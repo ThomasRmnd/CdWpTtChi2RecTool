@@ -29,32 +29,43 @@ enum class RecPmtType : unsigned char {
 };
 
 inline constexpr RecPmtType operator|(RecPmtType lhs, RecPmtType rhs) noexcept {
-	return static_cast<RecPmtType>(static_cast<int>(lhs) | static_cast<int>(rhs));
+	return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) | static_cast<unsigned char>(rhs));
 }
 
-inline constexpr RecPmtType operator&(RecPmtType lhs, RecPmtType rhs) {
-	return static_cast<RecPmtType>(static_cast<int>(lhs) & static_cast<int>(rhs));
+inline constexpr RecPmtType operator&(RecPmtType lhs, RecPmtType rhs) noexcept {
+	return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) & static_cast<unsigned char>(rhs));
 }
 
-inline constexpr RecPmtType operator^(RecPmtType lhs, RecPmtType rhs) {
-	return static_cast<RecPmtType>(static_cast<int>(lhs) ^ static_cast<int>(rhs));
+inline constexpr RecPmtType operator^(RecPmtType lhs, RecPmtType rhs) noexcept {
+	return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) ^ static_cast<unsigned char>(rhs));
 }
 
-inline constexpr RecPmtType operator~(RecPmtType rhs) {
-	return static_cast<RecPmtType>(~static_cast<int>(rhs));
+inline constexpr RecPmtType operator~(RecPmtType rhs) noexcept {
+	return static_cast<RecPmtType>(~static_cast<unsigned char>(rhs));
 }
 
-inline constexpr RecPmtType& operator|=(RecPmtType& lhs, RecPmtType rhs) {
+inline constexpr RecPmtType& operator|=(RecPmtType& lhs, RecPmtType rhs) noexcept {
 	return (lhs = lhs | rhs);
 }
 
-inline constexpr RecPmtType& operator&=(RecPmtType& lhs, RecPmtType rhs) {
+inline constexpr RecPmtType& operator&=(RecPmtType& lhs, RecPmtType rhs) noexcept {
 	return (lhs = lhs & rhs);
 }
 
-inline constexpr RecPmtType& operator^=(RecPmtType& lhs, RecPmtType rhs) {
+inline constexpr RecPmtType& operator^=(RecPmtType& lhs, RecPmtType rhs) noexcept {
 	return (lhs = lhs ^ rhs);
 }
+
+namespace std {
+
+template <>
+struct hash<RecPmtType> {
+    std::size_t operator()(const RecPmtType& t) const noexcept {
+        return static_cast<std::size_t>(t);
+    }
+};
+
+} // namespace std
 
 inline std::unordered_map<RecPmtType, double> pmt_type_to_res = {
     {RecPmtType::PMT_20INCH_NNVT, 7.0}, // 5.5},
@@ -79,12 +90,16 @@ struct RecPmtProp { // sizeof = 64 (PmtType : unsigned char)
 
 };
 
-inline bool operator==(const RecPmtProp& lhs, const RecPmtProp& rhs) {
+inline constexpr bool operator==(const RecPmtProp& lhs, const RecPmtProp& rhs) noexcept {
     return lhs.id == rhs.id;
 }
 
-inline bool operator!=(const RecPmtProp& lhs, const RecPmtProp& rhs) {
-    return !(lhs == rhs);
+inline constexpr bool operator!=(const RecPmtProp& lhs, const RecPmtProp& rhs) noexcept {
+    return lhs.id != rhs.id;
+}
+
+inline constexpr bool hasPmtType(const RecPmtProp& pmt, const RecPmtType& type) noexcept {
+    return ( (pmt.type & type ) == pmt.type );
 }
 
 typedef std::vector<RecPmtProp> RecPmtTable;

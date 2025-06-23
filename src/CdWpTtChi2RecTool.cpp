@@ -6,7 +6,7 @@ DECLARE_TOOL(CdWpTtChi2RecTool);
 
 CdWpTtChi2RecTool::CdWpTtChi2RecTool(const std::string& name) :
     ToolBase(name),
-    m_fact{"StractegyFactory"},
+    m_fact{"StrategyFactory"},
     m_strat{nullptr},
     m_timer{name}
 {
@@ -61,7 +61,7 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     std::vector<double> res = m_strat->get()->getFVars();
     double chi2 = m_strat->get()->getCost();
     m_strat->saveTrack(trks, res, chi2, tot_pe);
-    
+
     return true;
 }
 

@@ -6,6 +6,7 @@
 
 #include <memory>
 
+#include "strategy/Factory.hpp"
 #include "utils/RecPmtProp.hpp"
 #include "utils/timer.hpp"
 
@@ -27,7 +28,7 @@ private:
 
     const Params* m_params;
     const PmtTable* m_ref_table;
-    
+
     RecPmtTable m_table;
 
     bool m_waterphase;

@@ -3,22 +3,22 @@
 
 #include <type_traits>
 
-struct method_tag {};
+struct MethodTag {};
 
 // These are "pure" tags, they are used for the template of Chi2, Predictor and CostFunction
-struct fht_method_tag : public method_tag {};
-struct tt_method_tag : public method_tag {};
+struct FhtMethodTag : public MethodTag {};
+struct TtMethodTag : public MethodTag {};
 
 // These are "mixed" tags, they should only be used for the template of CostFunction
-struct fht_tt_method_tag : public fht_method_tag, public tt_method_tag {};
+struct FhtTtMethodTag : public FhtMethodTag, public TtMethodTag {};
 
 template<typename _Tag>
-struct method_traits;
+struct MethodTraits;
 
 #include "utils/RecPmtProp.hpp"
 
 template<>
-struct method_traits<fht_method_tag> {
+struct MethodTraits<FhtMethodTag> {
     typedef RecPmtProp value_type;
     typedef RecPmtTable vector_type;
     typedef RecPmtTable::iterator iterator;
@@ -31,7 +31,7 @@ struct method_traits<fht_method_tag> {
 };
 
 template<>
-struct method_traits<tt_method_tag> {
+struct MethodTraits<TtMethodTag> {
     typedef vec3 value_type;
     typedef std::vector<vec3> vector_type;
     typedef std::vector<vec3>::iterator iterator;

@@ -1,0 +1,21 @@
+#include "transformer/CalibrationTransformer.hpp"
+
+#include "SniperKernel/ToolFactory.h"
+
+DECLARE_TOOL(CalibrationTransformer);
+
+CalibrationTransformer::CalibrationTransformer(const std::string& name) :
+    Transformer(name),
+    m_offset(0.0)
+{}
+
+CalibrationTransformer::CalibrationTransformer(const std::string& name, const RecPmtType& type, double offset) :
+    Transformer(name, type),
+    m_offset(offset)
+{}
+
+void CalibrationTransformer::transform(RecPmtProp& pmt) {
+    if (!pmt.used || !checkType(pmt)) return;
+    pmt.fht += m_offset;
+    return;
+}

@@ -9,11 +9,10 @@ struct vec3 {
 
     double x, y, z;
 
-    constexpr vec3() noexcept : x(0.0), y(0.0), z(0.0) {};
-    constexpr vec3(double x_, double y_, double z_) noexcept : x(x_), y(y_), z(z_) {};
+    constexpr vec3() noexcept : x(0.0), y(0.0), z(0.0) {}
+    constexpr vec3(double x_, double y_, double z_) noexcept : x(x_), y(y_), z(z_) {}
 
-    explicit vec3(const TVector3& v) : x(v.X()), y(v.Y()), z(v.Z()) {};
-    explicit vec3(TVector3&& v) : x(std::move(v.X())), y(std::move(v.Y())), z(std::move(v.Z())) {};
+    explicit vec3(const TVector3& v) : x(v.X()), y(v.Y()), z(v.Z()) {}
     
     constexpr vec3(const vec3& v) noexcept = default;
     constexpr vec3(vec3&& v) noexcept = default;
@@ -28,43 +27,36 @@ struct vec3 {
         y = v.Y();
         z = v.Z();
         return *this;
-    };
-
-    vec3& operator=(TVector3&& v) {
-        x = std::move(v.X());
-        y = std::move(v.Y());
-        z = std::move(v.Z());
-        return *this;
-    };
+    }
 
     constexpr vec3& operator+=(const vec3& v) noexcept {
         x += v.x;
         y += v.y;
         z += v.z;
         return *this;
-    };
+    }
 
     constexpr vec3& operator-=(const vec3& v) noexcept {
         x -= v.x;
         y -= v.y;
         z -= v.z;
         return *this;
-    };
+    }
 
     constexpr vec3 operator-() const noexcept {
         return vec3{-x, -y, -z};
-    };
+    }
 
     constexpr vec3& operator*=(double s) noexcept {
         x *= s;
         y *= s;
         z *= s;
         return *this;
-    };
+    }
 
     constexpr vec3& operator/=(double s) noexcept {
         return *this *= (1.0 / s);
-    };
+    }
 
 };
 
@@ -115,11 +107,11 @@ inline constexpr double angle(const vec3& lhs, const vec3& rhs) noexcept {
 
 inline constexpr double theta(const vec3& v) noexcept {
     return std::acos(v.z / mag(v));
-};
+}
 
 inline constexpr double phi(const vec3& v) noexcept {
     return std::atan2(v.y, v.x);
-};
+}
 
 inline constexpr vec3 from_spherical(double mag, double theta, double phi) noexcept {
     mag = std::abs(mag);
@@ -127,15 +119,6 @@ inline constexpr vec3 from_spherical(double mag, double theta, double phi) noexc
     double y = mag * std::sin(theta) * std::sin(phi);
     double z = mag * std::cos(theta);
     return vec3{x, y, z};
-};
-
-
-inline constexpr bool operator==(const vec3& lhs, const vec3& rhs) noexcept {
-    return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
-}
-
-inline constexpr bool operator!=(const vec3& lhs, const vec3& rhs) noexcept {
-    return !(lhs == rhs);
 }
 
 #endif // CDWPTTCHI2RECTOOL_UTILS_VEC3_HPP_
