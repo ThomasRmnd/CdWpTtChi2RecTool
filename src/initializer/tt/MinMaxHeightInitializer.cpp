@@ -29,3 +29,7 @@ bool MinMaxHeightInitializer::operator()(const std::vector<vec3>& hits) {
 
     return true;
 }
+
+ParamsType MinMaxHeightInitializer::getOParamsType() {
+    return ParamsType::SingleTt;
+}

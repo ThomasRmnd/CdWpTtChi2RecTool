@@ -4,12 +4,12 @@
 
 Transformer::Transformer(const std::string& name) :
     ToolBase(name),
-    c_type(RecPmtType::PMT_UNKNOWN)
+    PmtTypeChecker(RecPmtType::PMT_UNKNOWN)
 {}
 
-Transformer::Transformer(const std::string& name, const RecPmtType& type) :
+Transformer::Transformer(const std::string& name, const RecPmtType& pmt_type) :
     ToolBase(name),
-    c_type(type)
+    PmtTypeChecker(pmt_type)
 {}
 
 void Transformer::operator()(RecPmtTable& table) {
@@ -23,13 +23,9 @@ void Transformer::operator()(RecPmtTable& table) {
     return;
 }
 
-bool Transformer::checkType(const RecPmtProp& pmt) {
-    return hasPmtType(pmt, c_type);
-}
-
 bool Transformer::findRange(RecPmtTable& table) {
-    m_ftable = std::find_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return checkType(pmt); });
-    m_ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return checkType(pmt); }).base();
+    m_ftable = std::find_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return checkPmtType(pmt); });
+    m_ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return checkPmtType(pmt); }).base();
 
     if (std::distance(m_ftable, m_ltable) <= 0) {
         LogDebug << "No PMTs match the type for this Transformer\n";

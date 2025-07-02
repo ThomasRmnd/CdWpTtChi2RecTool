@@ -52,7 +52,7 @@ bool WaterPhaseInitializer::getTable(RecPmtTable::const_iterator ftable, RecPmtT
         if (it->fht < ftime - m_dt_f2itime) continue;
         itime = std::min(itime, it->fht);
     }
-    LogDebug << "itime: " << itime << ", ftime: " << ftime << ", ftime - f2itime: " << ftime - m_dt_f2itime << std::endl;
+    LogDebug << "itime: " << itime << ", ftime: " << ftime << ", ftime - f2itime: " << ftime - m_dt_f2itime << '\n';
 
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
         if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
@@ -101,7 +101,7 @@ vec3 WaterPhaseInitializer::getFPos(RecPmtTable::const_iterator ftable, RecPmtTa
         }
 
     }
-    LogDebug << "qmax = " << qmax << std::endl;
+    LogDebug << "qmax = " << qmax << '\n';
 
     vec3 fpos;
     double totq = 0.0;
@@ -118,7 +118,7 @@ vec3 WaterPhaseInitializer::getFPos(RecPmtTable::const_iterator ftable, RecPmtTa
 
 bool WaterPhaseInitializer::operator()(const RecPmtTable& table) {
     std::size_t count = std::count_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
-    LogDebug << count << " PMTs are used for the initialization." << std::endl;
+    LogDebug << count << " PMTs are used for the initialization\n";
 
     RecPmtTable::const_iterator ftable = std::find_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
     RecPmtTable::const_iterator ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); }).base();
@@ -168,4 +168,8 @@ bool WaterPhaseInitializer::operator()(const RecPmtTable& table) {
     m_params = std::vector<double>{itime, theta(ipos), phi(ipos), theta(dir), phi(dir)};
 
     return true;
+}
+
+ParamsType WaterPhaseInitializer::getOParamsType() {
+    return ParamsType::SingleCd;
 }

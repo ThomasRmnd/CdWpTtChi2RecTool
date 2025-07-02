@@ -13,9 +13,7 @@ public:
 
     bool operator()(const vector_type& data) override;
 
-    ParamsType getOParamsType() const override {
-        return ParamsType::SingleTt;
-    };
+    ParamsType getOParamsType() override;
 
 };
 

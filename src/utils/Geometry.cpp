@@ -34,12 +34,12 @@ bool trajectoryHitCylinder(double radius, double height, const vec3& pos, const 
     }
 
     if (hitpoints.size() > 2) {
-        LogWarn << "Number of intersections in the cylinder is more than two." << std::endl;
+        LogWarn << "Number of intersections in the cylinder is more than two\n";
         for (std::size_t i = 0; i < hitpoints.size(); ++i) {
-            LogWarn << "Hit length: " << hitpoints[i] << ", label: " << label[i] << std::endl;
+            LogWarn << "Hit length: " << hitpoints[i] << ", label: " << label[i] << '\n';
         }
-        LogWarn << "Position: " << pos.x << " " << pos.y << " " << pos.z << " (" << theta(pos) << ", " << phi(pos) << ")" << std::endl;
-        LogWarn << "Direction: " << dir.x << " " << dir.y << " " << dir.z << " (" << theta(dir) << ", " << phi(dir) << ")" << std::endl;
+        LogWarn << "Position: " << pos.x << ' ' << pos.y << ' ' << pos.z << " (" << theta(pos) << ", " << phi(pos) << ")\n";
+        LogWarn << "Direction: " << dir.x << ' ' << dir.y << ' ' << dir.z << " (" << theta(dir) << ", " << phi(dir) << ")\n";
         return false;
     }
 

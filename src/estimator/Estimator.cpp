@@ -4,7 +4,7 @@
 
 bool Estimator::setParams(const std::vector<double>& params, const std::vector<double>& steps, const std::vector<std::string>& names) {
     if (params.size() != steps.size() || params.size() != names.size()) {
-        LogError << "Number of dimension from initial variables and steps is different." << std::endl;
+        LogError << "Number of dimension from initial variables and steps is different\n";
         return false;
     }
     m_size = params.size();

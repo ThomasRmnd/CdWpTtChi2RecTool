@@ -28,7 +28,7 @@ public:
 
     virtual ~CostFunction() = default;
 
-    ParamsType getIParamsType() const override {
+    ParamsType getIParamsType() override {
         return m_pred->getIParamsType();
     }
 
@@ -64,7 +64,7 @@ public:
 
     virtual ~CostFunction() = default;
 
-    ParamsType getIParamsType() const override {
+    ParamsType getIParamsType() override {
         if (m_pred_fht->getIParamsType() != m_pred_tt->getIParamsType()) {
             LogError << "Fht and Tt methods have different parameter types\n";
             return ParamsType::Unknown;

@@ -21,7 +21,7 @@ public:
         });
     }
 
-    ParamsType getIParamsType() const override {
+    ParamsType getIParamsType() override {
         return _Pt;
     }
 

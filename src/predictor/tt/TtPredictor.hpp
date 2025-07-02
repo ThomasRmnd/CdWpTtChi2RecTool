@@ -17,7 +17,7 @@ public:
         });
     }
 
-    ParamsType getIParamsType() const override {
+    ParamsType getIParamsType() override {
         return _Pt;
     }
 
@@ -39,7 +39,7 @@ public:
         });
     }
 
-    ParamsType getIParamsType() const override {
+    ParamsType getIParamsType() override {
         return ParamsType::DoubleAcrylic;
     }
 
@@ -68,7 +68,7 @@ public:
         });
     }
 
-    ParamsType getIParamsType() const override {
+    ParamsType getIParamsType() override {
         return ParamsType::TripleAcrylic;
     }
 

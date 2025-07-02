@@ -18,9 +18,7 @@ public:
 
     bool operator()(const vector_type& table) override;
 
-    ParamsType getOParamsType() const override {
-        return ParamsType::SingleCd;
-    };
+    ParamsType getOParamsType() override;
 
 private:
 

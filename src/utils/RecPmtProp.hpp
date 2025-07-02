@@ -102,6 +102,24 @@ inline constexpr bool hasPmtType(const RecPmtProp& pmt, const RecPmtType& type) 
     return ( (pmt.type & type ) == pmt.type );
 }
 
+class PmtTypeChecker {
+
+public:
+
+    PmtTypeChecker(const RecPmtType& pmt_type) : c_pmt_type(pmt_type) {}
+
+    virtual ~PmtTypeChecker() = default;
+
+    bool checkPmtType(const RecPmtProp& pmt) {
+        return hasPmtType(pmt, c_pmt_type);
+    }
+
+protected:
+
+    const RecPmtType c_pmt_type;
+
+};
+
 typedef std::vector<RecPmtProp> RecPmtTable;
 
 class TableConverter {

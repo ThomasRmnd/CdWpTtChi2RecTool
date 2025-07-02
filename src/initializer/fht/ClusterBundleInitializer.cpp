@@ -23,7 +23,7 @@ ClusterBundleInitializer::ClusterBundleInitializer(const std::string& name, doub
 
 bool ClusterBundleInitializer::operator()(const RecPmtTable& table) {
     unsigned int count = std::count_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
-    LogDebug << count << " PMTs are used for the initialization." << std::endl;
+    LogDebug << count << " PMTs are used for the initialization\n";
 
     RecPmtTable dpc_table;
     dpc_table.reserve(count);
@@ -50,13 +50,13 @@ bool ClusterBundleInitializer::operator()(const RecPmtTable& table) {
     else if (m_clusters.size() == 3) return strategy3Cluster(table);
     else if (m_clusters.size() == 4) return strategy4Cluster(table);
     else {
-        LogWarn << "Wrong number of clusters: " << m_clusters.size() << ", skip this event." << std::endl;
+        LogWarn << "Wrong number of clusters: " << m_clusters.size() << ", skip this event\n";
         return false;
     }
 }
 
 bool ClusterBundleInitializer::strategy1Cluster(const RecPmtTable& table) {
-    LogDebug << "Strategy 1: 1 cluster." << std::endl;
+    LogDebug << "Strategy 1: 1 cluster\n";
 
     return false; // TOOD: remove this line
 
@@ -110,9 +110,9 @@ bool ClusterBundleInitializer::strategy1Cluster(const RecPmtTable& table) {
         }
     }
 
-    LogDebug << "Number of clusters: " << m_clusters.size() << std::endl;
+    LogDebug << "Number of clusters: " << m_clusters.size() << '\n';
     m_clusters.erase(std::remove_if(m_clusters.begin(), m_clusters.end(), [&](const Cluster& cluster) { return notvalid[&cluster - &m_clusters[0]]; }), m_clusters.end());
-    LogDebug << "Number of valid clusters: " << m_clusters.size() << std::endl;
+    LogDebug << "Number of valid clusters: " << m_clusters.size() << '\n';
 
     if (m_clusters.size() == 2) return strategy2Cluster(table);
     else if (m_clusters.size() == 3) return strategy3Cluster(table);
@@ -122,7 +122,7 @@ bool ClusterBundleInitializer::strategy1Cluster(const RecPmtTable& table) {
         return strategy4ClusterSpe(table);
     }
     else if (m_clusters.size() == 0) {
-        LogWarn << "No cluster found, skip this event." << std::endl;
+        LogWarn << "No cluster found, skip this event\n";
         return false;
     }
     // else there is only 1 cluster
@@ -148,14 +148,14 @@ bool ClusterBundleInitializer::strategy1Cluster(const RecPmtTable& table) {
 }
 
 bool ClusterBundleInitializer::strategy2Cluster(const RecPmtTable& table) {
-    LogDebug << "Strategy 2: 2 clusters." << std::endl;
+    LogDebug << "Strategy 2: 2 clusters\n";
     // TODO: implement strategy 2
     (void) table;
     return false;
 }
 
 bool ClusterBundleInitializer::strategy3Cluster(const RecPmtTable& table) {
-    LogDebug << "Strategy 3: 3 clusters." << std::endl;
+    LogDebug << "Strategy 3: 3 clusters\n";
     // TODO: implement strategy 3
     (void) table;
 
@@ -166,9 +166,9 @@ bool ClusterBundleInitializer::strategy3Cluster(const RecPmtTable& table) {
     vec3 ipos2 = m_clusters[1].pos;
     vec3 fpos = m_clusters[2].pos;
 
-    std::cout << "Cluster 1: (" << ipos1.X() << ", " << ipos1.Y() << ", " << ipos1.Z() << "), " << m_clusters[0].charge << ", " << m_clusters[0].time << std::endl;
-    std::cout << "Cluster 2: (" << ipos2.X() << ", " << ipos2.Y() << ", " << ipos2.Z() << "), " << m_clusters[1].charge << ", " << m_clusters[1].time << std::endl;
-    std::cout << "Cluster 3: (" << fpos.X() << ", " << fpos.Y() << ", " << fpos.Z() << "), " << m_clusters[2].charge << ", " << m_clusters[2].time << std::endl;
+    std::cout << "Cluster 1: (" << ipos1.X() << ", " << ipos1.Y() << ", " << ipos1.Z() << "), " << m_clusters[0].charge << ", " << m_clusters[0].time << '\n';
+    std::cout << "Cluster 2: (" << ipos2.X() << ", " << ipos2.Y() << ", " << ipos2.Z() << "), " << m_clusters[1].charge << ", " << m_clusters[1].time << '\n';
+    std::cout << "Cluster 3: (" << fpos.X() << ", " << fpos.Y() << ", " << fpos.Z() << "), " << m_clusters[2].charge << ", " << m_clusters[2].time << '\n';
 
     // TODO: check if the following code is correct
     double dt1 = m_clusters[2].time - m_clusters[0].time;
@@ -194,7 +194,7 @@ bool ClusterBundleInitializer::strategy3Cluster(const RecPmtTable& table) {
 }
 
 bool ClusterBundleInitializer::strategy4Cluster(const RecPmtTable& table) {
-    LogDebug << "Strategy 4: 4 clusters." << std::endl;
+    LogDebug << "Strategy 4: 4 clusters\n";
     (void) table;
 
     std::sort(m_clusters.begin(), m_clusters.end(), [](const Cluster& lhs, const Cluster& rhs) { return lhs.time < rhs.time; });
@@ -203,15 +203,15 @@ bool ClusterBundleInitializer::strategy4Cluster(const RecPmtTable& table) {
     vec3 fpos1 = m_clusters[2].pos;
     vec3 fpos2 = m_clusters[3].pos;
 
-    std::cout << "Cluster 1: (" << ipos1.x << ", " << ipos1.y << ", " << ipos1.z << "), " << m_clusters[0].charge << ", " << m_clusters[0].time << std::endl;
-    std::cout << "Cluster 2: (" << ipos2.x << ", " << ipos2.y << ", " << ipos2.z << "), " << m_clusters[1].charge << ", " << m_clusters[1].time << std::endl;
-    std::cout << "Cluster 3: (" << fpos1.x << ", " << fpos1.y << ", " << fpos1.z << "), " << m_clusters[2].charge << ", " << m_clusters[2].time << std::endl;
-    std::cout << "Cluster 4: (" << fpos2.x << ", " << fpos2.y << ", " << fpos2.z << "), " << m_clusters[3].charge << ", " << m_clusters[3].time << std::endl;
+    std::cout << "Cluster 1: (" << ipos1.x << ", " << ipos1.y << ", " << ipos1.z << "), " << m_clusters[0].charge << ", " << m_clusters[0].time << '\n';
+    std::cout << "Cluster 2: (" << ipos2.x << ", " << ipos2.y << ", " << ipos2.z << "), " << m_clusters[1].charge << ", " << m_clusters[1].time << '\n';
+    std::cout << "Cluster 3: (" << fpos1.x << ", " << fpos1.y << ", " << fpos1.z << "), " << m_clusters[2].charge << ", " << m_clusters[2].time << '\n';
+    std::cout << "Cluster 4: (" << fpos2.x << ", " << fpos2.y << ", " << fpos2.z << "), " << m_clusters[3].charge << ", " << m_clusters[3].time << '\n';
 
     double angle1 = angle(fpos1 - ipos1, fpos2 - ipos2);
     double angle2 = angle(fpos2 - ipos1, fpos1 - ipos2);
 
-    std::cout << "Angle 1: " << angle1 * 180.0 / M_PI << ", Angle 2: " << angle2 * 180.0 / M_PI << std::endl;
+    std::cout << "Angle 1: " << angle1 * 180.0 / M_PI << ", Angle 2: " << angle2 * 180.0 / M_PI << '\n';
 
     if (angle2 < angle1) std::swap(fpos1, fpos2);
 
@@ -227,7 +227,7 @@ bool ClusterBundleInitializer::strategy4Cluster(const RecPmtTable& table) {
 }
 
 bool ClusterBundleInitializer::strategy4ClusterSpe(const RecPmtTable& table) {
-    LogDebug << "Strategy 4: 4 clusters." << std::endl;
+    LogDebug << "Strategy 4: 4 clusters\n";
     (void) table;
 
     std::sort(m_clusters.begin(), m_clusters.end(), [](const Cluster& lhs, const Cluster& rhs) { return lhs.time < rhs.time; });
@@ -236,15 +236,15 @@ bool ClusterBundleInitializer::strategy4ClusterSpe(const RecPmtTable& table) {
     vec3 fpos1 = m_clusters[2].pos;
     vec3 fpos2 = m_clusters[3].pos;
 
-    std::cout << "Cluster 1: (" << ipos1.x << ", " << ipos1.y << ", " << ipos1.z << "), " << m_clusters[0].charge << ", " << m_clusters[0].time << std::endl;
-    std::cout << "Cluster 2: (" << ipos2.x << ", " << ipos2.y << ", " << ipos2.z << "), " << m_clusters[1].charge << ", " << m_clusters[1].time << std::endl;
-    std::cout << "Cluster 3: (" << fpos1.x << ", " << fpos1.y << ", " << fpos1.z << "), " << m_clusters[2].charge << ", " << m_clusters[2].time << std::endl;
-    std::cout << "Cluster 4: (" << fpos2.x << ", " << fpos2.y << ", " << fpos2.z << "), " << m_clusters[3].charge << ", " << m_clusters[3].time << std::endl;
+    std::cout << "Cluster 1: (" << ipos1.x << ", " << ipos1.y << ", " << ipos1.z << "), " << m_clusters[0].charge << ", " << m_clusters[0].time << '\n';
+    std::cout << "Cluster 2: (" << ipos2.x << ", " << ipos2.y << ", " << ipos2.z << "), " << m_clusters[1].charge << ", " << m_clusters[1].time << '\n';
+    std::cout << "Cluster 3: (" << fpos1.x << ", " << fpos1.y << ", " << fpos1.z << "), " << m_clusters[2].charge << ", " << m_clusters[2].time << '\n';
+    std::cout << "Cluster 4: (" << fpos2.x << ", " << fpos2.y << ", " << fpos2.z << "), " << m_clusters[3].charge << ", " << m_clusters[3].time << '\n';
 
     double angle1 = angle(fpos1 - ipos1, fpos2 - ipos2);
     double angle2 = angle(fpos2 - ipos1, fpos1 - ipos2);
 
-    std::cout << "Angle 1: " << angle1 * 180.0 / M_PI << ", Angle 2: " << angle2 * 180.0 / M_PI << std::endl;
+    std::cout << "Angle 1: " << angle1 * 180.0 / M_PI << ", Angle 2: " << angle2 * 180.0 / M_PI << '\n';
 
     if (angle2 < angle1) std::swap(fpos1, fpos2);
 
@@ -257,4 +257,8 @@ bool ClusterBundleInitializer::strategy4ClusterSpe(const RecPmtTable& table) {
     };
 
     return true;
+}
+
+ParamsType ClusterBundleInitializer::getOParamsType() {
+    return ParamsType::DoubleAcrylic;
 }

@@ -22,7 +22,7 @@ public:
 
     virtual ~IParamsHandler() = default;
 
-    virtual ParamsType getIParamsType() const = 0;
+    virtual ParamsType getIParamsType() = 0;
 
 };
 
@@ -32,7 +32,7 @@ public:
 
     virtual ~OParamsHandler() = default;
 
-    virtual ParamsType getOParamsType() const = 0;
+    virtual ParamsType getOParamsType() = 0;
 
 };
 

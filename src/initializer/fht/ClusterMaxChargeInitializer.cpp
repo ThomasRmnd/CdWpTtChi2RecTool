@@ -121,7 +121,7 @@ vec3 ClusterMaxChargeInitializer::getFPos(RecPmtTable::const_iterator ftable, Re
         ++n;
     }
     if (!n) {
-        LogWarn << "No valid PMTs found for the end point." << std::endl;
+        LogWarn << "No valid PMTs found for the end point\n";
         return pos_q_cntrd;
     }
     return fpos / static_cast<double>(n);
@@ -129,7 +129,7 @@ vec3 ClusterMaxChargeInitializer::getFPos(RecPmtTable::const_iterator ftable, Re
 
 bool ClusterMaxChargeInitializer::operator()(const RecPmtTable& table) {
     unsigned int count = std::count_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
-    LogDebug << count << " PMTs are used for the initialization." << std::endl;
+    LogDebug << count << " PMTs are used for the initialization\n";
 
     RecPmtTable::const_iterator ftable = std::find_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
     RecPmtTable::const_iterator ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); }).base();
@@ -146,4 +146,8 @@ bool ClusterMaxChargeInitializer::operator()(const RecPmtTable& table) {
     m_params = std::vector<double>{itime, theta(ipos), phi(ipos), theta(dir), phi(dir)};
 
     return true;
+}
+
+ParamsType ClusterMaxChargeInitializer::getOParamsType() {
+    return ParamsType::SingleAcrylic;
 }

@@ -15,9 +15,7 @@ public:
 
     bool operator()(const RecPmtTable& table) override;
 
-    ParamsType getOParamsType() const override {
-        return ParamsType::DoubleAcrylic;
-    };
+    ParamsType getOParamsType() override;
 
 private:
 
