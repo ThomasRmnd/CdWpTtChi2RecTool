@@ -15,8 +15,6 @@ public:
 private:
 
     const double c_alpha, c_gamma, c_rho, c_sigma;
-
-    std::vector<double(const double*)> m_func;
     
     std::vector<std::vector<double>> m_simplex;
     std::vector<double> m_costs;
