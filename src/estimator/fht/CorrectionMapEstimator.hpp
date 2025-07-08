@@ -44,7 +44,7 @@ public:
     };
 
     ParamsType getIParamsType() override {
-        if (this->m_func->getIParamsType() != _Pt::type) {
+        if (this->m_func->getIParamsType() != _Pt) {
             LogError << "Cost function and correction maps have different parameters type\n";
             return ParamsType::Unknown;
         }
@@ -64,20 +64,18 @@ public:
         copyTable(table);
         
         for (std::size_t k = 0; k < c_nb_loop; ++k) {
-            if (!applyCorrMap(this->m_ivars, table)) return false;
+            if (!applyCorrMap(this->m_params, table)) return false;
 
             this->m_func->set(table);
-            if (!this->m_opti->setParams(this->m_ivars, this->m_steps, this->m_names)) return false;
+            if (!this->m_opti->setParams(this->m_params, this->m_steps, this->m_names)) return false;
             if (!this->m_opti->operator()(*this->m_func)) return false;
 
-            this->m_ivars = this->m_opti->getFVars();
+            this->m_params = this->m_opti->getParams();
             resetFht(table);
         }
 
-        this->m_fvars = this->m_ivars;
         this->m_cost = this->m_opti->getCost();
-
-        this->m_opti->printFVars();
+        this->m_opti->printParams();
         return true;
     }
 
@@ -95,9 +93,9 @@ protected:
         }
     }
 
-    bool applyCorrMap(const std::vector<double>& vars, RecPmtTable& table) {
+    bool applyCorrMap(const std::vector<double>& params, RecPmtTable& table) {
         for (const std::shared_ptr<CorrectionMap<_Pt>>& map : m_maps) {
-            map->setTrack(vars.data());
+            map->setTrack(params.data());
             map->operator()(table);
         }
         return true;
