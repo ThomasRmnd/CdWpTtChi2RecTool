@@ -55,16 +55,16 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     timer_guard tg(m_timer); // start the timer, and stop it when `tg` goes out of scope and if timer::stop() is not called
 
     TableConverter::convert(m_ref_table, m_table);
-    double tot_pe = TableConverter::getTotPE();
+    double totpe = TableConverter::getTotPE();
 
-    LogInfo << "Start reconstruction entry with " << m_table.size() << " PMTs, and " << tot_pe << " PEs\n";
+    LogInfo << "Start reconstruction entry with " << m_table.size() << " PMTs, and " << totpe << " PEs\n";
 
     std::shared_ptr<Strategy> strat = m_fact->construct(m_table);
     if (!strat) {
         LogInfo << "No strategy found for this type of event. Skipping\n";
         return true;
     }
-
+    strat->prepare();
     std::shared_ptr<Pipeline> pipe = strat->pipeline();
     if (!pipe) {
         LogError << "Pipeline is not set for this given strategy. Abording\n";
@@ -76,9 +76,7 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
         return true;
     }
 
-    std::vector<double> res = pipe->getParams();
-    double chi2 = pipe->getCost();
-    strat->saveTrack(trks, res, chi2, tot_pe);
+    strat->save(trks, totpe);
 
     return true;
 }

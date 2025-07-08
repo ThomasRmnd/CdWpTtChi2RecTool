@@ -11,6 +11,7 @@ bool StrategyRegistry::initialize() {
             LogError << "Strategy is not set. Abording\n";
             return false;
         }
+        strat->create();
         std::shared_ptr<Pipeline> pipe = strat->pipeline();
         if (!pipe) {
             LogError << "Pipeline is not set for the strategy (" << strat->type.params << ", " << strat->type.detector << ")\n";

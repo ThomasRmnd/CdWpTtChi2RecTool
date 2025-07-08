@@ -10,7 +10,7 @@
 
 #include "estimator/fht/map/CorrectionMap.hpp"
 
-template<typename _Pt>
+template<ParamsType _Pt>
 class CorrectionMapLoopEstimator : public MinimizerEstimator<FhtMethodTag> {
 
 public:
@@ -48,7 +48,7 @@ public:
             LogError << "Cost function and correction maps have different parameters type\n";
             return ParamsType::Unknown;
         }
-        return _Pt::type;
+        return _Pt;
     }
 
     ParamsType getOParamsType() override {

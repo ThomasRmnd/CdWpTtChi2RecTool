@@ -76,22 +76,23 @@ public:
     std::shared_ptr<Pipeline> pipeline() const { return m_pipe; };
 
     virtual void create() = 0;
-    virtual void setDefaultParams() = 0;
-    virtual void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) = 0;
+    virtual void prepare() = 0;
+    virtual void save(RecTrks* tracks, double totpe) = 0;
 
 protected:
 
     std::shared_ptr<Pipeline> m_pipe;
 
-    std::vector<double> m_default_params;
+    std::vector<double> m_params;
     std::vector<double> m_steps;
     std::vector<std::string> m_names;
 
-    template<typename TParams>
-    void getParams() {
-        m_default_params = std::vector<double>(TParams::default_params, TParams::default_params + TParams::nb_params);
-        m_steps = std::vector<double>(TParams::steps, TParams::steps + TParams::nb_params);
-        m_names = std::vector<std::string>(TParams::names, TParams::names + TParams::nb_params);
+    template<ParamsType _Pt>
+    void getDefaultParams() {
+        typedef ParamsTraits<_Pt> _Traits;
+        m_params = std::vector<double>(_Traits::defaults, _Traits::defaults + _Traits::size);
+        m_steps = std::vector<double>(_Traits::steps, _Traits::steps + _Traits::size);
+        m_names = std::vector<std::string>(_Traits::names, _Pt::names + _Traits::size);
     }
 
 };
@@ -104,8 +105,8 @@ public:
     ~CdStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
@@ -117,8 +118,8 @@ public:
     ~CdStoppingStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
@@ -130,8 +131,8 @@ public:
     ~CdDoubleStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
@@ -143,8 +144,8 @@ public:
     ~TtStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
@@ -156,8 +157,8 @@ public:
     ~CdWpStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
@@ -169,8 +170,8 @@ public:
     ~CdTtStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
@@ -182,8 +183,8 @@ public:
     ~CdWpTtStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
@@ -195,8 +196,8 @@ public:
     ~CdWaterPhaseStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
@@ -208,8 +209,8 @@ public:
     ~CdWpWaterPhaseStrategy() override = default;
 
     void create() override;
-    void setDefaultParams() override;
-    void saveTrack(RecTrks* tracks, const std::vector<double>& params, double cost, double tot_pe) override;
+    void prepare() override;
+    void save(RecTrks* tracks, double totpe) override;
 
 };
 
