@@ -47,7 +47,7 @@ public:
         m_param_y->setTrack(this->m_orig, this->m_dir);
         m_param_z->setTrack(this->m_orig, this->m_dir);
         for (RecPmtProp& pmt : table) {
-            if (!checkPmtType(pmt)) continue;
+            if (!this->checkPmtType(pmt)) continue;
             pmt.fht -= correction(pmt);
         }
         return;
@@ -65,7 +65,7 @@ private:
     double m_lbin_ctr_x, m_lbin_ctr_y, m_lbin_ctr_z;
 
     bool openCorrProfile() override {
-        m_prof3d = this->m_file->get<TProfile3D>(this->m_mapname.c_str());
+        m_prof3d = this->m_file->template get<TProfile3D>(this->m_mapname.c_str());
         if (!m_prof3d) {
             LogError << "Cannot find TProfile3D prof3d in correction file " << this->m_filename << '\n';
             return false;

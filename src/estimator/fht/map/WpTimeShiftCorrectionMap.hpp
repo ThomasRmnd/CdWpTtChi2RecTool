@@ -9,17 +9,17 @@
 
 #include "utils/Geometry.hpp"
 
-template<typename Params>
-class WpTimeShiftCorrectionMap : public CorrectionMap<Params> {
+template<ParamsType _Pt>
+class WpTimeShiftCorrectionMap : public CorrectionMap<_Pt> {
 
 public:
 
     WpTimeShiftCorrectionMap(const std::string& name) :
-        CorrectionMap<Params>(name)
+        CorrectionMap<_Pt>(name)
     {};
 
-    WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
-        CorrectionMap<Params>(name, RecPmtType::PMT_WP, filename, mapname)
+    WpTimeShiftCorrectionMap(const std::string& name, const std::shared_ptr<CorrectionFile>& file, const std::string& filename, const std::string& mapname) :
+        CorrectionMap<_Pt>(name, RecPmtType::PMT_WP, file, filename, mapname)
     {};
 
     ~WpTimeShiftCorrectionMap() override = default;
@@ -63,7 +63,7 @@ private:
     double m_shift;
 
     bool openCorrProfile() override {
-        m_prof = this->m_file->get<TProfile2D>(this->m_mapname.c_str());
+        m_prof = this->m_file->template get<TProfile2D>(this->m_mapname.c_str());
         if (!m_prof) {
             LogError << "Cannot find TProfile3D prof3d in correction file " << this->m_filename << std::endl;
             return false;

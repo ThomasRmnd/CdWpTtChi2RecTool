@@ -13,7 +13,7 @@ std::shared_ptr<CorrectionFile> CorrectionFile::open(const std::string& filename
             return existing;
         }
     }
-    std::shared_ptr<CorrectionFile> file = std::make_shared<CorrectionFile>(filename);
+    std::shared_ptr<CorrectionFile> file(new CorrectionFile(filename));
     s_cache[filename] = file;
     return file;
 }
