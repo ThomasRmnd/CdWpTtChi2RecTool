@@ -30,8 +30,8 @@ PKG(CdWpTtChi2RecTool
     src/transformer/WaterPhaseTransformer.cpp
     src/transformer/WpGeomTimeTransformer.cpp
 
-    utils/DensityPeaksClustering.cpp
-    utils/Geometry.cpp
+    src/utils/DensityPeaksClustering.cpp
+    src/utils/Geometry.cpp
 
 DEPENDS
         
