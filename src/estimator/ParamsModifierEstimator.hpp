@@ -47,11 +47,11 @@ public:
         return ParamsModifierEstimator::estimate(table);
     }
 
-    ParamsType get_IPtType() override {
+    ParamsType getIParamsType() override {
         return _IPt;
     }
 
-    ParamsType get_OPtType() override {
+    ParamsType getOParamsType() override {
         return _IPt;
     }
 
