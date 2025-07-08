@@ -5,7 +5,7 @@
 
 #include "predictor/fht/fht/CdFht.hpp"
 
-template<typename _Pt>
+template<ParamsType _Pt>
 class CdFhtPredictor : public Predictor<FhtMethodTag> {
 
 public:

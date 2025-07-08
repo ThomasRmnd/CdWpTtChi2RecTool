@@ -5,7 +5,7 @@
 
 #include "predictor/fht/fht/WpFht.hpp"
 
-template<typename _Pt>
+template<ParamsType _Pt>
 class WpFhtPredictor : public Predictor<FhtMethodTag> {
 
 public:

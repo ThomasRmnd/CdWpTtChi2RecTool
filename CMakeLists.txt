@@ -3,6 +3,7 @@ PKG(CdWpTtChi2RecTool
     src/estimator/Estimator.cpp
     src/estimator/ParamsModifierEstimator.cpp
     src/estimator/Pipeline.cpp
+    src/estimator/fht/FhtMinimizerEstimator.cpp
 
     src/initializer/fht/ClusterBundleInitializer.cpp
     src/initializer/fht/ClusterMaxChargeInitializer.cpp
@@ -16,7 +17,7 @@ PKG(CdWpTtChi2RecTool
     src/transformer/Transformer.cpp
     src/transformer/TtCrossTalkTransformer.cpp
     src/transformer/WaterPhaseTransformer.cpp
-    src/transformer/WpGeomtryTimeTransformer.cpp
+    src/transformer/WpGeomTimeTransformer.cpp
 
 DEPENDS
         

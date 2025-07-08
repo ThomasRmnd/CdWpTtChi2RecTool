@@ -19,7 +19,7 @@ EarlyLateFhtTransformer::EarlyLateFhtTransformer(const std::string& name, const 
 double EarlyLateFhtTransformer::getITime(const RecPmtTable& table) {
     m_hist->Reset();
     for (const RecPmtProp& pmt : table) {
-        if (!pmt.used || !checkType(pmt)) continue;
+        if (!pmt.used || !checkPmtType(pmt)) continue;
         m_hist->Fill(pmt.fht);
     }
     
@@ -38,7 +38,7 @@ void EarlyLateFhtTransformer::operator()(RecPmtTable& table) {
 }
 
 void EarlyLateFhtTransformer::transform(RecPmtProp& pmt) {
-    if (!pmt.used || !checkType(pmt)) return;
+    if (!pmt.used || !checkPmtType(pmt)) return;
     pmt.used = (m_itime <= pmt.fht && pmt.fht <= m_itime + m_relative_cut);
     return;
 }

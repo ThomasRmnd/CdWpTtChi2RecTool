@@ -81,8 +81,8 @@ void WaterPhaseTransformer::operator()(RecPmtTable& table) {
     std::for_each(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transform(pmt); });
 
     std::size_t tsize_spmt = std::count_if(m_ftable, m_ltable, [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_3INCH) == pmt.type; });
-    std::cout << "SPMT: " << isize_spmt << " - " << tsize_spmt << " = " << isize_spmt - tsize_spmt << std::endl;
-    std::cout << m_nb_spmt << " SPMTs and " << m_nb_lpmt << " LPMTs are used" << std::endl;
+    std::cout << "SPMT: " << isize_spmt << " - " << tsize_spmt << " = " << isize_spmt - tsize_spmt << '\n';
+    std::cout << m_nb_spmt << " SPMTs and " << m_nb_lpmt << " LPMTs are used\n";
 
     // Neighbouring filter for 3-inch PMTs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     m_nb_neigh.clear();
@@ -104,7 +104,7 @@ void WaterPhaseTransformer::operator()(RecPmtTable& table) {
         ++k;
     }
 
-    std::cout << k << std::endl;
+    std::cout << k << '\n';
 
     k = 0u;
     for (RecPmtProp& pmt : table) {
@@ -114,7 +114,7 @@ void WaterPhaseTransformer::operator()(RecPmtTable& table) {
         ++k;
     }
 
-    std::cout << k << std::endl;
+    std::cout << k << '\n';
 
     // Neighbouring filter for 20-inch PMTs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     m_nb_neigh.clear();
@@ -149,12 +149,12 @@ void WaterPhaseTransformer::operator()(RecPmtTable& table) {
     std::size_t fsize = table.size();
 
     std::size_t fsize_lpmt = std::count_if(table.begin(), table.end(), [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_20INCH) == pmt.type; });
-    std::cout << "LPMT: " << isize_lpmt << " - " << fsize_lpmt << " = " << isize_lpmt - fsize_lpmt << std::endl;
+    std::cout << "LPMT: " << isize_lpmt << " - " << fsize_lpmt << " = " << isize_lpmt - fsize_lpmt << '\n';
 
     std::size_t fsize_spmt = std::count_if(table.begin(), table.end(), [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_3INCH) == pmt.type; });
-    std::cout << "SPMT: " << tsize_spmt << " - " << fsize_spmt << " = " << tsize_spmt - fsize_spmt << std::endl;
+    std::cout << "SPMT: " << tsize_spmt << " - " << fsize_spmt << " = " << tsize_spmt - fsize_spmt << '\n';
         
-    LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed." << std::endl;
+    LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed." << '\n';
 
     return;
 }
@@ -204,7 +204,7 @@ bool WaterPhaseTransformer::getITime20inch(const RecPmtTable& table) {
         m_lpmt_itime = std::min(m_lpmt_itime, pmt.fht);
         flag = true;
     }
-    if (!flag) LogWarn << "No valid PMTs found to get the initial time." << std::endl;
+    if (!flag) LogWarn << "No valid PMTs found to get the initial time\n";
     return flag;
 }
 
@@ -217,7 +217,7 @@ bool WaterPhaseTransformer::getFTime20inch(const RecPmtTable& table) {
     }
 
     if (m_hist->GetEntries() == 0) {
-        LogWarn << "No valid PMTs found to get the final time." << std::endl;
+        LogWarn << "No valid PMTs found to get the final time\n";
         return false;
     }
 
@@ -239,15 +239,15 @@ void WaterPhaseTransformer::operator()(RecPmtTable& table) {
     if (!getITime20inch(table)) return;
     if (!getFTime20inch(table)) return;
 
-    std::cout << "itime = " << m_lpmt_itime << ", ftime = " << m_lpmt_ftime << std::endl;
+    std::cout << "itime = " << m_lpmt_itime << ", ftime = " << m_lpmt_ftime << '\n';
 
     std::for_each(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transform(pmt); });
 
     std::size_t tsize_lpmt = std::count_if(m_ftable, m_ltable, [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_20INCH) == pmt.type; });
     std::size_t tsize_spmt = std::count_if(m_ftable, m_ltable, [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_3INCH) == pmt.type; });
     
-    std::cout << "LPMT: " << isize_lpmt << " - " << tsize_lpmt << " = " << isize_lpmt - tsize_lpmt << std::endl;
-    std::cout << "SPMT: " << isize_spmt << " - " << tsize_spmt << " = " << isize_spmt - tsize_spmt << std::endl;
+    std::cout << "LPMT: " << isize_lpmt << " - " << tsize_lpmt << " = " << isize_lpmt - tsize_lpmt << '\n';
+    std::cout << "SPMT: " << isize_spmt << " - " << tsize_spmt << " = " << isize_spmt - tsize_spmt << '\n';
 
     // Neighbouring filter for 20-inch PMTs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     m_nb_neigh.clear();
@@ -278,16 +278,16 @@ void WaterPhaseTransformer::operator()(RecPmtTable& table) {
     std::size_t fsize_lpmt = std::count_if(table.begin(), table.end(), [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_20INCH) == pmt.type; });
     std::size_t fsize_spmt = std::count_if(table.begin(), table.end(), [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_3INCH) == pmt.type; });
     
-    std::cout << "LPMT: " << isize_lpmt << " - " << fsize_lpmt << " = " << isize_lpmt - fsize_lpmt << std::endl;
-    std::cout << "SPMT: " << tsize_spmt << " - " << fsize_spmt << " = " << tsize_spmt - fsize_spmt << std::endl;
+    std::cout << "LPMT: " << isize_lpmt << " - " << fsize_lpmt << " = " << isize_lpmt - fsize_lpmt << '\n';
+    std::cout << "SPMT: " << tsize_spmt << " - " << fsize_spmt << " = " << tsize_spmt - fsize_spmt << '\n';
         
-    LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed." << std::endl;
+    LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed\n";
 
     return;
 }
 
 void WaterPhaseTransformer::transform(RecPmtProp& pmt) {
-    if (!pmt.used || !checkType(pmt)) return;
+    if (!pmt.used || !checkPmtType(pmt)) return;
     if ( (pmt.type & RecPmtType::PMT_20INCH) == pmt.type ) {
         if ( pmt.fht < m_lpmt_itime || m_lpmt_ftime < pmt.fht ) pmt.used = false;
     }

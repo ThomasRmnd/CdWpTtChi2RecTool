@@ -25,7 +25,7 @@ void TtCrossTalkTransformer::operator()(RecPmtTable& table) {
 }
 
 void TtCrossTalkTransformer::transform(RecPmtProp& pmt) {
-    if (!pmt.used || !checkType(pmt)) return;
+    if (!pmt.used || !checkPmtType(pmt)) return;
     Identifier id = TtID::id(pmt.id);
     int ch_id = TtID::getIntID(TtID::wall_id(id), TtID::lower_pmt_index(TtID::pmt(id)), TtID::strip(id));
     if (m_ch_ids.find(ch_id) == m_ch_ids.end()) return;

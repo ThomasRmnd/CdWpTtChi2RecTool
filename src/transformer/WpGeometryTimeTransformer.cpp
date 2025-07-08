@@ -1,4 +1,4 @@
-#include "transformer/WpGeometryTimeTransformer.hpp"
+#include "transformer/WpGeomTimeTransformer.hpp"
 
 #include <algorithm>
 #include <limits>
@@ -8,13 +8,13 @@
 #include "SniperKernel/SniperLog.h"
 #include "SniperKernel/ToolFactory.h"
 
-DECLARE_TOOL(WpGeometryTimeTransformer);
+DECLARE_TOOL(WpGeomTimeTransformer);
 
-WpGeometryTimeTransformer::WpGeometryTimeTransformer(const std::string& name) : 
+WpGeomTimeTransformer::WpGeomTimeTransformer(const std::string& name) : 
     Transformer(name, RecPmtType::PMT_WP)
 {}
 
-WpGeometryTimeTransformer::WpGeometryTimeTransformer(const std::string& name, double time_window_early, double time_window_late, double thold_sep, double thold_q_ratio, double radius_time, double radius_arclength) : 
+WpGeomTimeTransformer::WpGeomTimeTransformer(const std::string& name, double time_window_early, double time_window_late, double thold_sep, double thold_q_ratio, double radius_time, double radius_arclength) : 
     Transformer(name, RecPmtType::PMT_WP), 
     m_time_window_early(time_window_early), 
     m_time_window_late(time_window_late), 
@@ -37,16 +37,16 @@ WpGeometryTimeTransformer::WpGeometryTimeTransformer(const std::string& name, do
     m_h_fht->SetDirectory(0);
 }
 
-void WpGeometryTimeTransformer::operator()(RecPmtTable& table) {
+void WpGeomTimeTransformer::operator()(RecPmtTable& table) {
     if (!findRange(table)) return;
 
     // ~~~
     // m_nb_neigh.clear();
     // m_nb_neigh.resize(std::distance(m_ftable, m_ltable), 0u);
     // for (RecPmtTable::iterator it = m_ftable; it != m_ltable; ++it) {
-    //     if (!it->used || !checkType(*it)) continue;
+    //     if (!it->used || !checkPmtType(*it)) continue;
     //     for (RecPmtTable::iterator jt = m_ftable; jt != m_ltable; ++jt) {
-    //         if (!jt->used || !checkType(*jt)) continue;
+    //         if (!jt->used || !checkPmtType(*jt)) continue;
     //         if (it->id == jt->id) continue;
     //         if (m_dist2_neigh < mag2(it->pos - jt->pos)) continue;
     //         ++m_nb_neigh[std::distance(m_ftable, it)];
@@ -55,56 +55,56 @@ void WpGeometryTimeTransformer::operator()(RecPmtTable& table) {
     // for (std::size_t k = 0; k < m_nb_neigh.size(); ++k) {
     //     if (m_nb_neigh[k] < m_neigh_thold) m_ftable[k].used = false;
     // }
-    // std::cout << "After applying neighbor threshold: " << std::count_if(m_ftable, m_ltable, [&](RecPmtProp& pmt) { return pmt.used; }) << std::endl;
+    // std::cout << "After applying neighbor threshold: " << std::count_if(m_ftable, m_ltable, [&](RecPmtProp& pmt) { return pmt.used; }) << '\n';
     // ~~~
 
     if (!getEarlyLateTime()) return;
-    std::cout << "time_early: " << m_time_early << " time_late: " << m_time_late << std::endl;
+    std::cout << "time_early: " << m_time_early << " time_late: " << m_time_late << '\n';
 
     for (RecPmtTable::iterator it = m_ftable; it != m_ltable; ++it) {
-        if (!it->used || !checkType(*it)) continue;
+        if (!it->used || !checkPmtType(*it)) continue;
         if (it->fht < m_time_early || m_time_late + 100.0 < it->fht) it->used = false;
     }
 
     // ~~~
     // m_first_time_late = m_time_late;
     // for (RecPmtTable::iterator it = m_ftable; it != m_ltable; ++it) {
-    //     if (!it->used || !checkType(*it)) continue;
+    //     if (!it->used || !checkPmtType(*it)) continue;
     //     if (it->fht < m_time_early || m_time_late < it->fht) it->used = false;
     // }
     // ~~~
 
     if (!getEarlyLatePosition()) return;
-    std::cout << "pos_early: " << m_pos_early.x << " " << m_pos_early.y << " " << m_pos_early.z << std::endl;
-    std::cout << "pos_late: " << m_pos_late.x << " " << m_pos_late.y << " " << m_pos_late.z << std::endl;
+    std::cout << "pos_early: " << m_pos_early.x << ' ' << m_pos_early.y << ' ' << m_pos_early.z << '\n';
+    std::cout << "pos_late: " << m_pos_late.x << ' ' << m_pos_late.y << ' ' << m_pos_late.z << '\n';
     if (!getMaxRange()) return;
-    std::cout << "max_range: " << m_max_range << std::endl;
+    std::cout << "max_range: " << m_max_range << '\n';
     if (!fillClusteredTable()) return;
     // m_thold_nb_neighbors = static_cast<unsigned int>( std::min(0.05 * m_clustered_table.size() + 5.0, 20.0) );
     m_thold_nb_neighbors = static_cast<unsigned int>( std::min(1.0/30.0 * m_clustered_table.size() + 5.0, 15.0) );
-    std::cout << "Clustered table size: " << m_clustered_table.size() << " thold_nb_neighbors: " << m_thold_nb_neighbors << std::endl;
+    std::cout << "Clustered table size: " << m_clustered_table.size() << " thold_nb_neighbors: " << m_thold_nb_neighbors << '\n';
     dbscan(m_thold_nb_neighbors);
     checkClusters();
     int cluster_id = getClusterWithMaxPmts();
     if (!getMaxChargeInCluster(cluster_id)) return;
-    std::cout << "max_q: " << m_max_q << std::endl;
+    std::cout << "max_q: " << m_max_q << '\n';
     getMeanPosAndTimeInCluster(cluster_id);
-    std::cout << "pos_late: " << m_pos_late.x << " " << m_pos_late.y << " " << m_pos_late.z << std::endl;
-    std::cout << "time_late: " << m_time_late << std::endl;
+    std::cout << "pos_late: " << m_pos_late.x << ' ' << m_pos_late.y << ' ' << m_pos_late.z << '\n';
+    std::cout << "time_late: " << m_time_late << '\n';
 
     m_dist_range = 20050.0 * angle(m_pos_early, m_pos_late);
     m_time_range = m_time_late - m_time_early;
 
-    std::cout << "dist_range: " << m_dist_range << " time_range: " << m_time_range << std::endl;
+    std::cout << "dist_range: " << m_dist_range << " time_range: " << m_time_range << '\n';
 
     // Transformer::operator()(table);
     std::for_each(table.begin(), table.end(), [&](RecPmtProp& pmt) { transform(pmt); });
 
     /* std::unordered_map<int, unsigned int> pmt_neigh_cnt;
     for (RecPmtTable::const_iterator it = m_ftable; it != m_ltable; ++it) {
-        if (!it->used || !checkType(*it)) continue;
+        if (!it->used || !checkPmtType(*it)) continue;
         for (RecPmtTable::const_iterator jt = m_ftable; jt != m_ltable; ++jt) {
-            if (!jt->used || !checkType(*jt)) continue;
+            if (!jt->used || !checkPmtType(*jt)) continue;
             if (it->id == jt->id) continue;
             if (mag2(it->pos - it->pos) < m_dist2_neigh) {
                 ++pmt_neigh_cnt[it->id];
@@ -113,7 +113,7 @@ void WpGeometryTimeTransformer::operator()(RecPmtTable& table) {
     }
 
     for (RecPmtTable::iterator it = m_ftable; it != m_ltable; ++it) {
-        if (!it->used || !checkType(*it)) continue;
+        if (!it->used || !checkPmtType(*it)) continue;
         if (pmt_neigh_cnt.find(it->id) == pmt_neigh_cnt.end()) it->used = false;
         else if (pmt_neigh_cnt[it->id] <= 2u) it->used = false;
     } */
@@ -125,13 +125,13 @@ void WpGeometryTimeTransformer::operator()(RecPmtTable& table) {
 // 
     // m_h_fht->Reset();
     // for (const RecPmtProp& pmt : table) {
-    //     if (!pmt.used || !checkType(pmt)) continue;
+    //     if (!pmt.used || !checkPmtType(pmt)) continue;
     //     m_h_fht->Fill(pmt.fht);
     // }
 // 
     // int bin_begin = m_h_fht->FindBin(m_first_time_late - m_time_window_late);
     // int bin_end = m_h_fht->FindBin(m_first_time_late);
-    // std::cout << "bin_begin: " << bin_begin << " bin_end: " << bin_end << std::endl;
+    // std::cout << "bin_begin: " << bin_begin << " bin_end: " << bin_end << '\n';
     // double time_max_bin = m_first_time_late - m_time_window_late * 0.5;
     // int max_bin = m_h_fht->FindBin(time_max_bin);
     // for (int k = bin_begin; k <= bin_end; ++k) {
@@ -140,9 +140,9 @@ void WpGeometryTimeTransformer::operator()(RecPmtTable& table) {
     //     }
     // }
     // time_max_bin = m_h_fht->GetBinCenter(max_bin);
-    // std::cout << max_bin << " " << time_max_bin << std::endl;
+    // std::cout << max_bin << ' ' << time_max_bin << '\n';
     // for (RecPmtProp& pmt : table) {
-    //     if (!pmt.used || !checkType(pmt)) continue;
+    //     if (!pmt.used || !checkPmtType(pmt)) continue;
     //     double dist_pmt = arcLengthRatio(pmt, m_dist_range);
     //     if (0.7 <= dist_pmt && (pmt.fht <= time_max_bin - m_width_time_window || time_max_bin + m_width_time_window <= pmt.fht)) pmt.used = false;
     // }
@@ -151,11 +151,11 @@ void WpGeometryTimeTransformer::operator()(RecPmtTable& table) {
     // table.erase(std::remove_if(m_ftable, m_ltable, [&](RecPmtProp& pmt) { return !pmt.used; }), m_ltable);
     // std::size_t fsize = table.size();
 // 
-    // LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed." << std::endl;
+    // LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed\n";
     // ~~~
 }
 
-bool WpGeometryTimeTransformer::getEarlyLateTime() {
+bool WpGeomTimeTransformer::getEarlyLateTime() {
     m_time_early = std::numeric_limits<double>::infinity();
     m_time_late = -std::numeric_limits<double>::infinity();
 
@@ -163,7 +163,7 @@ bool WpGeometryTimeTransformer::getEarlyLateTime() {
     bool found_late = false;
 
     for (RecPmtTable::const_iterator it = m_ftable; it != m_ltable; ++it) {
-        if (!it->used || !checkType(*it)) continue;
+        if (!it->used || !checkPmtType(*it)) continue;
         if (it->q < m_qthold_iftime) continue;
         m_time_early = std::min(m_time_early, it->fht);
         m_time_late = std::max(m_time_late, it->fht);
@@ -174,7 +174,7 @@ bool WpGeometryTimeTransformer::getEarlyLateTime() {
     //
     /* m_h_fht->Reset();
     for (const RecPmtProp& pmt : table) {
-        if (!pmt.used || !checkType(pmt)) continue;
+        if (!pmt.used || !checkPmtType(pmt)) continue;
         m_h_fht->Fill(pmt.fht);
     }
 
@@ -200,7 +200,7 @@ bool WpGeometryTimeTransformer::getEarlyLateTime() {
     //
 
     /* for (const RecPmtProp& pmt : table) {
-        if (!pmt.used || !checkType(pmt)) continue;
+        if (!pmt.used || !checkPmtType(pmt)) continue;
         if (pmt.fht < m_time_early) {
             m_time_early = pmt.fht;
             found_early = true;
@@ -212,14 +212,14 @@ bool WpGeometryTimeTransformer::getEarlyLateTime() {
     } */
 
     if (!found_early || !found_late) {
-        LogWarn << "Early/Late time not found, cannot continue WpGeometryTimeTransformer" << std::endl;
+        LogWarn << "Early/Late time not found, cannot continue WpGeomTimeTransformer\n";
         return false;
     }
 
     return true;
 }
 
-bool WpGeometryTimeTransformer::getEarlyLatePosition() {
+bool WpGeomTimeTransformer::getEarlyLatePosition() {
     m_pos_early = vec3{0.0, 0.0, 0.0};
     m_pos_late = vec3{0.0, 0.0, 0.0};
     double totq_early = 0.0, totq_late = 0.0;
@@ -228,7 +228,7 @@ bool WpGeometryTimeTransformer::getEarlyLatePosition() {
     bool found_late = false;
 
     for (RecPmtTable::const_iterator it = m_ftable; it != m_ltable; ++it) {
-        if (!it->used || !checkType(*it)) continue;
+        if (!it->used || !checkPmtType(*it)) continue;
         if (m_time_early <= it->fht && it->fht <= m_time_early + m_time_window_early) {
             m_pos_early += it->pos * it->q;
             totq_early += it->q;
@@ -242,7 +242,7 @@ bool WpGeometryTimeTransformer::getEarlyLatePosition() {
     }
 
     if (!found_early || !found_late) {
-        LogWarn << "Early/Late position not found, cannot continue WpGeometryTimeTransformer" << std::endl;
+        LogWarn << "Early/Late position not found, cannot continue WpGeomTimeTransformer\n";
         return false;
     }
 
@@ -250,14 +250,14 @@ bool WpGeometryTimeTransformer::getEarlyLatePosition() {
     m_pos_late /= totq_late;
 
     if (mag(m_pos_late - m_pos_early) < 5000.0) {
-        LogInfo << "Early/Late position are too close, event might be a stopping muon, cannot continue WpGeometryTimeTransformer." << std::endl;
+        LogInfo << "Early/Late position are too close, event might be a stopping muon, cannot continue WpGeomTimeTransformer\n";
         return false;
     }
 
     return true;
 }
 
-bool WpGeometryTimeTransformer::getMaxRange() {
+bool WpGeomTimeTransformer::getMaxRange() {
     m_plan_z = unit(cross(m_pos_late, m_pos_early));
 
     double min_dist = std::numeric_limits<double>::infinity();
@@ -266,7 +266,7 @@ bool WpGeometryTimeTransformer::getMaxRange() {
     bool found_range = false;
 
     for (RecPmtTable::const_iterator it = m_ftable; it != m_ltable; ++it) {
-        if (!it->used || !checkType(*it)) continue;
+        if (!it->used || !checkPmtType(*it)) continue;
         double dist_pmt = arcLengthRatio(*it, 1.0);
         min_dist = std::min(min_dist, dist_pmt);
         max_dist = std::max(max_dist, dist_pmt);
@@ -274,7 +274,7 @@ bool WpGeometryTimeTransformer::getMaxRange() {
     }
 
     if (!found_range) {
-        LogWarn << "Range not found, cannot continue WpGeometryTimeTransformer" << std::endl;
+        LogWarn << "Range not found, cannot continue WpGeomTimeTransformer\n";
         return false;
     }
 
@@ -283,23 +283,23 @@ bool WpGeometryTimeTransformer::getMaxRange() {
     return true;
 }
 
-bool WpGeometryTimeTransformer::fillClusteredTable() {
+bool WpGeomTimeTransformer::fillClusteredTable() {
     m_clustered_table.clear();
     for (RecPmtTable::const_iterator it = m_ftable; it != m_ltable; ++it) {
-        if (!it->used || !checkType(*it)) continue;
+        if (!it->used || !checkPmtType(*it)) continue;
         double dist_pmt = arcLengthRatio(*it, m_max_range);
         if (m_thold_sep <= dist_pmt) {
             m_clustered_table.push_back({it, 0});
         }
     }
     if (m_clustered_table.empty()) {
-        LogWarn << "No pmts to cluster, cannot continue WpGeometryTimeTransformer" << std::endl;
+        LogWarn << "No pmts to cluster, cannot continue WpGeomTimeTransformer\n";
         return false;
     }
     return true;
 }
 
-void WpGeometryTimeTransformer::dbscan(unsigned int thold_nb_neighbors) {
+void WpGeomTimeTransformer::dbscan(unsigned int thold_nb_neighbors) {
     int cur_cluster_id = 0;
     for (std::size_t k = 0; k < m_clustered_table.size(); ++k) {
         if (m_clustered_table[k].cluster_id) continue; // != 0 ==> already visited
@@ -311,7 +311,7 @@ void WpGeometryTimeTransformer::dbscan(unsigned int thold_nb_neighbors) {
     }
 }
 
-void WpGeometryTimeTransformer::expandCluster(std::vector<std::size_t>& neighbors, int cluster_id, unsigned int thold_nb_neighbors) {
+void WpGeomTimeTransformer::expandCluster(std::vector<std::size_t>& neighbors, int cluster_id, unsigned int thold_nb_neighbors) {
     while (!neighbors.empty()) {
         std::size_t k = neighbors.back();
         neighbors.pop_back();
@@ -327,7 +327,7 @@ void WpGeometryTimeTransformer::expandCluster(std::vector<std::size_t>& neighbor
     }
 }
 
-std::vector<std::size_t> WpGeometryTimeTransformer::regionQuery(const std::size_t idx) {
+std::vector<std::size_t> WpGeomTimeTransformer::regionQuery(const std::size_t idx) {
     std::vector<std::size_t> neighbors;
     double cur_dist_pmt = arcLengthRatio(*m_clustered_table[idx].it_pmt, m_max_range);
     for (std::size_t k = 0; k < m_clustered_table.size(); ++k) {
@@ -343,7 +343,7 @@ std::vector<std::size_t> WpGeometryTimeTransformer::regionQuery(const std::size_
     return neighbors;
 }
 
-void WpGeometryTimeTransformer::checkClusters() {
+void WpGeomTimeTransformer::checkClusters() {
     bool found_cluster = false;
     for (const ClusteredPmt& pmt : m_clustered_table) {
         if (pmt.cluster_id && pmt.cluster_id != -1) {
@@ -352,7 +352,7 @@ void WpGeometryTimeTransformer::checkClusters() {
         }
     }
     if (!found_cluster) {
-        LogWarn << "No cluster found, trying with thold_nb_neighbor - 10" << std::endl;
+        LogWarn << "No cluster found, trying with thold_nb_neighbor - 10\n";
         for (ClusteredPmt& pmt : m_clustered_table) {
             pmt.cluster_id = 0;
         }
@@ -360,7 +360,7 @@ void WpGeometryTimeTransformer::checkClusters() {
     }
 }
 
-int WpGeometryTimeTransformer::getClusterWithMaxPmts() {
+int WpGeomTimeTransformer::getClusterWithMaxPmts() {
     int cluster_with_max_pmts = 0;
     std::unordered_map<int, unsigned int> cluster_counter;
     for (const ClusteredPmt& pmt : m_clustered_table) {
@@ -381,7 +381,7 @@ int WpGeometryTimeTransformer::getClusterWithMaxPmts() {
     return cluster_with_max_pmts;
 }
 
-bool WpGeometryTimeTransformer::getMaxChargeInCluster(int cluster_id) {
+bool WpGeomTimeTransformer::getMaxChargeInCluster(int cluster_id) {
     m_max_q = 0.0;
     bool found_maxq = false;
     for (const ClusteredPmt& pmt : m_clustered_table) {
@@ -392,13 +392,13 @@ bool WpGeometryTimeTransformer::getMaxChargeInCluster(int cluster_id) {
         }
     }
     if (!found_maxq) {
-        LogWarn << "Max charge not found, cannot continue WpGeometryTimeTransformer" << std::endl;
+        LogWarn << "Max charge not found, cannot continue WpGeomTimeTransformer\n";
         return false;
     }
     return true;
 }
 
-void WpGeometryTimeTransformer::getMeanPosAndTimeInCluster(int cluster_id) {
+void WpGeomTimeTransformer::getMeanPosAndTimeInCluster(int cluster_id) {
     m_pos_late = vec3{0.0, 0.0, 0.0};
     double totq_late = 0.0;
     m_time_late = 0.0;
@@ -416,13 +416,13 @@ void WpGeometryTimeTransformer::getMeanPosAndTimeInCluster(int cluster_id) {
     m_time_late /= totq_late;
 }
 
-double WpGeometryTimeTransformer::arcLengthRatio(const RecPmtProp& pmt, double range) {
+double WpGeomTimeTransformer::arcLengthRatio(const RecPmtProp& pmt, double range) {
     vec3 pmt_proj = pmt.pos - dot(pmt.pos, m_plan_z) * m_plan_z;
     return 20050.0 * angle(m_pos_early, pmt_proj) / range;
 }
 
-void WpGeometryTimeTransformer::transform(RecPmtProp& pmt) {
-    if (!pmt.used || !checkType(pmt)) return;
+void WpGeomTimeTransformer::transform(RecPmtProp& pmt) {
+    if (!pmt.used || !checkPmtType(pmt)) return;
     double dist_pmt = arcLengthRatio(pmt, m_dist_range);
     double time_pmt = (pmt.fht - m_time_early) / m_time_range;
     if (

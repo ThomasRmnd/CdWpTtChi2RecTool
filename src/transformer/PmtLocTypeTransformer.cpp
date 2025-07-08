@@ -6,6 +6,6 @@ DECLARE_TOOL(PmtLocTypeTransformer);
 
 void PmtLocTypeTransformer::transform(RecPmtProp& pmt) {
     if (!pmt.used) return;
-    pmt.used = !checkType(pmt);
+    pmt.used = !checkPmtType(pmt);
     return;
 }

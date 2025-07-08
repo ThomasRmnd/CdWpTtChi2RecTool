@@ -1,5 +1,5 @@
-#ifndef CDWPTTCHI2RECTOOL_TRANSFORMER_WPGEOMETRYTIMETRANSFORMER_HPP_
-#define CDWPTTCHI2RECTOOL_TRANSFORMER_WPGEOMETRYTIMETRANSFORMER_HPP_
+#ifndef CDWPTTCHI2RECTOOL_TRANSFORMER_WPGEOMTIMETRANSFORMER_HPP_
+#define CDWPTTCHI2RECTOOL_TRANSFORMER_WPGEOMTIMETRANSFORMER_HPP_
 
 #include "transformer/Transformer.hpp"
 
@@ -14,14 +14,14 @@ struct ClusteredPmt {
 
 };
 
-class WpGeometryTimeTransformer : public Transformer {
+class WpGeomTimeTransformer : public Transformer {
 
 public:
 
-    WpGeometryTimeTransformer(const std::string& name);
-    WpGeometryTimeTransformer(const std::string& name, double time_window_early, double time_window_late, double thold_sep, double thold_q_ratio, double radius_time, double radius_arclength);
+    WpGeomTimeTransformer(const std::string& name);
+    WpGeomTimeTransformer(const std::string& name, double time_window_early, double time_window_late, double thold_sep, double thold_q_ratio, double radius_time, double radius_arclength);
 
-    ~WpGeometryTimeTransformer() override = default;
+    ~WpGeomTimeTransformer() override = default;
 
     void operator()(RecPmtTable& table) override;
 
@@ -78,4 +78,4 @@ protected:
 };
 
 
-#endif // CDWPTTCHI2RECTOOL_TRANSFORMER_WPGEOMETRYTIMETRANSFORMER_HPP_
+#endif // CDWPTTCHI2RECTOOL_TRANSFORMER_WPGEOMTIMETRANSFORMER_HPP_

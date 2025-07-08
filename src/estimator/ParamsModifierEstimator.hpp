@@ -41,7 +41,7 @@ public:
 
     bool operator()(RecPmtTable& table) override {
         if (m_params.size() != ParamsTraits<_IPt>::size) {
-            LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_IPt>::size << " but got " << m_params.size() << std::endl;
+            LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_IPt>::size << " but got " << m_params.size() << '\n';
             return false;
         }
         for (std::size_t i = 0; i < ParamsTraits<_IPt>::size; ++i) {
@@ -85,7 +85,7 @@ public:
 
     bool operator()(RecPmtTable& table) override {
         if (m_params.size() != ParamsTraits<_IPt>::size) {
-            LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_IPt>::size << " but got " << m_params.size() << "." << std::endl;
+            LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_IPt>::size << " but got " << m_params.size() << '\n';
             return false;
         }
         details::convert_params(m_params, m_steps, m_names, TrackSetterHelper<_IPt>{}, TrackSetterHelper<_OPt>{});

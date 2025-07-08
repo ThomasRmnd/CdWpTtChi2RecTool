@@ -54,7 +54,7 @@ public:
         return m_func->getIParamsType();
     }
 
-    virtual bool operator()(RecPmtTable& table) override = 0;
+    virtual bool estimate(RecPmtTable& table) = 0;
 
 protected:
 

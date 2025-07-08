@@ -15,7 +15,7 @@ FhtChargeTholdTransformer::FhtChargeTholdTransformer(const std::string& name, co
 {}
 
 void FhtChargeTholdTransformer::transform(RecPmtProp& pmt) {
-    if (!pmt.used || !checkType(pmt)) return;
+    if (!pmt.used || !checkPmtType(pmt)) return;
     pmt.used = (pmt.q >= m_q_thold);
     return;
 }

@@ -15,7 +15,7 @@ CalibrationTransformer::CalibrationTransformer(const std::string& name, const Re
 {}
 
 void CalibrationTransformer::transform(RecPmtProp& pmt) {
-    if (!pmt.used || !checkType(pmt)) return;
+    if (!pmt.used || !checkPmtType(pmt)) return;
     pmt.fht += m_offset;
     return;
 }

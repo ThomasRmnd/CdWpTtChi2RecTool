@@ -31,9 +31,12 @@ private:
 
     RecPmtTable m_table;
 
-    bool m_waterphase;
-    StrategyFactory m_fact;
-    std::shared_ptr<Strategy> m_strat;
+    bool m_auto_fact;
+    bool m_water_phase;
+    int m_manual_reco_mode;
+
+    StrategyRegistry m_reg;
+    std::shared_ptr<StrategyFactory> m_fact;
 
     timer m_timer;
 

@@ -16,6 +16,13 @@ enum class ParamsType {
     SingleTt,              // single muon (through-going or stopping), with entry point at the TT level
 };
 
+// struct SingleAcrylicParamsTag {};
+// struct SingleStoppingAcrylicParamsTag {};
+// struct DoubleAcrylicParamsTag {};
+// struct TripleAcrylicParamsTag {};
+// struct SingleCdParamsTag {};
+// struct SingleTtParamsTag {};
+
 class IParamsHandler {
 
 public:
