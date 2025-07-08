@@ -92,7 +92,7 @@ protected:
         typedef ParamsTraits<_Pt> _Traits;
         m_params = std::vector<double>(_Traits::defaults, _Traits::defaults + _Traits::size);
         m_steps = std::vector<double>(_Traits::steps, _Traits::steps + _Traits::size);
-        m_names = std::vector<std::string>(_Traits::names, _Pt::names + _Traits::size);
+        m_names = std::vector<std::string>(_Traits::names, _Traits::names + _Traits::size);
     }
 
 };
