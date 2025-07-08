@@ -63,7 +63,7 @@ private:
 
 namespace details {
 
-void convert_params(std::vector<double>& params, std::vector<double>& steps, std::vector<std::string>& names, TrackSetterHelper<ParamsType::SingleAcrylic>, TrackSetterHelper<ParamsType::SingleStoppingAcrylic>) {
+inline void convert_params(std::vector<double>& params, std::vector<double>& steps, std::vector<std::string>& names, TrackSetterHelper<ParamsType::SingleAcrylic>, TrackSetterHelper<ParamsType::SingleStoppingAcrylic>) {
     params.push_back(1.0);
     steps.push_back(0.1);
     names.push_back("length");
