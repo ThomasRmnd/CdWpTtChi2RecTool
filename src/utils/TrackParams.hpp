@@ -213,6 +213,8 @@ class TrackSetter {
 
 public:
 
+    virtual ~TrackSetter() = default;
+
     virtual void setTrack(const double* params) {
         TrackSetterHelper<_Pt>::set(params, m_t_0, m_orig, m_dir, m_length);
 
@@ -231,6 +233,8 @@ class TrackSetter<ParamsType::DoubleAcrylic> {
 
 public:
 
+    virtual ~TrackSetter() = default;
+
     virtual void setTrack(const double* params) {
         TrackSetterHelper<ParamsType::DoubleAcrylic>::set(params, m_t_0_1, m_orig_1, m_dir, m_length_1);
         TrackSetterHelper<ParamsType::DoubleAcrylic>::set(params, m_t_0_2, m_orig_2, m_dir, m_length_2);
@@ -248,6 +252,8 @@ template<>
 class TrackSetter<ParamsType::TripleAcrylic> {
 
 public:
+
+    virtual ~TrackSetter() = default;
 
     virtual void setTrack(const double* params) {
         TrackSetterHelper<ParamsType::TripleAcrylic>::set(params, m_t_0_1, m_orig_1, m_dir, m_length_1);

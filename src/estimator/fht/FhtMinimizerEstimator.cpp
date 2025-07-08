@@ -5,7 +5,7 @@
 
 DECLARE_TOOL(FhtMinimizerEstimator);
 
-bool FhtMinimizerEstimator::operator()(RecPmtTable& table) {
+bool FhtMinimizerEstimator::estimate(RecPmtTable& table) {
     if (m_params.empty()) {
         LogError << "No parameters were set as input. Abording\n";
         return false;

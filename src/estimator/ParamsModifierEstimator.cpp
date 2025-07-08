@@ -3,7 +3,9 @@
 #include "SniperKernel/SniperLog.h"
 #include "SniperKernel/ToolFactory.h"
 
-DECLARE_TOOL(ParamsModifierEstimator);
+ParamsModifierEstimator::ParamsModifierEstimator(const std::string& name, const std::shared_ptr<Estimator>& esti) : 
+    Estimator(name), m_esti(esti) 
+{}
 
 bool ParamsModifierEstimator::estimate(RecPmtTable& table) {
     m_esti->setParams(m_params, m_steps, m_names);

@@ -11,7 +11,7 @@ public:
 
     virtual ~FhtMinimizerEstimator() = default;
 
-    bool operator()(RecPmtTable& table) override;
+    bool estimate(RecPmtTable& table) override;
 
 };
 

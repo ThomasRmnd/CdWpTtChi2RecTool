@@ -43,8 +43,6 @@ inline DetectorType& operator^=(DetectorType& a, const DetectorType& b) {
     return a = a ^ b;
 }
 
-typedef std::pair<ParamsType, DetectorType> StrategyType;
-
 struct StrategyType {
 
     ParamsType params;

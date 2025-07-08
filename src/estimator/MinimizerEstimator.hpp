@@ -22,7 +22,7 @@ public:
         m_func(nullptr)
     {}
 
-    MinimizerEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<Tag>>& func) :
+    MinimizerEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<_Tag>>& func) :
         Estimator(name),
         m_opti(opti),
         m_func(func)

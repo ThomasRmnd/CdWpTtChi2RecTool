@@ -120,7 +120,7 @@ public:
         else if (m_length_3 < m_dist_1st_light) m_fht_3 = m_t_end_3 + constants::inv_c_ls * mag(pmt.pos - m_p_end_3);
         else m_fht_3 = m_t_0_3 + constants::one_minus_n_ls_2_div_c * m_dist_1st_light + constants::n_ls_2_div_c * m_dist_orig_to_pmt_perp;
 
-        return std::min(m_fht_1, m_fht_2, m_fht_3);
+        return std::min({m_fht_1, m_fht_2, m_fht_3});
     }
 
     void setTrack(const double* params) final override {
@@ -152,7 +152,7 @@ class WaterPhaseCdFht final : public CdFht<_Pt> {
 
 public:
 
-    ~NoRefractionLsCdFht() final override = default;
+    ~WaterPhaseCdFht() final override = default;
 
     double calculate(const RecPmtProp& pmt) final override {
         m_dist_orig_to_pmt_perp = m_half_length + dot(this->m_dir, pmt.pos);

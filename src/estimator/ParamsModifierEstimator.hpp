@@ -10,10 +10,7 @@ class ParamsModifierEstimator : public Estimator {
 public:
 
     ParamsModifierEstimator(const std::string& name) : Estimator(name) {}
-    
-    ParamsModifierEstimator(const std::string& name, const std::shared_ptr<Estimator>& esti) : 
-        Estimator(name), m_esti(esti) 
-    {}
+    ParamsModifierEstimator(const std::string& name, const std::shared_ptr<Estimator>& esti);
 
     virtual ~ParamsModifierEstimator() = default;
 
@@ -39,7 +36,7 @@ public:
 
     ~ParamsConstrainerEstimator() override = default;
 
-    bool operator()(RecPmtTable& table) override {
+    bool estimate(RecPmtTable& table) override {
         if (m_params.size() != ParamsTraits<_IPt>::size) {
             LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_IPt>::size << " but got " << m_params.size() << '\n';
             return false;
@@ -47,7 +44,7 @@ public:
         for (std::size_t i = 0; i < ParamsTraits<_IPt>::size; ++i) {
             if (m_constrains[i]) m_steps[i] = 0.0;
         }
-        return ParamsModifierEstimator::operator()(table);
+        return ParamsModifierEstimator::estimate(table);
     }
 
     ParamsType get_IPtType() override {
@@ -83,13 +80,13 @@ public:
 
     ~ParamsConverterEstimator() override = default;
 
-    bool operator()(RecPmtTable& table) override {
+    bool estimate(RecPmtTable& table) override {
         if (m_params.size() != ParamsTraits<_IPt>::size) {
             LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_IPt>::size << " but got " << m_params.size() << '\n';
             return false;
         }
         details::convert_params(m_params, m_steps, m_names, TrackSetterHelper<_IPt>{}, TrackSetterHelper<_OPt>{});
-        return ParamsModifierEstimator::operator()(table);
+        return ParamsModifierEstimator::estimate(table);
     };
 
     ParamsType getIParamsType() override {
