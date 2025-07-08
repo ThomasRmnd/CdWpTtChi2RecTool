@@ -9,7 +9,7 @@
 #include "estimator/fht/CorrectionMapEstimator.hpp"
 #include "estimator/tt/TtMinimizerEstimator.hpp"
 
-template<typename Params>
+template<ParamsType _Pt>
 class FhtTtCorrMapEstimator : public MinimizerEstimator<FhtTtMethodTag> {
 
     struct ScoredHits {
@@ -31,7 +31,7 @@ public:
         c_max_nb_hits(0), c_nb_loop(0)
     {};
 
-    FhtTtCorrMapEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<FhtTtMethodTag>>& func, const std::shared_ptr<CorrectionMapLoopEstimator<Params>>& fht_esti, const std::shared_ptr<TtMinimizerEstimator>& tt_esti, std::size_t max_nb_trks, std::size_t nb_loop) :
+    FhtTtCorrMapEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<FhtTtMethodTag>>& func, const std::shared_ptr<CorrectionMapLoopEstimator<_Pt>>& fht_esti, const std::shared_ptr<TtMinimizerEstimator>& tt_esti, std::size_t max_nb_trks, std::size_t nb_loop) :
         MinimizerEstimator<FhtTtMethodTag>(name, opti, func),
         m_fht_esti(fht_esti),
         m_tt_esti(tt_esti),
@@ -252,7 +252,7 @@ public:
 
 protected:
 
-    std::shared_ptr<CorrectionMapLoopEstimator<Params>> m_fht_esti;
+    std::shared_ptr<CorrectionMapLoopEstimator<_Pt>> m_fht_esti;
     std::shared_ptr<TtMinimizerEstimator> m_tt_esti;
     const std::size_t c_max_nb_hits;
     const std::size_t c_nb_loop;

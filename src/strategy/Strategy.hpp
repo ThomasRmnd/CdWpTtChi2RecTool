@@ -251,10 +251,11 @@ extern std::shared_ptr<Optimizer> g_opti;
 
 #include "predictor/Predictor.hpp"
 
-DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<FhtMethodTag>, pred_fht_cd_no_refl_ls)
+DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<FhtMethodTag>, pred_fht_cd_no_refr_ls)
 DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<FhtMethodTag>, pred_fht_wp_no_hit)
-DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<FhtMethodTag>, pred_fht_no_refl_ls_no_hit)
+DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<FhtMethodTag>, pred_fht_no_refr_ls_no_hit)
 DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<TtMethodTag>, pred_tt)
+extern std::shared_ptr<Predictor<TtMethodTag>> g_pred_tt_single_tt;
 
 #include "predictor/fht/fht/CdFht.hpp"
 #include "predictor/fht/fht/WpFht.hpp"
