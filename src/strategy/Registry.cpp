@@ -14,7 +14,7 @@ bool StrategyRegistry::initialize() {
         strat->create();
         std::shared_ptr<Pipeline> pipe = strat->pipeline();
         if (!pipe) {
-            LogError << "Pipeline is not set for the strategy (" << strat->type.params << ", " << strat->type.detector << ")\n";
+            LogError << "Pipeline is not set for the strategy (" << static_cast<int>(strat->type.params) << ", " << static_cast<int>(strat->type.detector) << ")\n";
             return false;
         }
         if (!pipe->initialize()) return false;
@@ -32,7 +32,7 @@ bool StrategyRegistry::finalize() {
 
 void StrategyRegistry::book(const std::shared_ptr<Strategy>& strat) {
     if (m_strats.find(strat->type) != m_strats.end()) {
-        LogWarn << "Already booked a strategy of type (" << strat->type.params << ", " << strat->type.detector << "). Overwritting\n";
+        LogWarn << "Already booked a strategy of type (" << static_cast<int>(strat->type.params) << ", " << static_cast<int>(strat->type.detector) << "). Overwritting\n";
     }
     m_strats[strat->type] = strat;
 }
