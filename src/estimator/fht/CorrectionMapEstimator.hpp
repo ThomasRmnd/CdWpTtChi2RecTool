@@ -55,7 +55,7 @@ public:
         return getIParamsType();
     }
 
-    bool operator()(RecPmtTable& table) override {
+    bool estimate(RecPmtTable& table) override {
         if (m_params.empty()) {
             LogError << "No parameters were set as input. Abording\n";
             return false;
@@ -68,7 +68,7 @@ public:
 
             this->m_func->set(table);
             if (!this->m_opti->setParams(this->m_params, this->m_steps, this->m_names)) return false;
-            if (!this->m_opti->operator()(*this->m_func)) return false;
+            if (!this->m_opti->optimize(*this->m_func)) return false;
 
             this->m_params = this->m_opti->getParams();
             resetFht(table);

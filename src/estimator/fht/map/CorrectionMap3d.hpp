@@ -16,8 +16,8 @@ public:
 
     using CorrectionMap<_Pt>::CorrectionMap;
 
-    CorrectionMap3d(const std::string& name, const PmtType& type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
-        CorrectionMap<_Pt>(name, type, filename, mapname),
+    CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::shared_ptr<CorrectionFile>& file, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
+        CorrectionMap<_Pt>(name, pmt_type, file, filename, mapname),
         m_param_x(param_x),
         m_param_y(param_y),
         m_param_z(param_z)
@@ -142,8 +142,8 @@ public:
 
     using CorrectionMap<ParamsType::DoubleAcrylic>::CorrectionMap;
 
-    CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
-        CorrectionMap<ParamsType::DoubleAcrylic>(name, pmt_type, filename, mapname),
+    CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::shared_ptr<CorrectionFile>& file, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
+        CorrectionMap<ParamsType::DoubleAcrylic>(name, pmt_type, file, filename, mapname),
         m_param_x(param_x),
         m_param_y(param_y),
         m_param_z(param_z)

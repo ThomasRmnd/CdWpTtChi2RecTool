@@ -19,6 +19,7 @@ bool StrategyRegistry::initialize() {
         }
         if (!pipe->initialize()) return false;
     }
+    return true;
 }
 
 bool StrategyRegistry::finalize() {
@@ -28,6 +29,7 @@ bool StrategyRegistry::finalize() {
         if (!pipe) return false;
         if (!pipe->finalize()) return false;
     }
+    return true;
 }
 
 void StrategyRegistry::book(const std::shared_ptr<Strategy>& strat) {
