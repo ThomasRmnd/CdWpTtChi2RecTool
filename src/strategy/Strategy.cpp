@@ -242,7 +242,7 @@ void CdDoubleStrategy::save(RecTrks* tracks, double totpe) {
     end_1 = start_1 + dir_1 * length_1;
     end_2 = start_2 + dir_2 * length_2;
     t_end_1 = t_start_1 + length_1 / constants::c;
-    t_end_2 + t_start_2 + length_2 / constants::c;
+    t_end_2 = t_start_2 + length_2 / constants::c;
     if (length_1 < 0.0) {
         LogWarn << "Negative length: " << length_1 << '\n';
         std::swap(start_1, end_1);
