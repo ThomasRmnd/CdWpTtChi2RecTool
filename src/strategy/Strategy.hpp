@@ -263,5 +263,13 @@ extern std::shared_ptr<Predictor<TtMethodTag>> g_pred_tt_single_tt;
 DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CdFht, cd_fht)
 DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(WpFht, wp_fht)
 
+#include "transformer/CalibrationTransformer.hpp"
+
+extern std::shared_ptr<Transformer> g_trans_calib_hama;
+extern std::shared_ptr<Transformer> g_trans_calib_nnvt;
+extern std::shared_ptr<Transformer> g_trans_calib_highqe;
+extern std::shared_ptr<Transformer> g_trans_calib_spmt;
+extern std::shared_ptr<Transformer> g_trans_calib_wp;
+
 
 #endif // CDWPTTCHI2RECTOOL_STRATEGY_STRATEGY_HPP_

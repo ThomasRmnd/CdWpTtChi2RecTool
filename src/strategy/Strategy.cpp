@@ -27,6 +27,8 @@
 #include "predictor/fht/CdFhtPredictor.hpp"
 #include "predictor/fht/CdWpFhtPredictor.hpp"
 #include "predictor/fht/WpFhtPredictor.hpp"
+#include "predictor/fht/fht/CdFht.hpp"
+#include "predictor/fht/fht/WpFht.hpp"
 #include "predictor/tt/TtPredictor.hpp"
 
 #include "transformer/CalibrationTransformer.hpp"
@@ -56,6 +58,12 @@ std::shared_ptr<CorrParam> g_corr_param_dist_track_to_center_squared = std::make
 
 std::shared_ptr<Optimizer> g_opti = std::make_shared<RootOptimizer>(1000000, 100000, 0.001);
 
+std::shared_ptr<Transformer> g_trans_calib_hama = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_nnvt = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_NNVT, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_highqe = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_HIGHQENNVT, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_spmt = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_3INCH, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_wp = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_WP, 0.0);
+
 // ################################################################################################
 // ========================================= CD Strategy ==========================================
 // ################################################################################################
@@ -70,6 +78,11 @@ void CdStrategy::create() {
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
@@ -139,6 +152,11 @@ void CdStoppingStrategy::create() {
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
@@ -209,6 +227,11 @@ void CdDoubleStrategy::create() {
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
@@ -350,6 +373,12 @@ void CdWpStrategy::create() {
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+    m_pipe->addStep(g_trans_calib_wp);
+
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
@@ -429,6 +458,11 @@ void CdTtStrategy::create() {
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
@@ -531,6 +565,12 @@ void CdWpTtStrategy::create() {
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+    m_pipe->addStep(g_trans_calib_wp);
+
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
@@ -643,6 +683,11 @@ void CdWaterPhaseStrategy::create() {
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Transformer> trans_hama_calib = std::make_shared<CalibrationTransformer>(
         "CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
     );
@@ -710,6 +755,97 @@ void CdWaterPhaseStrategy::save(RecTrks* tracks, double totpe) {
 // =================================== CD WP Water Phase Strategy =================================
 // ################################################################################################
 
-// ################################################################################################
-// ================================== CD WP TT Water Phase Strategy ===============================
-// ################################################################################################
+void CdWpWaterPhaseStrategy::create() {
+    m_pipe = std::make_shared<Pipeline>("Pipeline");
+
+    // ======================================= Initializer ========================================
+    std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<WaterPhaseInitializer>(
+        "WaterPhaseInitializer", 200.0, 20.0, 0.25
+    );
+    m_pipe->addStep(init);
+
+    // ======================================= Transformer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+    m_pipe->addStep(g_trans_calib_wp);
+    
+    std::shared_ptr<Transformer> trans_hama_calib = std::make_shared<CalibrationTransformer>(
+        "CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
+    );
+    m_pipe->addStep(trans_hama_calib);
+    
+    std::shared_ptr<Transformer> trans_spmt_calib = std::make_shared<CalibrationTransformer>(
+        "CalibrationTransformer", RecPmtType::PMT_3INCH, 13.0
+    );
+    m_pipe->addStep(trans_spmt_calib);
+
+    std::shared_ptr<Transformer> trans_hama_q = std::make_shared<FhtChargeTholdTransformer>(
+        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 5.0
+    );
+    m_pipe->addStep(trans_hama_q);
+
+    std::shared_ptr<Transformer> trans_nnvt_q = std::make_shared<FhtChargeTholdTransformer>(
+        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_NNVT, 20.0
+    );
+    m_pipe->addStep(trans_nnvt_q);
+    
+    std::shared_ptr<Transformer> trans = std::make_shared<WaterPhaseTransformer>(
+        "WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
+    );
+    m_pipe->addStep(trans);
+
+    std::shared_ptr<Transformer> trans_wp_clb = std::make_shared<CalibrationTransformer>(
+        "CalibrationTransformer", RecPmtType::PMT_WP, 20.0
+    );
+    m_pipe->addStep(trans_wp_clb);
+
+    std::shared_ptr<Transformer> trans_wp_q = std::make_shared<FhtChargeTholdTransformer>(
+        "FhtChargeTholdTransformer", RecPmtType::PMT_WP, 5.0
+    );
+    m_pipe->addStep(trans_wp_q);
+
+    std::shared_ptr<Transformer> trans_wp_geomtime = std::make_shared<WpGeomTimeTransformer>(
+        "WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
+    );
+    m_pipe->addStep(trans_wp_geomtime);
+
+    // ===================================== 1st Minimization =====================================
+    std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        std::make_shared<CdWpFhtPredictor<ParamsType::SingleCd>>(
+            std::make_shared<WaterPhaseCdFht<ParamsType::SingleCd>>(),
+            std::make_shared<NoGeomWpFht<ParamsType::SingleCd>>()
+        ),
+        g_chi2_fht
+    );
+
+    std::shared_ptr<Estimator> esti = std::make_shared<FhtMinimizerEstimator>("FhtMinimizerEstimator", g_opti, cost);
+    m_pipe->addStep(esti);
+}
+
+void CdWpWaterPhaseStrategy::prepare() {
+    getDefaultParams<ParamsType::SingleCd>();
+    m_pipe->setParams(m_params, m_steps, m_names);
+}
+
+void CdWpWaterPhaseStrategy::save(RecTrks* tracks, double totpe) {
+    const double* params = m_pipe->getParams().data();
+    double cost = m_pipe->getCost();
+    vec3 start, dir, end;
+    double t_start, length, t_end;
+    TrackSetterHelper<ParamsType::SingleCd>::set(params, t_start, start, dir, length);
+    end = start + dir * length;
+    t_end = t_start + length / constants::c;
+    if (length < 0.0) {
+        LogWarn << "Negative length: " << length << '\n';
+        std::swap(start, end);
+        std::swap(t_start, t_end);
+    }
+    tracks->addTrk(
+        TVector3(start.x, start.y, start.z),
+        TVector3(end.x, end.y, end.z),
+        t_start, t_end,
+        totpe, cost, 0
+    );
+}
