@@ -48,6 +48,16 @@
     std::shared_ptr<Base<ParamsType::SingleStoppingAcrylic>> g_##name##_single_stopping = std::make_shared<Derived<ParamsType::SingleStoppingAcrylic>>(__VA_ARGS__); \
     std::shared_ptr<Base<ParamsType::DoubleAcrylic>> g_##name##_double = std::make_shared<Derived<ParamsType::DoubleAcrylic>>(__VA_ARGS__);
 
+#define DEFINIT_GLOBAL_PREDICTOR(Base, name, Derived, fhtname) \
+    std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<ParamsType::SingleAcrylic>>(g_##fhtname##_single); \
+    std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<ParamsType::SingleStoppingAcrylic>>(g_##fhtname##_single_stopping); \
+    std::shared_ptr<Base> g_##name##_double = std::make_shared<Derived<ParamsType::DoubleAcrylic>>(g_##fhtname##_double);
+
+#define DEFINIT_GLOBAL_PREDICTOR_CDWP(Base, name, Derived, cdfhtname, wpfhtname) \
+    std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<ParamsType::SingleAcrylic>>(g_##cdfhtname##_single, g_##wpfhtname##_single); \
+    std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<ParamsType::SingleStoppingAcrylic>>(g_##cdfhtname##_single_stopping, g_##wpfhtname##_single_stopping); \
+    std::shared_ptr<Base> g_##name##_double = std::make_shared<Derived<ParamsType::DoubleAcrylic>>(g_##cdfhtname##_double, g_##wpfhtname##_double);
+
 std::shared_ptr<Chi2<FhtMethodTag>> g_chi2_fht = std::make_shared<FhtChi2>();
 std::shared_ptr<Chi2<TtMethodTag>> g_chi2_tt = std::make_shared<TtChi2>(13.0);
 std::shared_ptr<Chi2<TtMethodTag>> g_chi2_tt_joint = std::make_shared<TtChi2>(130.0);
@@ -57,6 +67,14 @@ std::shared_ptr<CorrParam> g_corr_param_angle = std::make_shared<AngleCorrParam>
 std::shared_ptr<CorrParam> g_corr_param_dist_track_to_center_squared = std::make_shared<DistTrackToCenterSquaredCorrParam>();
 
 std::shared_ptr<Optimizer> g_opti = std::make_shared<RootOptimizer>(1000000, 100000, 0.001);
+
+DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CdFht, cd_fht, NoRefractionLsCdFht)
+DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(WpFht, wp_fht, NoGeomWpFht)
+
+DEFINIT_GLOBAL_PREDICTOR(Predictor<FhtMethodTag>, pred_fht_cd_no_refr_ls, CdFhtPredictor, cd_fht)
+DEFINIT_GLOBAL_PREDICTOR(Predictor<FhtMethodTag>, pred_fht_wp_no_hit, WpFhtPredictor, wp_fht)
+DEFINIT_GLOBAL_PREDICTOR_CDWP(Predictor<FhtMethodTag>, pred_fht_no_refl_ls_no_hit, CdWpFhtPredictor, cd_fht, wp_fht)
+DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<TtMethodTag>, pred_tt, TtPredictor)
 
 std::shared_ptr<Transformer> g_trans_calib_hama = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 0.0);
 std::shared_ptr<Transformer> g_trans_calib_nnvt = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_NNVT, 0.0);
@@ -770,7 +788,7 @@ void CdWpWaterPhaseStrategy::create() {
     m_pipe->addStep(g_trans_calib_nnvt);
     m_pipe->addStep(g_trans_calib_spmt);
     m_pipe->addStep(g_trans_calib_wp);
-    
+
     std::shared_ptr<Transformer> trans_hama_calib = std::make_shared<CalibrationTransformer>(
         "CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
     );
