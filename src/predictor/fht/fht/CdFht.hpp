@@ -156,8 +156,8 @@ public:
 
     double calculate(const RecPmtProp& pmt) final override {
         m_dist_orig_to_pmt_perp = m_half_length + dot(this->m_dir, pmt.pos);
-        m_dist_1st_light = m_dist_orig_to_pmt_perp - mag(pmt.pos - (this->m_orig + m_dist_orig_to_pmt_perp * this->m_dir)) * this->m_inv_tan_theta_water;
-        return this->m_t_0 + this->m_one_minus_n_water_squared_div_c * m_dist_1st_light + this->m_n_water_squared_div_c * m_dist_orig_to_pmt_perp;
+        m_dist_1st_light = m_dist_orig_to_pmt_perp - mag(pmt.pos - (this->m_orig + m_dist_orig_to_pmt_perp * this->m_dir)) * constants::inv_tan_cherenkov_w;
+        return this->m_t_0 + constants::one_minus_n_w_2_div_c * m_dist_1st_light + constants::n_w_2_div_c * m_dist_orig_to_pmt_perp;
     }
 
     void setTrack(const double* params) final override {

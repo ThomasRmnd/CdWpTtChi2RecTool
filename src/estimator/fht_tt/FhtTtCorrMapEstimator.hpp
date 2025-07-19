@@ -83,7 +83,7 @@ public:
             LogError << "Cost function and correction maps estimator have different parameters type\n";
             return ParamsType::Unknown;
         }
-        if (this->m_func->getIParamsType() != m_tt_esti->get0ParamsType()) {
+        if (this->m_func->getIParamsType() != m_tt_esti->getOParamsType()) {
             LogError << "Cost function and TT estimator have different parameters type\n";
             return ParamsType::Unknown;
         }
@@ -97,7 +97,7 @@ public:
         }
         m_scored_hits.clear();
 
-        if (!m_fht_esti->setParams(this->m_ivars, this->m_steps, this->m_names)) return false;
+        if (!m_fht_esti->setParams(this->m_params, this->m_steps, this->m_names)) return false;
         if (!m_fht_esti->estimate(table)) return false;
         this->m_params = m_fht_esti->getParams();
         this->m_cost = m_fht_esti->getCost();
@@ -138,7 +138,7 @@ public:
                 this->m_opti->setParams(it->fvars, this->m_steps, this->m_names);
                 this->m_func->set(it->hits);
                 printHits(it->hits);
-                this->m_opti->operator()(*(this->m_func));
+                this->m_opti->optimize(*(this->m_func));
                 it->score = this->m_opti->getCost();
                 it->fvars = this->m_opti->getParams();
                 m_fht_esti->resetFht(table);
@@ -166,7 +166,7 @@ public:
             this->m_cost = m_scored_hits.front().score;
             this->m_params = m_scored_hits.front().fvars;
             LogDebug << "Final parameters: ";
-            for (std::size_t k = 0; k < this->m_dim; ++k) {
+            for (std::size_t k = 0; k < this->m_size; ++k) {
                 std::cout << this->m_names[k] << " = " << this->m_params[k] << ", ";
             }
             std::cout << "cost = " << this->m_cost << std::endl;
@@ -202,7 +202,7 @@ public:
                     }
                     this->m_func->set(curr_hits);
                     printHits(curr_hits);
-                    this->m_opti->operator()(*(this->m_func));
+                    this->m_opti->optimize(*(this->m_func));
                     m_scored_hits.push_back({curr_hits, this->m_opti->getCost(), this->m_opti->getParams()});
                 } while (std::next_permutation(hits_mask.begin(), hits_mask.end()));
             }
@@ -219,7 +219,7 @@ public:
                 this->m_opti->setParams(m_scored_hits[i].fvars, this->m_steps, this->m_names);
                 this->m_func->set(m_scored_hits[i].hits);
                 printHits(m_scored_hits[i].hits);
-                this->m_opti->operator()(*(this->m_func));
+                this->m_opti->optimize(*(this->m_func));
                 m_scored_hits[i].score = this->m_opti->getCost();
                 m_scored_hits[i].fvars = this->m_opti->getParams();
                 m_fht_esti->resetFht(table);
@@ -243,7 +243,7 @@ public:
         this->m_params = m_scored_hits.front().fvars;
 
         LogDebug << "Final parameters: ";
-        for (std::size_t k = 0; k < this->m_dim; ++k) {
+        for (std::size_t k = 0; k < this->m_size; ++k) {
             std::cout << this->m_names[k] << " = " << this->m_params[k] << ", ";
         }
         std::cout << "cost = " << this->m_cost << std::endl;

@@ -11,7 +11,7 @@ public:
     ~TtPredictor() override = default;
 
     void predict(const_iterator first, const_iterator last, theo_iterator theo, const double* params) override {
-        setTrack(params);
+        this->setTrack(params);
         std::transform(first, last, theo, [&](const vec3& hit) { 
             return this->m_orig + dot(hit - this->m_orig, this->m_dir) * this->m_dir;
         });

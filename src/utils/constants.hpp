@@ -102,7 +102,7 @@ inline constexpr double n_ls_2_div_c = n_ls_2_div_c_v<double>;
 template<typename _Tp>
 inline constexpr _Tp n_w_2_div_c_v = n_w_v<_Tp> * n_w_v<_Tp> * inv_c_v<_Tp>; // \frac{n_w^2}{c} (ns/mm)
 
-inline constexpr double n_w_div_c = n_w_2_div_c_v<double>;
+inline constexpr double n_w_2_div_c = n_w_2_div_c_v<double>;
 
 template<typename _Tp>
 inline constexpr _Tp one_minus_n_ls_2_div_c_v = (static_cast<_Tp>(1.0) - n_ls_v<_Tp> * n_ls_v<_Tp>) * inv_c_v<_Tp>; // \frac{1 - n_{ls}^2}{c} (ns/mm)
@@ -110,9 +110,9 @@ inline constexpr _Tp one_minus_n_ls_2_div_c_v = (static_cast<_Tp>(1.0) - n_ls_v<
 inline constexpr double one_minus_n_ls_2_div_c = one_minus_n_ls_2_div_c_v<double>;
 
 template<typename _Tp>
-inline constexpr _Tp one_minus_n_w_div_c_v = (static_cast<_Tp>(1.0) - n_w_v<_Tp> * n_w_v<_Tp>) * inv_c_v<_Tp>; // \frac{1 - n_w^2}{c} (ns/mm)
+inline constexpr _Tp one_minus_n_w_2_div_c_v = (static_cast<_Tp>(1.0) - n_w_v<_Tp> * n_w_v<_Tp>) * inv_c_v<_Tp>; // \frac{1 - n_w^2}{c} (ns/mm)
 
-inline constexpr double one_minus_n_w_div_c = one_minus_n_w_div_c_v<double>;
+inline constexpr double one_minus_n_w_2_div_c = one_minus_n_w_2_div_c_v<double>;
 
 } // namespace constants
 

@@ -107,7 +107,7 @@ protected:
         }
     };
 
-    template<typename T>
+    template<ParamsType _UPt>
     friend class FhtTtCorrMapEstimator;
 
 };
