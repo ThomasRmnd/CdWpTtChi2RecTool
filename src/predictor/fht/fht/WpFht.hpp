@@ -140,9 +140,9 @@ public:
         fht_1 = m_t_0_1 + dt_1st_light + mag(pmt.pos - m_p_1st_light) * constants::inv_c_w;
 
         m_p_pmt_proj = m_orig_2 + dot(m_dir, pmt.pos - m_orig_2) * m_dir;
-        double dt_pmt_proj = dot(m_p_pmt_proj - m_orig_2, m_dir) * constants::inv_c;
-        double dt_1st_light = dt_pmt_proj - mag(pmt.pos - m_p_pmt_proj) * constants::inv_c_tan_cherenkov_w;
-        double d_1st_light = constants::c * dt_1st_light;
+        dt_pmt_proj = dot(m_p_pmt_proj - m_orig_2, m_dir) * constants::inv_c;
+        dt_1st_light = dt_pmt_proj - mag(pmt.pos - m_p_pmt_proj) * constants::inv_c_tan_cherenkov_w;
+        d_1st_light = constants::c * dt_1st_light;
         m_p_1st_light = m_orig_2 + d_1st_light * this->m_dir;
 
         fht_2 = m_t_0_2 + dt_1st_light + mag(pmt.pos - m_p_1st_light) * constants::inv_c_w;
