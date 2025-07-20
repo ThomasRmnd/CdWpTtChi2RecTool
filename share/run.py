@@ -70,14 +70,13 @@ rec_alg = RecMuonAlg.createAlg(task)
 rec_alg.setLogLevel(1)
 rec_alg.useRecTool("CdWpTtChi2RecTool")
 
-rec_alg.property("ChosenDetectors").set(3) # 1: CD, 2: WP, 4: TT
-rec_alg.property("Use20inchPMT").set(True)
-rec_alg.property("Use3inchPMT").set(True)
 rec_alg.property("Pmt20inchTimeReso").set(8.0)
-rec_alg.property("Pmt3inchTimeReso").set(15.0) # 15.0
-rec_alg.property("PmtWPTimeReso").set(20.0)
+rec_alg.property("Pmt3inchTimeReso").set(15.0)
 rec_alg.property("PmtTTTimeReso").set(2.0)
-rec_alg.property("TimeDiffEventThreshold").set(300.0) # ~200.0 for Joint should be ok
+rec_alg.property("Use3inchPMT").set(True)
+rec_alg.property("Use20inchPMT").set(True)
+rec_alg.property("ChosenDetectors").set(3) # 1: CD, 2: WP, 4: TT
+# rec_alg.property("TimeDiffEventThreshold").set(300.0) # ~200.0 for Joint should be ok
 
 task.setEvtMax(-1)
 # task.show()
