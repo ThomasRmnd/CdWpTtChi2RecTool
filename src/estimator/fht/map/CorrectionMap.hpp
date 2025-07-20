@@ -17,7 +17,7 @@ public:
 
     using ToolBase::ToolBase;
 
-    CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::shared_ptr<CorrectionFile>& file, const std::string& filename, const std::string& mapname) :
+    CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname) :
         ToolBase(name),
         PmtTypeChecker(pmt_type),
         m_file(file),
@@ -37,7 +37,7 @@ public:
 
 protected:
 
-    std::shared_ptr<CorrectionFile> m_file;
+    std::shared_ptr<CorrectionFile> m_file = nullptr;
     std::string m_filename;
     std::string m_mapname;
 
