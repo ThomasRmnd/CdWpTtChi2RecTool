@@ -15,14 +15,16 @@ class CorrectionMap : public ToolBase, public PmtTypeChecker, public TrackSetter
 
 public:
 
-    using ToolBase::ToolBase;
+    CorrectionMap(const std::string& name) :
+        ToolBase(name)
+    {}
 
     CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname) :
         ToolBase(name),
         PmtTypeChecker(pmt_type),
         m_filename(filename),
         m_mapname(mapname)
-    {};
+    {}
 
     virtual ~CorrectionMap() = default;
 
@@ -30,7 +32,7 @@ public:
         if (!openCorrFile()) return false;
         if (!openCorrProfile()) return false;
         return true;
-    };
+    }
 
     virtual void operator()(RecPmtTable& table) = 0;
 
@@ -48,7 +50,7 @@ protected:
         }
         LogDebug << "Correction file " << m_filename << " is opened\n";
         return true;
-    };
+    }
 
     virtual bool openCorrProfile() = 0;
 

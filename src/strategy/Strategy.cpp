@@ -98,7 +98,7 @@ DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_3inch, Cor
     g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_wp, WpTimeShiftCorrectionMap,
-    "WpTimeShiftCorrectionMap", RecPmtType::PMT_WP,
+    "WpTimeShiftCorrectionMap",
     CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_WP
 )
 
