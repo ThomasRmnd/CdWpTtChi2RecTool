@@ -16,7 +16,8 @@ class CorrectionMap : public ToolBase, public PmtTypeChecker, public TrackSetter
 public:
 
     CorrectionMap(const std::string& name) :
-        ToolBase(name)
+        ToolBase(name),
+        PmtTypeChecker(RecPmtType::PMT_UNKNOWN)
     {}
 
     CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname) :

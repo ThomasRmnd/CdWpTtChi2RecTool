@@ -15,7 +15,7 @@ class WpTimeShiftCorrectionMap : public CorrectionMap<_Pt> {
 public:
 
     WpTimeShiftCorrectionMap(const std::string& name) :
-        CorrectionMap<_Pt>(name)
+        CorrectionMap<_Pt>(name),
     {}
 
     WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
@@ -148,7 +148,7 @@ private:
             LogError << "Orig: " << m_orig_2.x << ' ' << m_orig_2.y << ' ' << m_orig_2.z << '\n';
             LogError << "Dir: " << m_dir.x << ' ' << m_dir.y << ' ' << m_dir.z << '\n';
             std::cin.get();
-            return;
+            return 0.0;
         }
 
         vec3 end_wp_1 = m_orig_1 + m_dir * d_o_wp_1;
