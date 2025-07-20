@@ -21,8 +21,3 @@ std::shared_ptr<CorrectionFile> CorrectionFile::open(const std::string& filename
 bool CorrectionFile::isOpen() const {
     return (m_file && m_file->IsOpen());
 }
-
-template<typename _Tp>
-_Tp* CorrectionFile::get(const std::string& objname) const {
-    return m_file->Get<_Tp>(objname.c_str());
-}

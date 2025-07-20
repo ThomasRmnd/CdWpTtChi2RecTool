@@ -16,7 +16,9 @@ public:
     bool isOpen() const;
 
     template<typename _Tp>
-    _Tp* get(const std::string& objname) const;
+    _Tp* get(const std::string& objname) const {
+        return m_file->Get<_Tp>(objname.c_str());
+    }
 
 private:
 
