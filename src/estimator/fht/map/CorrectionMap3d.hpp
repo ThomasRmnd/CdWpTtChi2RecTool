@@ -14,14 +14,16 @@ class CorrectionMap3d : public CorrectionMap<_Pt> {
 
 public:
 
-    using CorrectionMap<_Pt>::CorrectionMap;
+    CorrectionMap3d(const std::string& name) :
+        CorrectionMap<_Pt>(name)
+    {}
 
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
         CorrectionMap<_Pt>(name, pmt_type, filename, mapname),
         m_param_x(param_x),
         m_param_y(param_y),
         m_param_z(param_z)
-    {};
+    {}
 
     ~CorrectionMap3d() override = default;
 
@@ -40,7 +42,7 @@ public:
             return false;
         }
         return true;
-    };
+    }
 
     void operator()(RecPmtTable& table) override {
         m_param_x->setTrack(this->m_orig, this->m_dir);
@@ -51,7 +53,7 @@ public:
             pmt.fht -= correction(pmt);
         }
         return;
-    };
+    }
 
 private:
 
@@ -83,7 +85,7 @@ private:
         m_lbin_ctr_z = m_prof3d->GetZaxis()->GetBinCenter(m_prof3d->GetZaxis()->GetNbins());
 
         return true;
-    };
+    }
 
     int getBinX(double value) {
         int bin = m_prof3d->GetXaxis()->FindBin(value);
@@ -92,7 +94,7 @@ private:
             bin = std::clamp(bin, 1, m_nbins_x);
         }
         return bin;
-    };
+    }
 
     int getBinY(double value) {
         int bin = m_prof3d->GetYaxis()->FindBin(value);
@@ -101,7 +103,7 @@ private:
             bin = std::clamp(bin, 1, m_nbins_y);
         }
         return bin;
-    };
+    }
 
     int getBinZ(double value) {
         int bin = m_prof3d->GetZaxis()->FindBin(value);
@@ -110,7 +112,7 @@ private:
             bin = std::clamp(bin, 1, m_nbins_z);
         }
         return bin;
-    };
+    }
 
     double correction(const RecPmtProp& pmt) override {
         double corr = 0.0;
@@ -131,7 +133,7 @@ private:
         }
     
         return corr;
-    };
+    }
 
 };
 
@@ -140,14 +142,16 @@ class CorrectionMap3d<ParamsType::DoubleAcrylic> : public CorrectionMap<ParamsTy
 
 public:
 
-    using CorrectionMap<ParamsType::DoubleAcrylic>::CorrectionMap;
+    CorrectionMap3d(const std::string& name) :
+        CorrectionMap<ParamsType::DoubleAcrylic>(name)
+    {}
 
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
         CorrectionMap<ParamsType::DoubleAcrylic>(name, pmt_type, filename, mapname),
         m_param_x(param_x),
         m_param_y(param_y),
         m_param_z(param_z)
-    {};
+    {}
 
     ~CorrectionMap3d() override = default;
 
@@ -166,7 +170,7 @@ public:
             return false;
         }
         return true;
-    };
+    }
 
     void setTrack(const double* params) override {
         CorrectionMap<ParamsType::DoubleAcrylic>::setTrack(params);
@@ -176,7 +180,7 @@ public:
         m_half_length_2 = 0.5 * m_length_2;
         m_t_end_2 = m_t_0_2 + m_length_2 / constants::c; // m_length_2 * constants::inv_c
         m_p_end_2 = m_orig_2 + m_dir * m_length_2;
-    };
+    }
 
     void operator()(RecPmtTable& table) override {
         for (RecPmtProp& pmt : table) {
@@ -184,7 +188,7 @@ public:
             pmt.fht -= correction(pmt);
         }
         return;
-    };
+    }
 
 private:
 
@@ -223,7 +227,7 @@ private:
         m_lbin_ctr_z = m_prof3d->GetZaxis()->GetBinCenter(m_prof3d->GetZaxis()->GetNbins());
 
         return true;
-    };
+    }
 
     int getBinX(double value) {
         int bin = m_prof3d->GetXaxis()->FindBin(value);
@@ -232,7 +236,7 @@ private:
             bin = std::clamp(bin, 1, m_nbins_x);
         }
         return bin;
-    };
+    }
 
     int getBinY(double value) {
         int bin = m_prof3d->GetYaxis()->FindBin(value);
@@ -241,7 +245,7 @@ private:
             bin = std::clamp(bin, 1, m_nbins_y);
         }
         return bin;
-    };
+    }
 
     int getBinZ(double value) {
         int bin = m_prof3d->GetZaxis()->FindBin(value);
@@ -250,7 +254,7 @@ private:
             bin = std::clamp(bin, 1, m_nbins_z);
         }
         return bin;
-    };
+    }
 
     double correction(const RecPmtProp& pmt) override {
         m_dist_orig_to_pmt_perp = m_half_length_1 + dot(m_dir, pmt.pos);
@@ -294,7 +298,7 @@ private:
         }
     
         return corr;
-    };
+    }
 
 };
 

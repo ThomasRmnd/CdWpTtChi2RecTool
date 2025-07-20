@@ -15,7 +15,7 @@ class WpTimeShiftCorrectionMap : public CorrectionMap<_Pt> {
 public:
 
     WpTimeShiftCorrectionMap(const std::string& name) :
-        CorrectionMap<_Pt>(name),
+        CorrectionMap<_Pt>(name)
     {}
 
     WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
