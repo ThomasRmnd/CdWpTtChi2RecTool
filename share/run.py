@@ -65,7 +65,7 @@ ro_svc.property("OutputStreams").set(output_files)
 
 # === RecMuonAlg and CdWpTtChi2RecTool ===
 import RecMuonAlg
-import CdWpTtChi2Rectool
+import CdWpTtChi2RecTool
 rec_alg = RecMuonAlg.createAlg(task)
 rec_alg.setLogLevel(1)
 rec_alg.useRecTool("CdWpTtChi2RecTool")
