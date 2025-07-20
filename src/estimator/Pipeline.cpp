@@ -81,6 +81,10 @@ ParamsType Pipeline::getOParamsType() {
     return type;
 }
 
+void Pipeline::addStep(const Step& step) {
+    m_pipe.push_back(step);
+}
+
 bool Pipeline::estimate(RecPmtTable& table) {
     for (Step& step : m_pipe) {
         if (std::holds_alternative<std::shared_ptr<Estimator>>(step)) {
