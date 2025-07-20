@@ -111,6 +111,7 @@ DEFINIT_GLOBAL_PREDICTOR(Predictor<FhtMethodTag>, pred_fht_cd_no_refr_ls, CdFhtP
 DEFINIT_GLOBAL_PREDICTOR(Predictor<FhtMethodTag>, pred_fht_wp_no_hit, WpFhtPredictor, wp_fht)
 DEFINIT_GLOBAL_PREDICTOR_CDWP(Predictor<FhtMethodTag>, pred_fht_no_refr_ls_no_hit, CdWpFhtPredictor, cd_fht, wp_fht)
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<TtMethodTag>, pred_tt, TtPredictor)
+std::shared_ptr<Predictor<TtMethodTag>> g_pred_tt_single_tt = std::make_shared<TtPredictor<ParamsType::SingleTt>>();
 
 std::shared_ptr<Transformer> g_trans_calib_hama = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 0.0);
 std::shared_ptr<Transformer> g_trans_calib_nnvt = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_NNVT, 0.0);
