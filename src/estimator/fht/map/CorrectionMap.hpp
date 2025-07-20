@@ -20,7 +20,6 @@ public:
     CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname) :
         ToolBase(name),
         PmtTypeChecker(pmt_type),
-        m_file(file),
         m_filename(filename),
         m_mapname(mapname)
     {};

@@ -18,8 +18,8 @@ public:
         CorrectionMap<_Pt>(name)
     {};
 
-    WpTimeShiftCorrectionMap(const std::string& name, const std::shared_ptr<CorrectionFile>& file, const std::string& filename, const std::string& mapname) :
-        CorrectionMap<_Pt>(name, RecPmtType::PMT_WP, file, filename, mapname)
+    WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
+        CorrectionMap<_Pt>(name, RecPmtType::PMT_WP, filename, mapname)
     {};
 
     ~WpTimeShiftCorrectionMap() override = default;
