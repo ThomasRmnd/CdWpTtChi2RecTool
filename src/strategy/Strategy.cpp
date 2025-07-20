@@ -97,6 +97,10 @@ DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_3inch, Cor
     CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_3INCH,
     g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
+DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_wp, WpTimeShiftCorrectionMap,
+    "WpTimeShiftCorrectionMap", RecPmtType::PMT_WP,
+    CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_WP
+)
 
 std::shared_ptr<Optimizer> g_opti = std::make_shared<RootOptimizer>(1000000, 100000, 0.001);
 
