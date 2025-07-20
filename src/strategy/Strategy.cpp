@@ -109,7 +109,7 @@ DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(WpFht, wp_fht, NoGeomWpFht)
 
 DEFINIT_GLOBAL_PREDICTOR(Predictor<FhtMethodTag>, pred_fht_cd_no_refr_ls, CdFhtPredictor, cd_fht)
 DEFINIT_GLOBAL_PREDICTOR(Predictor<FhtMethodTag>, pred_fht_wp_no_hit, WpFhtPredictor, wp_fht)
-DEFINIT_GLOBAL_PREDICTOR_CDWP(Predictor<FhtMethodTag>, pred_fht_no_refl_ls_no_hit, CdWpFhtPredictor, cd_fht, wp_fht)
+DEFINIT_GLOBAL_PREDICTOR_CDWP(Predictor<FhtMethodTag>, pred_fht_no_refr_ls_no_hit, CdWpFhtPredictor, cd_fht, wp_fht)
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<TtMethodTag>, pred_tt, TtPredictor)
 
 std::shared_ptr<Transformer> g_trans_calib_hama = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 0.0);
