@@ -43,7 +43,13 @@ bool CdWpTtChi2RecTool::initialize() {
     if (!m_reg.initialize()) return false;
     LogInfo << m_name << " initialized successfully\n";
 
-    LogInfo << "Configuration Map:\n";
+    for (const auto& [key, value] : m_config_map) {
+    std::visit([&](const auto& v) {
+        std::cout << "Config[" << key << "] = " << v << std::endl;
+    }, value);
+}
+
+    /* LogInfo << "Configuration Map:\n";
     for (const auto& [key, value_any] : m_config_map) {
         LogInfo << "  " << key << " = ";
 
@@ -66,7 +72,7 @@ bool CdWpTtChi2RecTool::initialize() {
             LogInfo << "<unprintable type: " << value_any.type().name() << ">";
         }
         LogInfo << "\n";
-    }
+    } */
 
     return true;
 }
