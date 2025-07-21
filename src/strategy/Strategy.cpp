@@ -124,11 +124,11 @@ std::shared_ptr<Transformer> g_trans_calib_wp = std::make_shared<CalibrationTran
 // ################################################################################################
 
 void CdStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("CdStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
     );
     m_pipe->addStep(init);
 
@@ -139,12 +139,12 @@ void CdStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
     std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+        "CdStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     );
     m_pipe->addStep(trans_fht_spmt);
 
@@ -155,13 +155,13 @@ void CdStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
-        "FhtMinimizerEstimator", g_opti, cost
+        "CdStrategy__FhtMinimizerEstimator", g_opti, cost
     );
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
-        "CorrectionMapLoopEstimator", g_opti, cost, 
+        "CdStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
         std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
     );
     m_pipe->addStep(esti_corrmap_loop);
@@ -198,11 +198,11 @@ void CdStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 
 void CdStoppingStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("CdStoppingStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdStoppingStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
     );
     m_pipe->addStep(init);
 
@@ -213,12 +213,12 @@ void CdStoppingStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdStoppingStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
     std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+        "CdStoppingStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     );
     m_pipe->addStep(trans_fht_spmt);
 
@@ -229,13 +229,13 @@ void CdStoppingStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
-        "FhtMinimizerEstimator", g_opti, cost
+        "CdStoppingStrategy__FhtMinimizerEstimator", g_opti, cost
     );
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
-        "CorrectionMapLoopEstimator", g_opti, cost, 
+        "CdStoppingStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
         std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
     );
     m_pipe->addStep(esti_corrmap_loop);
@@ -273,11 +273,11 @@ void CdStoppingStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 
 void CdDoubleStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("CdDoubleStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterBundleInitializer>(
-        "ClusterBundleInitializer", 1000.0, 5000.0
+        "CdDoubleStrategy__ClusterBundleInitializer", 1000.0, 5000.0
     );
     m_pipe->addStep(init);
 
@@ -288,12 +288,12 @@ void CdDoubleStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdDoubleStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
     std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+        "CdDoubleStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     );
     m_pipe->addStep(trans_fht_spmt);
 
@@ -304,15 +304,15 @@ void CdDoubleStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
-        "FhtMinimizerEstimator", g_opti, cost
+        "CdDoubleStrategy__FhtMinimizerEstimator", g_opti, cost
     );
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<ParamsConstrainerEstimator<ParamsType::DoubleAcrylic>>(
-        "ParamsConstrainerEstimator",
+        "CdDoubleStrategy__ParamsConstrainerEstimator",
         std::make_shared<CorrectionMapLoopEstimator<ParamsType::DoubleAcrylic>>(
-            "CorrectionMapLoopEstimator", g_opti, cost, 
+            "CdDoubleStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
             std::vector<std::shared_ptr<CorrectionMap<ParamsType::DoubleAcrylic>>>{g_corr_map_nnvt_double, g_corr_map_hamamatsu_double, g_corr_map_3inch_double}, 2u
         ),
         std::array<bool, 8>{false, false, false, false, false, false, true, true}
@@ -365,25 +365,25 @@ void CdDoubleStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 
 void TtStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("TtStrategy__Pipeline");
 
     // ======================================= Transformer ========================================
     std::shared_ptr<Transformer> trans_tt = std::make_shared<TtCrossTalkTransformer>(
-        "TtCrossTalkTransformer"
+        "TtStrategy__TtCrossTalkTransformer"
     );
     m_pipe->addStep(trans_tt);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<Estimator> esti_tt = std::make_shared<TtMinimizerEstimator>(
-        "TtMinimizerEstimator",
+        "TtStrategy__TtMinimizerEstimator",
         g_opti,
         std::make_shared<TtCostFunction>(
             g_pred_tt_single_tt,
             g_chi2_tt
         ),
-        std::make_shared<FuzeNeighborConverter>("FuzeNeighborConverter"), 25,
-        std::make_shared<MaskHeightCartesianProdCombinator>("MaskHeightCartesianProdCombinator", 6),
-        std::make_shared<MinMaxHeightInitializer>("MinMaxHeightInitializer")
+        std::make_shared<FuzeNeighborConverter>("TtStrategy__FuzeNeighborConverter"), 25,
+        std::make_shared<MaskHeightCartesianProdCombinator>("TtStrategy__MaskHeightCartesianProdCombinator", 6),
+        std::make_shared<MinMaxHeightInitializer>("TtStrategy__MinMaxHeightInitializer")
     );
     m_pipe->addStep(esti_tt);
 }
@@ -419,11 +419,11 @@ void TtStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 
 void CdWpStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("CdWpStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdWpStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
     );
     m_pipe->addStep(init);
 
@@ -435,22 +435,22 @@ void CdWpStrategy::create() {
     m_pipe->addStep(g_trans_calib_wp);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdWpStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
     std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+        "CdWpStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     );
     m_pipe->addStep(trans_fht_spmt);
 
     std::shared_ptr<Transformer> trans_q_wp = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_WP, 10.0
+        "CdWpStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 10.0
     );
     m_pipe->addStep(trans_q_wp);
 
     std::shared_ptr<Transformer> trans_geomtime_wp = std::make_shared<WpGeomTimeTransformer>(
-        "WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
+        "CdWpStrategy__WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
     );
     m_pipe->addStep(trans_geomtime_wp);
 
@@ -461,13 +461,13 @@ void CdWpStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
-        "FhtMinimizerEstimator", g_opti, cost
+        "CdWpStrategy__FhtMinimizerEstimator", g_opti, cost
     );
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
-        "CorrectionMapLoopEstimator", g_opti, cost, 
+        "CdWpStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
         std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2u
     );
     m_pipe->addStep(esti_corrmap_loop);
@@ -504,11 +504,11 @@ void CdWpStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 
 void CdTtStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("CdTtStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdTtStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
     );
     m_pipe->addStep(init);
 
@@ -519,17 +519,17 @@ void CdTtStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
     std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+        "CdTtStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     );
     m_pipe->addStep(trans_fht_spmt);
 
     std::shared_ptr<Transformer> trans_tt = std::make_shared<TtCrossTalkTransformer>(
-        "TtCrossTalkTransformer"
+        "CdTtStrategy__TtCrossTalkTransformer"
     );
     m_pipe->addStep(trans_tt);
 
@@ -540,13 +540,13 @@ void CdTtStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
-        "FhtMinimizerEstimator", g_opti, cost
+        "CdTtStrategy__FhtMinimizerEstimator", g_opti, cost
     );
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
-        "CorrectionMapLoopEstimator", g_opti, cost, 
+        "CdTtStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
         std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
     );
 
@@ -556,11 +556,11 @@ void CdTtStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_tt = std::make_shared<TtMinimizerEstimator>(
-        "TtMinimizerEstimator",
+        "CdTtStrategy__TtMinimizerEstimator",
         g_opti, tt_cost,
-        std::make_shared<FuzeNeighborConverter>("FuzeNeighborConverter"), 25,
-        std::make_shared<MaskHeightCartesianProdCombinator>("MaskHeightCartesianProdCombinator", 6),
-        std::make_shared<MinMaxHeightInitializer>("MinMaxHeightInitializer")
+        std::make_shared<FuzeNeighborConverter>("CdTtStrategy__FuzeNeighborConverter"), 25,
+        std::make_shared<MaskHeightCartesianProdCombinator>("CdTtStrategy__MaskHeightCartesianProdCombinator", 6),
+        std::make_shared<MinMaxHeightInitializer>("CdTtStrategy__MinMaxHeightInitializer")
     );
 
     std::shared_ptr<CostFunction<FhtTtMethodTag>> fht_tt_cost = std::make_shared<FhtTtCostFunction>(
@@ -571,7 +571,7 @@ void CdTtStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator<ParamsType::SingleAcrylic>>(
-        "FhtTtCorrectionMapEstimator",
+        "CdTtStrategy__FhtTtCorrectionMapEstimator",
         g_opti, fht_tt_cost, 
         std::dynamic_pointer_cast<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(esti_corrmap_loop), 
         std::dynamic_pointer_cast<TtMinimizerEstimator>(esti_tt),
@@ -611,11 +611,11 @@ void CdTtStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 
 void CdWpTtStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("CdWpTtStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdWpTtStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
     );
     m_pipe->addStep(init);
 
@@ -627,27 +627,27 @@ void CdWpTtStrategy::create() {
     m_pipe->addStep(g_trans_calib_wp);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
     std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+        "CdWpTtStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     );
     m_pipe->addStep(trans_fht_spmt);
 
     std::shared_ptr<Transformer> trans_q_wp = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_WP, 10.0
+        "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 10.0
     );
     m_pipe->addStep(trans_q_wp);
 
     std::shared_ptr<Transformer> trans_geomtime_wp = std::make_shared<WpGeomTimeTransformer>(
-        "WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
+        "CdWpTtStrategy__WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
     );
     m_pipe->addStep(trans_geomtime_wp);
 
     std::shared_ptr<Transformer> trans_tt = std::make_shared<TtCrossTalkTransformer>(
-        "TtCrossTalkTransformer"
+        "CdWpTtStrategy__TtCrossTalkTransformer"
     );
     m_pipe->addStep(trans_tt);
 
@@ -658,13 +658,13 @@ void CdWpTtStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
-        "FhtMinimizerEstimator", g_opti, cost
+        "CdWpTtStrategy__FhtMinimizerEstimator", g_opti, cost
     );
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
-        "CorrectionMapLoopEstimator", g_opti, cost, 
+        "CdWpTtStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
         std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2
     );
 
@@ -674,11 +674,11 @@ void CdWpTtStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_tt = std::make_shared<TtMinimizerEstimator>(
-        "TtMinimizerEstimator",
+        "CdWpTtStrategy__TtMinimizerEstimator",
         g_opti, tt_cost,
-        std::make_shared<FuzeNeighborConverter>("FuzeNeighborConverter"), 25,
-        std::make_shared<MaskHeightCartesianProdCombinator>("MaskHeightCartesianProdCombinator", 6),
-        std::make_shared<MinMaxHeightInitializer>("MinMaxHeightInitializer")
+        std::make_shared<FuzeNeighborConverter>("CdWpTtStrategy__FuzeNeighborConverter"), 25,
+        std::make_shared<MaskHeightCartesianProdCombinator>("CdWpTtStrategy__MaskHeightCartesianProdCombinator", 6),
+        std::make_shared<MinMaxHeightInitializer>("CdWpTtStrategy__MinMaxHeightInitializer")
     );
 
     std::shared_ptr<CostFunction<FhtTtMethodTag>> fht_tt_cost = std::make_shared<FhtTtCostFunction>(
@@ -689,7 +689,7 @@ void CdWpTtStrategy::create() {
     );
 
     std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator<ParamsType::SingleAcrylic>>(
-        "FhtTtCorrectionMapEstimator",
+        "CdWpTtStrategy__FhtTtCorrectionMapEstimator",
         g_opti, fht_tt_cost, 
         std::dynamic_pointer_cast<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(esti_corrmap_loop), 
         std::dynamic_pointer_cast<TtMinimizerEstimator>(esti_tt),
@@ -729,11 +729,11 @@ void CdWpTtStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 
 void CdWaterPhaseStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("CdWaterPhaseStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<WaterPhaseInitializer>(
-        "WaterPhaseInitializer", 200.0, 20.0, 0.25
+        "CdWaterPhaseStrategy__WaterPhaseInitializer", 200.0, 20.0, 0.25
     );
     m_pipe->addStep(init);
 
@@ -744,27 +744,27 @@ void CdWaterPhaseStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Transformer> trans_hama_calib = std::make_shared<CalibrationTransformer>(
-        "CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
+        "CdWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
     );
     m_pipe->addStep(trans_hama_calib);
     
     std::shared_ptr<Transformer> trans_spmt_calib = std::make_shared<CalibrationTransformer>(
-        "CalibrationTransformer", RecPmtType::PMT_3INCH, 13.0
+        "CdWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_3INCH, 13.0
     );
     m_pipe->addStep(trans_spmt_calib);
 
     std::shared_ptr<Transformer> trans_hama_q = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 5.0
+        "CdWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 5.0
     );
     m_pipe->addStep(trans_hama_q);
 
     std::shared_ptr<Transformer> trans_nnvt_q = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_NNVT, 20.0
+        "CdWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_NNVT, 20.0
     );
     m_pipe->addStep(trans_nnvt_q);
     
     std::shared_ptr<Transformer> trans = std::make_shared<WaterPhaseTransformer>(
-        "WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
+        "CdWaterPhaseStrategy__WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
     );
     m_pipe->addStep(trans);
 
@@ -776,7 +776,7 @@ void CdWaterPhaseStrategy::create() {
         g_chi2_fht
     );
 
-    std::shared_ptr<Estimator> esti = std::make_shared<FhtMinimizerEstimator>("FhtMinimizerEstimator", g_opti, cost);
+    std::shared_ptr<Estimator> esti = std::make_shared<FhtMinimizerEstimator>("CdWaterPhaseStrategy__FhtMinimizerEstimator", g_opti, cost);
     m_pipe->addStep(esti);
 }
 
@@ -811,11 +811,11 @@ void CdWaterPhaseStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 
 void CdWpWaterPhaseStrategy::create() {
-    m_pipe = std::make_shared<Pipeline>("Pipeline");
+    m_pipe = std::make_shared<Pipeline>("CdWpWaterPhaseStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<WaterPhaseInitializer>(
-        "WaterPhaseInitializer", 200.0, 20.0, 0.25
+        "CdWpWaterPhaseStrategy__WaterPhaseInitializer", 200.0, 20.0, 0.25
     );
     m_pipe->addStep(init);
 
@@ -827,42 +827,42 @@ void CdWpWaterPhaseStrategy::create() {
     m_pipe->addStep(g_trans_calib_wp);
 
     std::shared_ptr<Transformer> trans_hama_calib = std::make_shared<CalibrationTransformer>(
-        "CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
+        "CdWpWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
     );
     m_pipe->addStep(trans_hama_calib);
     
     std::shared_ptr<Transformer> trans_spmt_calib = std::make_shared<CalibrationTransformer>(
-        "CalibrationTransformer", RecPmtType::PMT_3INCH, 13.0
+        "CdWpWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_3INCH, 13.0
     );
     m_pipe->addStep(trans_spmt_calib);
 
     std::shared_ptr<Transformer> trans_hama_q = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 5.0
+        "CdWpWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 5.0
     );
     m_pipe->addStep(trans_hama_q);
 
     std::shared_ptr<Transformer> trans_nnvt_q = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_NNVT, 20.0
+        "CdWpWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_NNVT, 20.0
     );
     m_pipe->addStep(trans_nnvt_q);
     
     std::shared_ptr<Transformer> trans = std::make_shared<WaterPhaseTransformer>(
-        "WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
+        "CdWpWaterPhaseStrategy__WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
     );
     m_pipe->addStep(trans);
 
     std::shared_ptr<Transformer> trans_wp_clb = std::make_shared<CalibrationTransformer>(
-        "CalibrationTransformer", RecPmtType::PMT_WP, 20.0
+        "CdWpWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_WP, 20.0
     );
     m_pipe->addStep(trans_wp_clb);
 
     std::shared_ptr<Transformer> trans_wp_q = std::make_shared<FhtChargeTholdTransformer>(
-        "FhtChargeTholdTransformer", RecPmtType::PMT_WP, 5.0
+        "CdWpWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 5.0
     );
     m_pipe->addStep(trans_wp_q);
 
     std::shared_ptr<Transformer> trans_wp_geomtime = std::make_shared<WpGeomTimeTransformer>(
-        "WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
+        "CdWpWaterPhaseStrategy__WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
     );
     m_pipe->addStep(trans_wp_geomtime);
 
@@ -875,7 +875,7 @@ void CdWpWaterPhaseStrategy::create() {
         g_chi2_fht
     );
 
-    std::shared_ptr<Estimator> esti = std::make_shared<FhtMinimizerEstimator>("FhtMinimizerEstimator", g_opti, cost);
+    std::shared_ptr<Estimator> esti = std::make_shared<FhtMinimizerEstimator>("CdWpWaterPhaseStrategy__FhtMinimizerEstimator", g_opti, cost);
     m_pipe->addStep(esti);
 }
 
