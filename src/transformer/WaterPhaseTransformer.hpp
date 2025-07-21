@@ -18,7 +18,7 @@ public:
 
     ~WaterPhaseTransformer() override = default;
 
-    void operator()(RecPmtTable& table) override;
+    void transform(RecPmtTable& table) override;
 
 
 #ifdef __USE_WATERPHASETRANSFORMER_J24_3_0_SIMULATIONS_IMPLEMENTATION__
@@ -65,7 +65,7 @@ protected:
 
 #endif // __USE_WATERPHASETRANSFORMER_J24_3_0_SIMULATIONS_IMPLEMENTATION__
 
-    void transform(RecPmtProp& pmt) override;
+    void transformPmt(RecPmtProp& pmt) override;
 
 };
 

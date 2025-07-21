@@ -116,7 +116,7 @@ vec3 WaterPhaseInitializer::getFPos(RecPmtTable::const_iterator ftable, RecPmtTa
     return fpos / totq;
 }
 
-bool WaterPhaseInitializer::operator()(const RecPmtTable& table) {
+bool WaterPhaseInitializer::initiate(const RecPmtTable& table) {
     std::size_t count = std::count_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
     LogDebug << count << " PMTs are used for the initialization\n";
 

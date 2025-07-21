@@ -23,7 +23,7 @@ public:
 
     ~FuzeNeighborConverter() override = default;
 
-    bool operator()(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) override;
+    bool convert(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) override;
 
 protected:
 

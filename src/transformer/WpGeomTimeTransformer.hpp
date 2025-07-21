@@ -23,7 +23,7 @@ public:
 
     ~WpGeomTimeTransformer() override = default;
 
-    void operator()(RecPmtTable& table) override;
+    void transform(RecPmtTable& table) override;
 
 protected:
 
@@ -73,7 +73,7 @@ protected:
     void getMeanPosAndTimeInCluster(int cluster_id);
     double arcLengthRatio(const RecPmtProp& pmt, double range);
 
-    void transform(RecPmtProp& pmt) override;
+    void transformPmt(RecPmtProp& pmt) override;
 
 };
 

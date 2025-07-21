@@ -10,7 +10,7 @@ MaskHeightCartesianProdCombinator::MaskHeightCartesianProdCombinator(const std::
     m_max_nb_heights(max_nb_heights)
 {};
 
-bool MaskHeightCartesianProdCombinator::operator()(const std::vector<vec3>& hits) {
+bool MaskHeightCartesianProdCombinator::combine(const std::vector<vec3>& hits) {
     m_hits_comb.clear();
     if (!getHeightMap(hits)) return false;
     

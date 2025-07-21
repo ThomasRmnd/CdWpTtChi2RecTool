@@ -19,7 +19,7 @@ public:
 
     virtual ~Initializer() = default;
 
-    virtual bool operator()(const vector_type& data) = 0;
+    virtual bool initiate(const vector_type& data) = 0;
 
     const std::vector<double>& getParams() const {
         return m_params;

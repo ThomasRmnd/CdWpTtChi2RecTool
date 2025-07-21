@@ -13,7 +13,7 @@ public:
 
     using ToolBase::ToolBase;
 
-    virtual bool operator()(const std::vector<vec3>& hits) = 0;
+    virtual bool combine(const std::vector<vec3>& hits) = 0;
 
     PointCombination::iterator begin() { return m_hits_comb.begin(); };
     PointCombination::const_iterator begin() const { return m_hits_comb.begin(); };

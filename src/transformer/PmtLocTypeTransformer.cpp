@@ -1,10 +1,10 @@
-#include "transformer/PmtLocTypeTransformer.h"
+#include "transformer/PmtLocTypeTransformer.hpp"
 
 #include "SniperKernel/ToolFactory.h"
 
 DECLARE_TOOL(PmtLocTypeTransformer);
 
-void PmtLocTypeTransformer::transform(RecPmtProp& pmt) {
+void PmtLocTypeTransformer::transformPmt(RecPmtProp& pmt) {
     if (!pmt.used) return;
     pmt.used = !checkPmtType(pmt);
     return;

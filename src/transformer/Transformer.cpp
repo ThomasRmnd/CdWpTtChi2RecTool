@@ -12,11 +12,11 @@ Transformer::Transformer(const std::string& name, const RecPmtType& pmt_type) :
     PmtTypeChecker(pmt_type)
 {}
 
-void Transformer::operator()(RecPmtTable& table) {
+void Transformer::transform(RecPmtTable& table) {
     if (!findRange(table)) return;
 
     std::size_t isize = table.size();
-    table.erase(std::remove_if(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transform(pmt); return !pmt.used; }), m_ltable);
+    table.erase(std::remove_if(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transformPmt(pmt); return !pmt.used; }), m_ltable);
     std::size_t fsize = table.size();
 
     LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed\n";

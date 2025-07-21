@@ -35,7 +35,7 @@ public:
         return true;
     }
 
-    virtual void operator()(RecPmtTable& table) = 0;
+    virtual void correct(RecPmtTable& table) = 0;
 
 protected:
 

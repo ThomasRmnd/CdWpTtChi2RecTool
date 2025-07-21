@@ -96,7 +96,7 @@ protected:
     bool applyCorrMap(const std::vector<double>& params, RecPmtTable& table) {
         for (const std::shared_ptr<CorrectionMap<_Pt>>& map : m_maps) {
             map->setTrack(params.data());
-            map->operator()(table);
+            map->correct(table);
         }
         return true;
     }

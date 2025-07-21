@@ -11,7 +11,7 @@ public:
     
     ~MinMaxHeightInitializer() override = default;
 
-    bool operator()(const vector_type& data) override;
+    bool initiate(const vector_type& data) override;
 
     ParamsType getOParamsType() override;
 

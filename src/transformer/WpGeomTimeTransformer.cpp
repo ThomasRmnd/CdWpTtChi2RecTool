@@ -37,7 +37,7 @@ WpGeomTimeTransformer::WpGeomTimeTransformer(const std::string& name, double tim
     m_h_fht->SetDirectory(0);
 }
 
-void WpGeomTimeTransformer::operator()(RecPmtTable& table) {
+void WpGeomTimeTransformer::transform(RecPmtTable& table) {
     if (!findRange(table)) return;
 
     // ~~~
@@ -97,8 +97,8 @@ void WpGeomTimeTransformer::operator()(RecPmtTable& table) {
 
     std::cout << "dist_range: " << m_dist_range << " time_range: " << m_time_range << '\n';
 
-    // Transformer::operator()(table);
-    std::for_each(table.begin(), table.end(), [&](RecPmtProp& pmt) { transform(pmt); });
+    // Transformer::transform(table);
+    std::for_each(table.begin(), table.end(), [&](RecPmtProp& pmt) { transformPmt(pmt); });
 
     /* std::unordered_map<int, unsigned int> pmt_neigh_cnt;
     for (RecPmtTable::const_iterator it = m_ftable; it != m_ltable; ++it) {
@@ -421,7 +421,7 @@ double WpGeomTimeTransformer::arcLengthRatio(const RecPmtProp& pmt, double range
     return 20050.0 * angle(m_pos_early, pmt_proj) / range;
 }
 
-void WpGeomTimeTransformer::transform(RecPmtProp& pmt) {
+void WpGeomTimeTransformer::transformPmt(RecPmtProp& pmt) {
     if (!pmt.used || !checkPmtType(pmt)) return;
     double dist_pmt = arcLengthRatio(pmt, m_dist_range);
     double time_pmt = (pmt.fht - m_time_early) / m_time_range;

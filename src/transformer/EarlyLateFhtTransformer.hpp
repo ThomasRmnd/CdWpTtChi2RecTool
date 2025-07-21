@@ -16,7 +16,7 @@ public:
 
     ~EarlyLateFhtTransformer() override = default;
 
-    void operator()(RecPmtTable& table) override;
+    void transform(RecPmtTable& table) override;
 
 protected:
 
@@ -28,7 +28,7 @@ protected:
     double m_itime;
 
     double getITime(const RecPmtTable& table);
-    void transform(RecPmtProp& pmt) override;
+    void transformPmt(RecPmtProp& pmt) override;
 
 };
 

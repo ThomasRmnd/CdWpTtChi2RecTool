@@ -96,12 +96,12 @@ bool Pipeline::estimate(RecPmtTable& table) {
         } 
         else if (std::holds_alternative<std::shared_ptr<Initializer<FhtMethodTag>>>(step)) {
             std::shared_ptr<Initializer<FhtMethodTag>> init = std::get<std::shared_ptr<Initializer<FhtMethodTag>>>(step);
-            if (!init->operator()(table)) return false;
+            if (!init->initiate(table)) return false;
             m_params = init->getParams();
         } 
         else if (std::holds_alternative<std::shared_ptr<Transformer>>(step)) {
             std::shared_ptr<Transformer> transfo = std::get<std::shared_ptr<Transformer>>(step);
-            transfo->operator()(table);
+            transfo->transform(table);
         }
     }
 

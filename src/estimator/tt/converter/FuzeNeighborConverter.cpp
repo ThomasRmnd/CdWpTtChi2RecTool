@@ -7,7 +7,7 @@
 
 DECLARE_TOOL(FuzeNeighborConverter);
 
-bool FuzeNeighborConverter::operator()(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) {
+bool FuzeNeighborConverter::convert(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) {
     if (!getWallHits(ftable, ltable)) return false;
     if (!cleanWallHits()) return false;
     return convertToHits();

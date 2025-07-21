@@ -8,7 +8,7 @@ class CorrParam {
 
 public:
 
-    virtual double operator()(const RecPmtProp& pmt) = 0;
+    virtual double calculate(const RecPmtProp& pmt) = 0;
 
     virtual void setTrack(const vec3& orig, const vec3& dir) {
         m_orig = orig;
@@ -27,7 +27,7 @@ class AngleCorrParam final : public CorrParam {
 
 public:
 
-    double operator()(const RecPmtProp& pmt) final override {
+    double calculate(const RecPmtProp& pmt) final override {
         m_cntr_to_pmt = pmt.pos - dot(pmt.pos, m_dir) * m_dir;
         return angle(m_cntr_to_pmt, m_cntr_to_trk);
     };
@@ -49,7 +49,7 @@ class CosAngleCorrParam final : public CorrParam {
 
 public:
 
-    double operator()(const RecPmtProp& pmt) final override {
+    double calculate(const RecPmtProp& pmt) final override {
         m_cntr_to_pmt = pmt.pos - dot(pmt.pos, m_dir) * m_dir;
         return dot(m_cntr_to_pmt, m_cntr_to_trk) / mag(m_cntr_to_pmt);
     };
@@ -72,7 +72,7 @@ class DistProjPmtToOrigCorrParam final : public CorrParam {
 
 public:
 
-    double operator()(const RecPmtProp& pmt) final override {
+    double calculate(const RecPmtProp& pmt) final override {
         return dot(pmt.pos, m_dir) + m_half_length;
     };
 
@@ -92,7 +92,7 @@ class DistTrackToCenterCorrParam final : public CorrParam {
 
 public:
 
-    double operator()(const RecPmtProp& pmt) final override {
+    double calculate(const RecPmtProp& pmt) final override {
         (void)pmt;
         return m_dist_to_cntr;
     };
@@ -114,7 +114,7 @@ class DistTrackToCenterSquaredCorrParam final : public CorrParam {
 
 public:
 
-    double operator()(const RecPmtProp& pmt) final override {
+    double calculate(const RecPmtProp& pmt) final override {
         (void)pmt;
         return m_dist_to_cntr_squared;
     };

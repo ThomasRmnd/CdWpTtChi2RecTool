@@ -62,7 +62,7 @@ void WaterPhaseTransformer::getTimes3inch(const RecPmtTable& table) {
     m_spmt_t_f = m_hist->GetBinCenter(idx);
 }
 
-void WaterPhaseTransformer::operator()(RecPmtTable& table) {
+void WaterPhaseTransformer::transform(RecPmtTable& table) {
     if (!findRange(table)) return;
     
     m_nb_spmt = 0u;
@@ -230,7 +230,7 @@ bool WaterPhaseTransformer::getFTime20inch(const RecPmtTable& table) {
     return true;
 }
 
-void WaterPhaseTransformer::operator()(RecPmtTable& table) {
+void WaterPhaseTransformer::transform(RecPmtTable& table) {
     if (!findRange(table)) return;
 
     std::size_t isize_lpmt = std::count_if(m_ftable, m_ltable, [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_20INCH) == pmt.type; });
@@ -241,7 +241,7 @@ void WaterPhaseTransformer::operator()(RecPmtTable& table) {
 
     std::cout << "itime = " << m_lpmt_itime << ", ftime = " << m_lpmt_ftime << '\n';
 
-    std::for_each(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transform(pmt); });
+    std::for_each(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transformPmt(pmt); });
 
     std::size_t tsize_lpmt = std::count_if(m_ftable, m_ltable, [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_20INCH) == pmt.type; });
     std::size_t tsize_spmt = std::count_if(m_ftable, m_ltable, [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_3INCH) == pmt.type; });
@@ -286,7 +286,7 @@ void WaterPhaseTransformer::operator()(RecPmtTable& table) {
     return;
 }
 
-void WaterPhaseTransformer::transform(RecPmtProp& pmt) {
+void WaterPhaseTransformer::transformPmt(RecPmtProp& pmt) {
     if (!pmt.used || !checkPmtType(pmt)) return;
     if ( (pmt.type & RecPmtType::PMT_20INCH) == pmt.type ) {
         if ( pmt.fht < m_lpmt_itime || m_lpmt_ftime < pmt.fht ) pmt.used = false;

@@ -13,7 +13,7 @@ public:
 
     virtual ~Converter() = default;
 
-    virtual bool operator()(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) = 0;
+    virtual bool convert(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) = 0;
 
     const std::vector<vec3>& getHits() {
         return m_hits;

@@ -21,7 +21,7 @@ ClusterBundleInitializer::ClusterBundleInitializer(const std::string& name, doub
     m_dist_thold{dist_thold}
 {}
 
-bool ClusterBundleInitializer::operator()(const RecPmtTable& table) {
+bool ClusterBundleInitializer::initiate(const RecPmtTable& table) {
     unsigned int count = std::count_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
     LogDebug << count << " PMTs are used for the initialization\n";
 

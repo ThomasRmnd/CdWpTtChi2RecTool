@@ -16,7 +16,7 @@ public:
 
     ~WaterPhaseInitializer() override = default;
 
-    bool operator()(const vector_type& table) override;
+    bool initiate(const vector_type& table) override;
 
     ParamsType getOParamsType() override;
 

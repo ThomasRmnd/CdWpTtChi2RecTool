@@ -13,7 +13,7 @@ public:
 
 protected:
 
-    void transform(RecPmtProp& pmt) override;
+    void transformPmt(RecPmtProp& pmt) override;
 
 };
 

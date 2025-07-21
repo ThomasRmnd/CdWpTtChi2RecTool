@@ -24,7 +24,7 @@ public:
 
     ~WpTimeShiftCorrectionMap() override = default;
 
-    void operator()(RecPmtTable& table) override {
+    void correct(RecPmtTable& table) override {
     
         double d_i_wp = 0.0, d_o_wp = 0.0;
         if (!trajectoryHitCylinder(21750.0, 44000.0, this->m_orig, this->m_dir, d_i_wp, d_o_wp)) {
@@ -102,7 +102,7 @@ public:
 
     ~WpTimeShiftCorrectionMap() override = default;
 
-    void operator()(RecPmtTable& table) override {
+    void correct(RecPmtTable& table) override {
         double signed_pos = 0.0;
         for (RecPmtProp& pmt : table) {
             if (!checkPmtType(pmt)) continue;

@@ -44,7 +44,7 @@ public:
         return true;
     }
 
-    void operator()(RecPmtTable& table) override {
+    void correct(RecPmtTable& table) override {
         m_param_x->setTrack(this->m_orig, this->m_dir);
         m_param_y->setTrack(this->m_orig, this->m_dir);
         m_param_z->setTrack(this->m_orig, this->m_dir);
@@ -117,9 +117,9 @@ private:
     double correction(const RecPmtProp& pmt) override {
         double corr = 0.0;
 
-        double x = m_param_x->operator()(pmt);
-        double y = m_param_y->operator()(pmt);
-        double z = m_param_z->operator()(pmt);
+        double x = m_param_x->calculate(pmt);
+        double y = m_param_y->calculate(pmt);
+        double z = m_param_z->calculate(pmt);
     
         if ( (m_fbin_ctr_x < x && x < m_lbin_ctr_x) && (m_fbin_ctr_y < y && y < m_lbin_ctr_y) && (m_fbin_ctr_z < z && z < m_lbin_ctr_z) ) {
             corr = m_prof3d->Interpolate(x, y, z);
@@ -182,7 +182,7 @@ public:
         m_p_end_2 = m_orig_2 + m_dir * m_length_2;
     }
 
-    void operator()(RecPmtTable& table) override {
+    void correct(RecPmtTable& table) override {
         for (RecPmtProp& pmt : table) {
             if (!checkPmtType(pmt)) continue;
             pmt.fht -= correction(pmt);
@@ -282,9 +282,9 @@ private:
 
         double corr = 0.0;
 
-        double x = m_param_x->operator()(pmt);
-        double y = m_param_y->operator()(pmt);
-        double z = m_param_z->operator()(pmt);
+        double x = m_param_x->calculate(pmt);
+        double y = m_param_y->calculate(pmt);
+        double z = m_param_z->calculate(pmt);
     
         if ( (m_fbin_ctr_x < x && x < m_lbin_ctr_x) && (m_fbin_ctr_y < y && y < m_lbin_ctr_y) && (m_fbin_ctr_z < z && z < m_lbin_ctr_z) ) {
             corr = m_prof3d->Interpolate(x, y, z);

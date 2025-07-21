@@ -16,7 +16,7 @@ protected:
 
     double m_offset;
 
-    void transform(RecPmtProp& pmt) override;
+    void transformPmt(RecPmtProp& pmt) override;
 
 };
 

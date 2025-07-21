@@ -16,7 +16,7 @@ public:
 
     virtual ~Transformer() = default;
 
-    virtual void operator()(RecPmtTable& table);
+    virtual void transform(RecPmtTable& table);
 
 protected:
 
@@ -25,7 +25,7 @@ protected:
 
     bool findRange(RecPmtTable& table);
     
-    virtual void transform(RecPmtProp& pmt) = 0;
+    virtual void transformPmt(RecPmtProp& pmt) = 0;
 
 };
 

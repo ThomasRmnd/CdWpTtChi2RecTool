@@ -13,7 +13,7 @@ public:
 
     ~ClusterBundleInitializer() override = default;
 
-    bool operator()(const RecPmtTable& table) override;
+    bool initiate(const RecPmtTable& table) override;
 
     ParamsType getOParamsType() override;
 

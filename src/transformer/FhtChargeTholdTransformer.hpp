@@ -16,7 +16,7 @@ protected:
 
     double m_q_thold;
 
-    void transform(RecPmtProp& pmt) override;
+    void transformPmt(RecPmtProp& pmt) override;
 
 };
 

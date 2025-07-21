@@ -23,11 +23,11 @@ public:
 
     ~TtCrossTalkTransformer() override = default;
 
-    void operator()(RecPmtTable& table) override;
+    void transform(RecPmtTable& table) override;
 
 protected:
 
-    void transform(RecPmtProp& pmt) override;
+    void transformPmt(RecPmtProp& pmt) override;
     void getHitsStrips();
     void filterCrossTalk();
 

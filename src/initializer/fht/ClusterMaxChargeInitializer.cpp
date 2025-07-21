@@ -103,20 +103,17 @@ vec3 ClusterMaxChargeInitializer::getFPos(RecPmtTable::const_iterator ftable, Re
     vec3 dir = unit(pos_q_cntrd - ipos);
     pos_q_cntrd = ipos - 2.0 * dot(ipos, dir) * dir;
     double max_q = 0.0;
-    float q = 0.0;
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
         if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
-        if (!getFhtCharge(it, q)) continue;
         if (m_radius_end < mag(it->pos - pos_q_cntrd) || mag(it->pos - ipos) < m_radius) continue;
-        if (max_q < q) max_q = static_cast<double>(q);
+        if (max_q < it->q) max_q = it->q;
     }
     vec3 fpos;
     std::size_t n = 0;
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
         if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
-        if (!getFhtCharge(it, q)) continue;
         if (m_radius_end < mag(it->pos - pos_q_cntrd) || mag(it->pos - ipos) < m_radius) continue;
-        if (q < m_lwr_q_thold * max_q) continue;
+        if (it->q < m_lwr_q_thold * max_q) continue;
         fpos += it->pos;
         ++n;
     }
@@ -127,7 +124,7 @@ vec3 ClusterMaxChargeInitializer::getFPos(RecPmtTable::const_iterator ftable, Re
     return fpos / static_cast<double>(n);
 }
 
-bool ClusterMaxChargeInitializer::operator()(const RecPmtTable& table) {
+bool ClusterMaxChargeInitializer::initiate(const RecPmtTable& table) {
     unsigned int count = std::count_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
     LogDebug << count << " PMTs are used for the initialization\n";
 

@@ -11,20 +11,20 @@ TtCrossTalkTransformer::TtCrossTalkTransformer(const std::string& name) :
     Transformer(name, RecPmtType::PMT_TT)
 {}
 
-void TtCrossTalkTransformer::operator()(RecPmtTable& table) {
+void TtCrossTalkTransformer::transform(RecPmtTable& table) {
     if (!findRange(table)) return;
     getHitsStrips();
     filterCrossTalk();
     
     std::size_t isize = table.size();
-    table.erase(std::remove_if(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transform(pmt); return !pmt.used; }), m_ltable);
+    table.erase(std::remove_if(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transformPmt(pmt); return !pmt.used; }), m_ltable);
     std::size_t fsize = table.size();
 
     LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed\n";
     return;
 }
 
-void TtCrossTalkTransformer::transform(RecPmtProp& pmt) {
+void TtCrossTalkTransformer::transformPmt(RecPmtProp& pmt) {
     if (!pmt.used || !checkPmtType(pmt)) return;
     Identifier id = TtID::id(pmt.id);
     int ch_id = TtID::getIntID(TtID::wall_id(id), TtID::lower_pmt_index(TtID::pmt(id)), TtID::strip(id));

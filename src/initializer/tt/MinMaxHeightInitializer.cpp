@@ -5,7 +5,7 @@
 
 DECLARE_TOOL(MinMaxHeightInitializer);
 
-bool MinMaxHeightInitializer::operator()(const std::vector<vec3>& hits) {
+bool MinMaxHeightInitializer::initiate(const std::vector<vec3>& hits) {
     std::size_t min_idx = 0, max_idx = 0;
 
     for (std::size_t k = 1; k < hits.size(); ++k) {

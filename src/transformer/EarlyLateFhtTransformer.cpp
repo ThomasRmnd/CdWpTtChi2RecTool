@@ -31,13 +31,13 @@ double EarlyLateFhtTransformer::getITime(const RecPmtTable& table) {
     return (m_hist->GetBinCenter(idx) - m_shift);
 }
 
-void EarlyLateFhtTransformer::operator()(RecPmtTable& table) {
+void EarlyLateFhtTransformer::transform(RecPmtTable& table) {
     m_itime = getITime(table);
-    Transformer::operator()(table);
+    Transformer::transform(table);
     return;
 }
 
-void EarlyLateFhtTransformer::transform(RecPmtProp& pmt) {
+void EarlyLateFhtTransformer::transformPmt(RecPmtProp& pmt) {
     if (!pmt.used || !checkPmtType(pmt)) return;
     pmt.used = (m_itime <= pmt.fht && pmt.fht <= m_itime + m_relative_cut);
     return;

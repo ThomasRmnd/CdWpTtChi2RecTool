@@ -72,19 +72,19 @@ bool TtMinimizerEstimator::estimate(RecPmtTable& table) {
     m_scored_hits.clear();
     
     RecPmtTable::const_iterator ftable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return (pmt.type & (RecPmtType::PMT_CD | RecPmtType::PMT_WP)) == pmt.type; }).base();
-    if (!m_conv->operator()(ftable, table.end())) return false;
+    if (!m_conv->convert(ftable, table.end())) return false;
     if (c_max_nb_hits < m_conv->getHits().size()) {
         LogError << "The number of hits is too large: max -> " << c_max_nb_hits << ", actual -> " << m_conv->getHits().size() << '\n';
         return false;
     }
-    if (!m_comb->operator()(m_conv->getHits())) return false;
+    if (!m_comb->combine(m_conv->getHits())) return false;
     
     std::vector<double> params;
     double cost = 0.;
     m_cost = std::numeric_limits<double>::max();
 
     for (const std::vector<vec3>& hits : *m_comb) {
-        if (!m_init->operator()(hits)) return false;
+        if (!m_init->initiate(hits)) return false;
         params = m_init->getParams();
         m_func->set(hits);
         if (!m_opti->setParams(params, m_steps, m_names)) return false;

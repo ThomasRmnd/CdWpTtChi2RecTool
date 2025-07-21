@@ -13,7 +13,7 @@ public:
     MaskHeightCartesianProdCombinator(const std::string& name, std::size_t max_nb_heights);
     ~MaskHeightCartesianProdCombinator() override = default;
 
-    bool operator()(const std::vector<vec3>& hits) override;
+    bool combine(const std::vector<vec3>& hits) override;
 
 private:
 
