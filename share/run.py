@@ -43,9 +43,6 @@ geom.property("GeomFile").set("default")
 geom.property("GeomPathInRoot").set("JunoGeom")
 geom.property("FastInit").set(True)
 
-Sniper.loadDll("libPmtRec.so")
-task.property("algs").append("PullSimHeaderAlg")
-
 # === PMTParamSvc ===
 pmt_param_svc = task.createSvc("PMTParamSvc")
 
