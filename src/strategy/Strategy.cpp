@@ -743,16 +743,6 @@ void CdWaterPhaseStrategy::create() {
     m_pipe->addStep(g_trans_calib_nnvt);
     m_pipe->addStep(g_trans_calib_spmt);
 
-    std::shared_ptr<Transformer> trans_hama_calib = std::make_shared<CalibrationTransformer>(
-        "CdWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
-    );
-    m_pipe->addStep(trans_hama_calib);
-    
-    std::shared_ptr<Transformer> trans_spmt_calib = std::make_shared<CalibrationTransformer>(
-        "CdWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_3INCH, 13.0
-    );
-    m_pipe->addStep(trans_spmt_calib);
-
     std::shared_ptr<Transformer> trans_hama_q = std::make_shared<FhtChargeTholdTransformer>(
         "CdWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 5.0
     );
@@ -826,16 +816,6 @@ void CdWpWaterPhaseStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
     m_pipe->addStep(g_trans_calib_wp);
 
-    std::shared_ptr<Transformer> trans_hama_calib = std::make_shared<CalibrationTransformer>(
-        "CdWpWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, -7.0
-    );
-    m_pipe->addStep(trans_hama_calib);
-    
-    std::shared_ptr<Transformer> trans_spmt_calib = std::make_shared<CalibrationTransformer>(
-        "CdWpWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_3INCH, 13.0
-    );
-    m_pipe->addStep(trans_spmt_calib);
-
     std::shared_ptr<Transformer> trans_hama_q = std::make_shared<FhtChargeTholdTransformer>(
         "CdWpWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 5.0
     );
@@ -850,11 +830,6 @@ void CdWpWaterPhaseStrategy::create() {
         "CdWpWaterPhaseStrategy__WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
     );
     m_pipe->addStep(trans);
-
-    std::shared_ptr<Transformer> trans_wp_clb = std::make_shared<CalibrationTransformer>(
-        "CdWpWaterPhaseStrategy__CalibrationTransformer", RecPmtType::PMT_WP, 20.0
-    );
-    m_pipe->addStep(trans_wp_clb);
 
     std::shared_ptr<Transformer> trans_wp_q = std::make_shared<FhtChargeTholdTransformer>(
         "CdWpWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 5.0
