@@ -2,9 +2,15 @@ import argparse
 import sys
 
 parser = argparse.ArgumentParser()
+
 parser.add_argument("--input", type=str, help="Input filepath")
 parser.add_argument("--output", type=str, help="Output filepath")
 parser.add_argument("--use-simulation", action="store_true", help="Enable SimEvent")
+
+parser.add_argument("--use-auto-factory", action="store_true", help="Use the automatic factory")
+parser.add_argument("--water-phase", action="store_true", help="Use water phase algorithms")
+parser.add_argument("--manual-reconstruction-mode", type=int, default=1, help="Set the reconstruction mode for the manual factory")
+
 args = parser.parse_args()
 
 ipath = args.input
@@ -76,6 +82,10 @@ rec_alg.property("Use3inchPMT").set(True)
 rec_alg.property("Use20inchPMT").set(True)
 rec_alg.property("ChosenDetectors").set(3) # 1: CD, 2: WP, 4: TT
 # rec_alg.property("TimeDiffEventThreshold").set(300.0) # ~200.0 for Joint should be ok
+
+rec_alg.property("UseAutomaticFactory").set(args.use_auto_factory)
+rec_alg.property("WaterPhase").set(args.water_phase)
+rec_alg.property("ManualReconstructionMode").set(args.manual_reconstruction_mode)
 
 task.setEvtMax(-1)
 # task.show()

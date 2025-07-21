@@ -9,7 +9,7 @@ CdWpTtChi2RecTool::CdWpTtChi2RecTool(const std::string& name) :
     m_reg{"StrategyRegistry"},
     m_timer{name}
 {
-    declProp("AutomaticFactory", m_auto_fact = false);
+    declProp("UseAutomaticFactory", m_auto_fact = false);
     declProp("WaterPhase", m_water_phase = false);
     declProp("ManualReconstructionMode", m_manual_reco_mode = 1); // 1 = single through-going, 2 = single stopping, 3 = double
 }
