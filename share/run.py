@@ -11,8 +11,14 @@ ipath = args.input
 opath = args.output
 use_sim = args.use_simulation
 
-sim_hdr = ["/Event/Sim"]
-rec_hdr = ["/Event/CdTrackRec", "/Event/WpRec", "/Event/TtRec"]
+sim_hdr = [
+    "/Event/Sim"
+]
+rec_hdr = [
+    "/Event/CdTrackRec", 
+    "/Event/WpRec", 
+    "/Event/TtRec"
+]
 
 # === Sniper ====
 import Sniper

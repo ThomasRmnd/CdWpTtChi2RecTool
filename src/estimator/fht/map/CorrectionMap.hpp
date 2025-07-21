@@ -49,7 +49,6 @@ protected:
             LogError << "Cannot open correction file " << m_filename << '\n';
             return false;
         }
-        LogDebug << "Correction file " << m_filename << " is opened\n";
         return true;
     }
 
