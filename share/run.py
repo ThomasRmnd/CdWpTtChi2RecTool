@@ -1,31 +1,37 @@
+import argparse
 import sys
 
-import BufferMemMgr
-import Geometry
-import RootIOSvc
-import Sniper
-import SniperProfiling
+parser = argparse.ArgumentParser()
+parser.add_argument("--input", type=str, help="Input filepath")
+parser.add_argument("--output", type=str, help="Output filepath")
+parser.add_argument("--use-simulation", action="store_true", help="Enable SimEvent")
+args = parser.parse_args()
 
-import RecMuonAlg
-import CdWpTtChi2RecTool
+ipath = args.input
+opath = args.output
+use_sim = args.use_simulation
 
-ipath = sys.argv[1]
-opath = sys.argv[2]
+sim_hdr = ["/Event/Sim"]
+rec_hdr = ["/Event/CdTrackRec", "/Event/WpRec", "/Event/TtRec"]
 
 # === Sniper ====
+import Sniper
 Sniper.setLogLevel(1)
 task = Sniper.TopTask("task")
 task.setLogLevel(1)
 
 # === Profiling ===
+import SniperProfiling
 prof = task.createSvc("SniperProfiling")
 prof.setLogLevel(1)
 
 # === BufferMemMgr ===
+import BufferMemMgr
 buf_mgr = task.createSvc("BufferMemMgr")
 buf_mgr.property("TimeWindow").set([0, 0])
 
 # === Geometry === 
+import Geometry
 geom = task.createSvc("RecGeomSvc")
 geom.property("GeomFile").set("default")
 geom.property("GeomPathInRoot").set("JunoGeom")
@@ -41,23 +47,17 @@ pmt_param_svc = task.createSvc("PMTParamSvc")
 tt_geom_svc = task.createSvc("TTGeomSvc")
 
 # === RootIOSvc ===
-
-input_files = [ipath]
-
+import RootIOSvc
+ifiles = [ipath]
 ri_svc = task.createSvc("RootInputSvc/InputSvc")
-ri_svc.property("InputFile").set(input_files)
+ri_svc.property("InputFile").set(ifiles)
 
-output_files = {
-    # === Sim ===
-    "/Event/Sim": opath,
-    # === Rec ===
-    "/Event/CdTrackRec": opath,
-    "/Event/WpRec": opath,
-    "/Event/TtRec": opath
-}
+ofiles = {hdr: opath for hdr in rec_hdr}
+if use_sim:
+    ofiles.update({hdr: opath for hdr in sim_hdr})
 
 ro_svc = task.createSvc("RootOutputSvc/OutputSvc")
-ro_svc.property("OutputStreams").set(output_files)
+ro_svc.property("OutputStreams").set(ofiles)
 
 # === RecMuonAlg and CdWpTtChi2RecTool ===
 import RecMuonAlg
@@ -77,8 +77,8 @@ rec_alg.property("ChosenDetectors").set(3) # 1: CD, 2: WP, 4: TT
 task.setEvtMax(-1)
 # task.show()
 if (task.run()):
-    print("Task finished successfully!")
+    print(f"Task finished successfully!")
     sys.exit(0)
 else:
-    print("Task failed!")
+    print(f"Task failed!")
     sys.exit(1)
