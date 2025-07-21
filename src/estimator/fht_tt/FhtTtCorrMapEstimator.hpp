@@ -71,20 +71,12 @@ public:
             LogError << "Cost function and correction maps estimator have different parameters type\n";
             return ParamsType::Unknown;
         }
-        if (this->m_func->getIParamsType() != m_tt_esti->getIParamsType()) {
-            LogError << "Cost function and TT estimator have different parameters type\n";
-            return ParamsType::Unknown;
-        }
         return this->m_func->getIParamsType();
     };
 
     ParamsType getOParamsType() override {
         if (this->m_func->getIParamsType() != m_fht_esti->getOParamsType()) {
             LogError << "Cost function and correction maps estimator have different parameters type\n";
-            return ParamsType::Unknown;
-        }
-        if (this->m_func->getIParamsType() != m_tt_esti->getOParamsType()) {
-            LogError << "Cost function and TT estimator have different parameters type\n";
             return ParamsType::Unknown;
         }
         return this->m_func->getIParamsType();
