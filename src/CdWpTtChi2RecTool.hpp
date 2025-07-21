@@ -4,7 +4,9 @@
 #include "SniperKernel/ToolBase.h"
 #include "RecTools/IRecMuonTool.h"
 
+#include <any>
 #include <memory>
+#include <unordered_map>
 
 #include "strategy/Factory.hpp"
 #include "utils/RecPmtProp.hpp"
@@ -36,6 +38,7 @@ private:
     int m_manual_reco_mode;
 
     StrategyRegistry m_reg;
+    std::unordered_map<std::string, std::any> m_config_map;
     std::shared_ptr<StrategyFactory> m_fact;
 
     timer m_timer;

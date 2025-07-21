@@ -12,6 +12,7 @@ CdWpTtChi2RecTool::CdWpTtChi2RecTool(const std::string& name) :
     declProp("UseAutomaticFactory", m_auto_fact = false);
     declProp("WaterPhase", m_water_phase = false);
     declProp("ManualReconstructionMode", m_manual_reco_mode = 1); // 1 = single through-going, 2 = single stopping, 3 = double
+    declProp("ConfigMap", m_config_map);
 }
 
 bool CdWpTtChi2RecTool::initialize() {
@@ -41,6 +42,32 @@ bool CdWpTtChi2RecTool::initialize() {
     }
     if (!m_reg.initialize()) return false;
     LogInfo << m_name << " initialized successfully\n";
+
+    LogInfo << "Configuration Map:\n";
+    for (const auto& [key, value_any] : m_config_map) {
+        LogInfo << "  " << key << " = ";
+
+        if (value_any.type() == typeid(int)) {
+            LogInfo << std::any_cast<int>(value_any);
+        }
+        else if (value_any.type() == typeid(double)) {
+            LogInfo << std::any_cast<double>(value_any);
+        }
+        else if (value_any.type() == typeid(std::string)) {
+            LogInfo << std::any_cast<std::string>(value_any);
+        }
+        else if (value_any.type() == typeid(bool)) {
+            LogInfo << (std::any_cast<bool>(value_any) ? "true" : "false");
+        }
+        else if (value_any.type() == typeid(RecPmtType)) {
+            LogInfo << static_cast<int>(std::any_cast<RecPmtType>(value_any)); 
+        }
+        else {
+            LogInfo << "<unprintable type: " << value_any.type().name() << ">";
+        }
+        LogInfo << "\n";
+    }
+
     return true;
 }
 
