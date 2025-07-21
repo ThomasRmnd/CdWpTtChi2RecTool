@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-#include "SniperJSON.h"
+#include "SniperKernel/SniperJSON.h"
 #include "SniperKernel/ToolFactory.h"
 
 DECLARE_TOOL(CdWpTtChi2RecTool);
