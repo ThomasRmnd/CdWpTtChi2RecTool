@@ -156,7 +156,8 @@ private:
 
     static RecPmtType getRecPmtType(const PmtProp& src) {
         RecPmtType type = RecPmtType::PMT_UNKNOWN;
-        Identifier id = Identifier{src.pmtid};
+        // Identifier id = Identifier{src.pmtid};
+        Identifier id = Identifier{static_cast<unsigned int>(src.value)};
         if (src.loc == 3) {
             type = RecPmtType::PMT_TT;
         }
@@ -182,7 +183,8 @@ private:
         dst.totq = src.q;
         dst.q = src.hitq[0];
         dst.fht = src.fht;
-        dst.id = src.pmtid;
+        // dst.id = src.pmtid;
+        dst.id = static_cast<unsigned int>(src.value);
         dst.used = true;
     }
 
