@@ -86,7 +86,7 @@ rec_alg.property("ChosenDetectors").set(3) # 1: CD, 2: WP, 4: TT
 rec_alg.rectool.property("UseAutomaticFactory").set(args.use_auto_factory)
 rec_alg.rectool.property("WaterPhase").set(args.water_phase)
 rec_alg.rectool.property("ManualReconstructionMode").set(args.manual_reconstruction_mode)
-rec_alg.rectool.property("ConfigMap").set(args.config_file)
+rec_alg.rectool.property("ConfigFile").set(args.config_file)
 
 task.setEvtMax(-1)
 # task.show()
