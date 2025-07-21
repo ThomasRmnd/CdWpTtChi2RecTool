@@ -12,10 +12,6 @@ import CdWpTtChi2RecTool
 ipath = sys.argv[1]
 opath = sys.argv[2]
 
-ifile = ipath.split("/")[-1]
-ipath = ipath.replace(ifile, "")
-ofile = ifile.replace("calib", "rec")
-
 # === Sniper ====
 Sniper.setLogLevel(1)
 task = Sniper.TopTask("task")
@@ -46,18 +42,18 @@ tt_geom_svc = task.createSvc("TTGeomSvc")
 
 # === RootIOSvc ===
 
-input_files = [ipath + ifile]
+input_files = [ipath]
 
 ri_svc = task.createSvc("RootInputSvc/InputSvc")
 ri_svc.property("InputFile").set(input_files)
 
 output_files = {
     # === Sim ===
-    "/Event/Sim": opath + ofile,
+    "/Event/Sim": opath,
     # === Rec ===
-    "/Event/CdTrackRec": opath + ofile,
-    "/Event/WpRec": opath + ofile,
-    "/Event/TtRec": opath + ofile
+    "/Event/CdTrackRec": opath,
+    "/Event/WpRec": opath,
+    "/Event/TtRec": opath
 }
 
 ro_svc = task.createSvc("RootOutputSvc/OutputSvc")
