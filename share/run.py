@@ -10,6 +10,7 @@ parser.add_argument("--use-simulation", action="store_true", help="Enable SimEve
 parser.add_argument("--use-auto-factory", action="store_true", help="Use the automatic factory")
 parser.add_argument("--water-phase", action="store_true", help="Use water phase algorithms")
 parser.add_argument("--manual-reconstruction-mode", type=int, default=1, help="Set the reconstruction mode for the manual factory")
+parser.add_argument("--config-file", type=str, default="", help="Path for the config file")
 
 args = parser.parse_args()
 
@@ -82,19 +83,10 @@ rec_alg.property("Use3inchPMT").set(True)
 rec_alg.property("Use20inchPMT").set(True)
 rec_alg.property("ChosenDetectors").set(3) # 1: CD, 2: WP, 4: TT
 # rec_alg.property("TimeDiffEventThreshold").set(300.0) # ~200.0 for Joint should be ok
-
-config_map = {
-    "CdStrategy__CalibrationTransformer__TimeOffset": 12.3,
-    "CdStrategy__CalibrationTransformer__Enabled": True,
-    "CdWpStrategy__CalibrationTransformer__TimeOffset": 15.8,
-    "CdStrategy__AnotherComponent__Threshold": 3,
-    "TtStrategy__CalibrationTransformer__Type": "Fine",
-}
-
 rec_alg.rectool.property("UseAutomaticFactory").set(args.use_auto_factory)
 rec_alg.rectool.property("WaterPhase").set(args.water_phase)
 rec_alg.rectool.property("ManualReconstructionMode").set(args.manual_reconstruction_mode)
-rec_alg.rectool.property("ConfigMap").set(config_map)
+rec_alg.rectool.property("ConfigMap").set(args.config_file)
 
 task.setEvtMax(-1)
 # task.show()

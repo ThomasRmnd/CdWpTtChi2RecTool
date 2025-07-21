@@ -37,11 +37,8 @@ private:
     bool m_water_phase;
     int m_manual_reco_mode;
 
-    using VariantType = std::variant<int, double, std::string /*, RecPmtType */>;
-    using ConfigMap = std::unordered_map<std::string, VariantType>;
-
     StrategyRegistry m_reg;
-    ConfigMap m_config_map;
+    std::string m_config_file;
     std::shared_ptr<StrategyFactory> m_fact;
 
     timer m_timer;
