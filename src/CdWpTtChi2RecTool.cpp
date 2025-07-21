@@ -33,6 +33,7 @@ bool CdWpTtChi2RecTool::initialize() {
         if (m_manual_reco_mode == 1) m_fact = std::make_shared<ManualStrategyFactory>(m_reg, ParamsType::SingleAcrylic);
         else if (m_manual_reco_mode == 2) m_fact = std::make_shared<ManualStrategyFactory>(m_reg, ParamsType::SingleStoppingAcrylic);
         else if (m_manual_reco_mode == 3) m_fact = std::make_shared<ManualStrategyFactory>(m_reg, ParamsType::DoubleAcrylic);
+        else if (m_manual_reco_mode == 4) m_fact = std::make_shared<ManualStrategyFactory>(m_reg, ParamsType::SingleCd);
         else {
             LogError << "Reconstruction mode " << m_manual_reco_mode << " is not handled for the moment. Abording\n";
             return false;
