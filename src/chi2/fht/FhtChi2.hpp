@@ -3,18 +3,28 @@
 
 #include "chi2/Chi2.hpp"
 
-#include "utils/Chi2.hpp"
-
-// Compute raw $\chi^2$ for the FHT method
+/**
+ * @class FhtChi2
+ * @brief Derived class for raw \f$ \chi^2 \f$ calculation for the FHT method
+ */
 class FhtChi2 : public Chi2<FhtMethodTag> {
 
 public:
 
+    FhtChi2(const std::string& name);
+
     ~FhtChi2() override = default;
 
-    double calculate(const_iterator first, const_iterator last, theo_const_iterator theo) override {
-        return chi2FhtMethod(first, last, theo);
-    }
+    /**
+     * @brief Calculate the raw \f$ \chi^2 \f$ for the FHT method
+     * 
+     * @param first the beginning iterator of the experimental data 
+     * @param last the end iterator of the experimental data
+     * @param theo the beginning iterator of the expected data
+     * 
+     * @return Raw \f$ \chi^2 \f$
+     */
+    double calculate(const_iterator first, const_iterator last, theo_const_iterator theo) override;
 
 };
 

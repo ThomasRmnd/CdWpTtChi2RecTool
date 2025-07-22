@@ -1,5 +1,8 @@
 PKG(CdWpTtChi2RecTool
 
+    src/chi2/fht/FhtChi2.cpp
+    src/chi2/tt/TtChi2.cpp
+
     src/estimator/Estimator.cpp
     src/estimator/ParamsModifierEstimator.cpp
     src/estimator/Pipeline.cpp

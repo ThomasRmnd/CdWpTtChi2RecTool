@@ -3,20 +3,31 @@
 
 #include "chi2/Chi2.hpp"
 
-#include "utils/Chi2.hpp"
-
-// Compute raw $\chi^2$ for the TT method
+/**
+ * @class TtChi2
+ * @brief Derived class for raw \f$ \chi^2 \f$ calculation for the TT method
+ */
 class TtChi2 : public Chi2<TtMethodTag> {
 
 public:
 
-    TtChi2(double res_) : m_ires2{1 / (res_ * res_)} {}
+    TtChi2(const std::string& name);
+    TtChi2(const std::string& name, double res);
 
     ~TtChi2() override = default;
 
-    double calculate(const_iterator first, const_iterator last, theo_const_iterator theo) {
-        return m_ires2 * chi2TtMethod(first, last, theo);
-    }
+    void configure(const SniperJSON& config) override;
+
+    /**
+     * @brief Calculate the raw \f$ \chi^2 \f$ for the TT method
+     * 
+     * @param first the beginning iterator of the experimental data 
+     * @param last the end iterator of the experimental data
+     * @param theo the beginning iterator of the expected data
+     * 
+     * @return Raw \f$ \chi^2 \f$
+     */
+    double calculate(const_iterator first, const_iterator last, theo_const_iterator theo);
 
 private:
 

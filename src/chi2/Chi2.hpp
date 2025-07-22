@@ -5,7 +5,8 @@
 #include "utils/Method.hpp"
 
 /**
- * @brief Base class for raw $\chi^2$ calculation
+ * @class Chi2
+ * @brief Base class for raw \f$ \chi^2 \f$ calculation
  */
 template<typename _Tag>
 class Chi2 : public Configurable {
@@ -21,6 +22,15 @@ public:
 
     virtual ~Chi2() = default;
 
+    /**
+     * @brief Calculate the raw \f$ \chi^2 \f$
+     * 
+     * @param first the beginning iterator of the experimental data 
+     * @param last the end iterator of the experimental data
+     * @param theo the beginning iterator of the expected data
+     * 
+     * @return Raw \f$ \chi^2 \f$
+     */
     virtual double calculate(const_iterator first, const_iterator last, theo_const_iterator theo) = 0;
 
 };
