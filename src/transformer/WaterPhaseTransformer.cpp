@@ -26,7 +26,7 @@ void WaterPhaseTransformer::getTimes20inch(const RecPmtTable& table) {
     m_hist->Reset();
     for (const RecPmtProp& pmt : table) {
         if (!pmt.used || (pmt.type & RecPmtType::PMT_20INCH) != pmt.type) continue;
-        m_hist->Fill(pmt.fht, std::log10(pmt.hitq[0]));
+        m_hist->Fill(pmt.fht, std::log10(pmt.q));
     }
 
     int idx = m_hist->GetMaximumBin();
@@ -73,7 +73,7 @@ void WaterPhaseTransformer::transform(RecPmtTable& table) {
 
     for (RecPmtProp& pmt : table) {
         if (!pmt.used || (pmt.type & RecPmtType::PMT_20INCH) != pmt.type) continue;
-        if (pmt.hitq[0] < m_q_thold || 10000.0 < pmt.q) pmt.used = false; // 10000.0 because of slight bug in the simulation
+        if (pmt.q < m_q_thold || 10000.0 < pmt.q) pmt.used = false; // 10000.0 because of slight bug in the simulation
     }
     getTimes20inch(table);
     getTimes3inch(table);
@@ -162,7 +162,7 @@ void WaterPhaseTransformer::transform(RecPmtTable& table) {
 void WaterPhaseTransformer::transform(RecPmtProp& pmt) {
     if (!pmt.used || !check(pmt)) return;
     if ( (pmt.type & RecPmtType::PMT_20INCH) == pmt.type ) {
-        if ( (pmt.fht < m_lpmt_t_i && pmt.hitq[0] < m_q_thold) || m_lpmt_t_f < pmt.fht ) pmt.used = false;
+        if ( (pmt.fht < m_lpmt_t_i && pmt.q < m_q_thold) || m_lpmt_t_f < pmt.fht ) pmt.used = false;
         else ++m_nb_lpmt;
     }
     else if ( (pmt.type & RecPmtType::PMT_3INCH) == pmt.type ) {
@@ -192,15 +192,7 @@ bool WaterPhaseTransformer::getITime20inch(const RecPmtTable& table) {
     for (const RecPmtProp& pmt : table) {
         if (!pmt.used) continue;
         if ( (pmt.type & RecPmtType::PMT_20INCH) != pmt.type ) continue;
-
-#if __USE_RECPMTPROP_VERSION__ == 1
-        if (static_cast<double>(pmt.hitq[0]) < m_q_thold_itime || pmt.fht < 100.0) continue;
-#elif __USE_RECPMTPROP_VERSION__ == 2
-        if (static_cast<double>(pmt.it_tq->q) < m_q_thold_itime || pmt.fht < 100.0) continue;
-#elif __USE_RECPMTPROP_VERSION__ == 3
         if (pmt.q < m_q_thold_itime || pmt.fht < 100.0) continue;
-#endif // __USE_RECPMTPROP_VERSION__
-
         m_lpmt_itime = std::min(m_lpmt_itime, pmt.fht);
         flag = true;
     }

@@ -42,7 +42,7 @@ bool ClusterBundleInitializer::initiate(const RecPmtTable& table) {
     for (std::size_t k = 0; k < densities.size(); ++k) {
         if (densities[k] < m_dens_thold) continue;
         if (distances[k] < m_dist_thold) continue;
-        m_clusters.emplace_back(dpc_table[k].pos, dpc_table[k].q, dpc_table[k].fht);
+        m_clusters.emplace_back(dpc_table[k].pos, dpc_table[k].totq, dpc_table[k].fht);
     }
 
     if (m_clusters.size() == 1) return strategy1Cluster(table);
@@ -69,9 +69,9 @@ bool ClusterBundleInitializer::strategy1Cluster(const RecPmtTable& table) {
         dpc_table.push_back(pmt);
     }
 
-    auto [pmt_qmin, pmt_qmax] = std::minmax_element(dpc_table.begin(), dpc_table.end(), [](const RecPmtProp& lhs, const RecPmtProp& rhs) { return lhs.q < rhs.q; });
+    auto [pmt_qmin, pmt_qmax] = std::minmax_element(dpc_table.begin(), dpc_table.end(), [](const RecPmtProp& lhs, const RecPmtProp& rhs) { return lhs.totq < rhs.totq; });
     double q_thold = std::sqrt(pmt_qmin->q * pmt_qmax->q); // geometric mean
-    dpc_table.erase(std::remove_if(dpc_table.begin(), dpc_table.end(), [q_thold](const RecPmtProp& pmt) { return pmt.q < q_thold; }), dpc_table.end());
+    dpc_table.erase(std::remove_if(dpc_table.begin(), dpc_table.end(), [q_thold](const RecPmtProp& pmt) { return pmt.totq < q_thold; }), dpc_table.end());
 
     m_dpc.cluster(dpc_table);
     
