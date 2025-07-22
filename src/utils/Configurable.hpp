@@ -18,7 +18,7 @@ public:
 protected:
 
     template<typename _Tp>
-    _Tp getConfigValue(const std::string& membername, const SniperJSON& config) const {
+    _Tp getConfigValue(const std::string& membername, const SniperJSON& config) {
         std::string fullkey = m_name + "__" + membername;
         SniperJSON::map_iterator it = config.find(fullkey);
         if (it == config.map_end()) {
