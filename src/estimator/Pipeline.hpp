@@ -19,6 +19,7 @@ public:
 
     ~Pipeline() override = default;
 
+    void configure(const SniperJSON& config) override;
     bool initialize() override;
     bool finalize() override;
 

@@ -24,7 +24,7 @@ bool StrategyRegistry::initialize() {
             LogError << "Pipeline is not set for the strategy (" << static_cast<int>(strat->type.params) << ", " << static_cast<int>(strat->type.detector) << ")\n";
             return false;
         }
-        // pipe->configure(m_config);
+        pipe->configure(m_config);
         if (!pipe->initialize()) return false;
     }
     return true;

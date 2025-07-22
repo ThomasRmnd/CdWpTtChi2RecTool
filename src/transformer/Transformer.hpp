@@ -3,11 +3,10 @@
 
 #include <algorithm>
 
-#include "SniperKernel/ToolBase.h"
-
+#include "utils/Configurable.hpp"
 #include "utils/RecPmtProp.hpp"
 
-class Transformer : public ToolBase, public PmtTypeChecker {
+class Transformer : public Configurable, public PmtTypeChecker {
 
 public:
 

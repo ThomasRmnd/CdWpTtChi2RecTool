@@ -12,6 +12,8 @@ public:
 
     ~CalibrationTransformer() override = default;
 
+    void configure(const SniperJSON& config) override;
+
 protected:
 
     double m_offset;

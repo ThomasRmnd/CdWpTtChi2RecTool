@@ -14,6 +14,12 @@ CalibrationTransformer::CalibrationTransformer(const std::string& name, const Re
     m_offset(offset)
 {}
 
+void CalibrationTransformer::configure(const SniperJSON& config) {
+    LogDebug << "Before: TimeOffset = " << m_offset << '\n';
+    m_offset = getConfigValue<double>("TimeOffset", config);
+    LogDebug << "After: TimeOffset = " << m_offset << '\n';
+}
+
 void CalibrationTransformer::transformPmt(RecPmtProp& pmt) {
     if (!pmt.used || !checkPmtType(pmt)) return;
     pmt.fht += m_offset;

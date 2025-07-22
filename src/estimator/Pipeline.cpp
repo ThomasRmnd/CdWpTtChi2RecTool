@@ -5,6 +5,14 @@
 
 DECLARE_TOOL(Pipeline);
 
+void Pipeline::configure(const SniperJSON& config) {
+    for (Step& step : m_pipe) {
+        std::visit([&](auto&& component) {
+            component->configure(config);
+        }, step);
+    }
+}
+
 bool Pipeline::initialize() {
     if (m_pipe.empty()) {
         LogError << "No steps in the pipeline\n";

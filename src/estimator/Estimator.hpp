@@ -1,18 +1,17 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_ESTIMATOR_HPP_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_ESTIMATOR_HPP_
 
-#include "SniperKernel/ToolBase.h"
-#include "utils/TrackParams.hpp"
-
 #include <vector>
 
+#include "utils/Configurable.hpp"
 #include "utils/RecPmtProp.hpp"
+#include "utils/TrackParams.hpp"
 
-class Estimator : public ToolBase, public IParamsHandler, public OParamsHandler {
+class Estimator : public Configurable, public IParamsHandler, public OParamsHandler {
 
 public:
 
-    using ToolBase::ToolBase;
+    using Configurable::Configurable;
 
     virtual ~Estimator() = default;
 
