@@ -25,7 +25,9 @@ protected:
             LogError << "Cannot retrieve the member value at " << fullkey << '\n';
             return _Tp{};
         }
-        return it->second.get<_Tp>();
+        _Tp value = it->second.get<_Tp>();
+        LogDebug << fullkey << " = " << value << '\n';
+        return value;
     }
 
 };
