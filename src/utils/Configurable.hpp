@@ -22,11 +22,11 @@ protected:
         std::string fullkey = m_name + "__" + membername;
         SniperJSON::map_iterator it = config.find(fullkey);
         if (it == config.map_end()) {
-            LogError << "Cannot retrieve the member value at " << fullkey << '\n';
+            LogError << "Cannot retrieve the member value " << membername << '\n';
             return _Tp{};
         }
         _Tp value = it->second.get<_Tp>();
-        LogDebug << fullkey << " = " << value << '\n';
+        LogDebug << membername << " = " << value << '\n';
         return value;
     }
 

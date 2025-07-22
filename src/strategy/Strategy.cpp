@@ -754,7 +754,8 @@ void CdWaterPhaseStrategy::create() {
     m_pipe->addStep(trans_nnvt_q);
     
     std::shared_ptr<Transformer> trans = std::make_shared<WaterPhaseTransformer>(
-        "CdWaterPhaseStrategy__WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
+        // "CdWaterPhaseStrategy__WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
+        "CdWaterPhaseStrategy__WaterPhaseTransformer", 10.0, 200, 0.0, 1000.0, 1.0, 30.0, 1.0, 20.0, 1500.0, 5u, 5.0
     );
     m_pipe->addStep(trans);
 
@@ -827,7 +828,8 @@ void CdWpWaterPhaseStrategy::create() {
     m_pipe->addStep(trans_nnvt_q);
     
     std::shared_ptr<Transformer> trans = std::make_shared<WaterPhaseTransformer>(
-        "CdWpWaterPhaseStrategy__WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
+        // "CdWpWaterPhaseStrategy__WaterPhaseTransformer", 200, 0.0, 1000.0, 30.0, 0.2, 1500.0, 10u, 35.0
+        "CdWpWaterPhaseStrategy__WaterPhaseTransformer", 10.0, 200, 0.0, 1000.0, 1.0, 30.0, 1.0, 20.0, 1500.0, 5u, 5.0
     );
     m_pipe->addStep(trans);
 

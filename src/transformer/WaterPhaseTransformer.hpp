@@ -8,7 +8,7 @@
 
 #include <TH1D.h>
 
-#undef __USE_WATERPHASETRANSFORMER_J24_3_0_SIMULATIONS_IMPLEMENTATION__
+#define __USE_WATERPHASETRANSFORMER_J24_3_0_SIMULATIONS_IMPLEMENTATION__
 
 class WaterPhaseTransformer : public Transformer {
 
