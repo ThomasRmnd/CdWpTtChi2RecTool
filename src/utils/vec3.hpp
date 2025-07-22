@@ -121,4 +121,9 @@ inline constexpr vec3 from_spherical(double mag, double theta, double phi) noexc
     return vec3{x, y, z};
 }
 
+template<class _Char, class _Traits>
+std::basic_ostream<_Char, _Traits>& operator<<(std::basic_ostream<_Char, _Traits>& os, const vec3& vec) {
+    return os << '(' << vec.x << ", " << vec.y << ", " << vec.z << ')';
+}
+
 #endif // CDWPTTCHI2RECTOOL_UTILS_VEC3_HPP_

@@ -1,11 +1,14 @@
 #ifndef CDWPTTCHI2RECTOOL_CHI2_CHI2_HPP_
 #define CDWPTTCHI2RECTOOL_CHI2_CHI2_HPP_
 
+#include "utils/Configurable.hpp"
 #include "utils/Method.hpp"
 
-// Base class for raw $\chi^2$ calculation
+/**
+ * @brief Base class for raw $\chi^2$ calculation
+ */
 template<typename _Tag>
-class Chi2 {
+class Chi2 : public Configurable {
 
     static_assert(std::is_base_of<MethodTag, _Tag>::value, "Tag must derive from MethodTag");
 
@@ -13,6 +16,8 @@ public:
 
     typedef typename MethodTraits<_Tag>::const_iterator const_iterator;
     typedef typename MethodTraits<_Tag>::theo_const_iterator theo_const_iterator;
+
+    using Configurable::Configurable;
 
     virtual ~Chi2() = default;
 
