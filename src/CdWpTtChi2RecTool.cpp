@@ -43,17 +43,14 @@ bool CdWpTtChi2RecTool::initialize() {
             return false;
         }
     }
-    if (!m_reg.initialize()) return false;
-    LogInfo << m_name << " initialized successfully\n";
 
     if (!m_config_file.empty()) {
         std::ifstream ifs(m_config_file);
-        SniperJSON json = SniperJSON::load(ifs);
-
-        for (auto it = json.map_begin(); it != json.map_end(); ++it) {
-            std::cout << it->first << ": " << it->second.str() << std::endl;
-        }
+        m_json = SniperJSON::load(ifs);
     }
+
+    if (!m_reg.initialize()) return false;
+    LogInfo << m_name << " initialized successfully\n";
 
     return true;
 }

@@ -1,8 +1,6 @@
 #ifndef CDWPTTCHI2RECTOOL_STRATEGY_STRATEGY_HPP_
 #define CDWPTTCHI2RECTOOL_STRATEGY_STRATEGY_HPP_
 
-#include "SniperKernel/ToolBase.h"
-
 #include "RecTools/IRecMuonTool.h"
 
 #include "estimator/Pipeline.hpp"

@@ -5,6 +5,13 @@
 
 DECLARE_TOOL(StrategyRegistry);
 
+void StrategyRegistry::configure(const SniperJSON& config) {
+    m_config = config;
+    for (auto it = m_config.map_begin(); it != m_config.map_end(); ++it) {
+        std::cout << it->first << ": " << it->second.str() << std::endl;
+    }
+}
+
 bool StrategyRegistry::initialize() {
     for (auto& [type, strat] : m_strats) {
         if (!strat) {
@@ -17,6 +24,7 @@ bool StrategyRegistry::initialize() {
             LogError << "Pipeline is not set for the strategy (" << static_cast<int>(strat->type.params) << ", " << static_cast<int>(strat->type.detector) << ")\n";
             return false;
         }
+        // pipe->configure(m_config);
         if (!pipe->initialize()) return false;
     }
     return true;

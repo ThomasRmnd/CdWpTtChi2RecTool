@@ -1,18 +1,19 @@
 #ifndef CDWPTTCHI2RECTOOL_STRATEGY_REGISTRY_HPP_
 #define CDWPTTCHI2RECTOOL_STRATEGY_REGISTRY_HPP_
 
-#include "SniperKernel/ToolBase.h"
+#include "utils/Configurable.hpp"
 
 #include <unordered_map>
 
 #include "strategy/Strategy.hpp"
 
-class StrategyRegistry : public ToolBase {
+class StrategyRegistry : public Configurable {
 
 public:
 
-    using ToolBase::ToolBase;
+    using Configurable::Configurable;
 
+    void configure(const SniperJSON& config) override;
     bool initialize() override;
     bool finalize() override;
 
@@ -21,6 +22,7 @@ public:
 
 private:
 
+    SniperJSON m_config;
     std::unordered_map<StrategyType, std::shared_ptr<Strategy>> m_strats;
 
 };

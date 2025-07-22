@@ -39,6 +39,7 @@ private:
 
     StrategyRegistry m_reg;
     std::string m_config_file;
+    SniperJSON m_json;
     std::shared_ptr<StrategyFactory> m_fact;
 
     timer m_timer;
