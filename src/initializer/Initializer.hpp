@@ -27,10 +27,10 @@ public:
 
     void printParams() {
         LogInfo << "Initial parameters: ";
-        for (std::size_t k = 0; k < m_ivars.size() - 1; ++k) {
-            std::cout << m_ivars[k] << ", ";
+        for (std::size_t k = 0; k < m_params.size() - 1; ++k) {
+            std::cout << m_params[k] << ", ";
         }
-        std::cout << m_ivars.back() << '\n';
+        std::cout << m_params.back() << '\n';
     }
 
 protected:
