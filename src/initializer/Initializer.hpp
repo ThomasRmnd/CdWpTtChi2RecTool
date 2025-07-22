@@ -23,7 +23,15 @@ public:
 
     const std::vector<double>& getParams() const {
         return m_params;
-    };
+    }
+
+    void printParams() {
+        LogInfo << "Initial parameters: ";
+        for (std::size_t k = 0; k < m_ivars.size() - 1; ++k) {
+            std::cout << m_ivars[k] << ", ";
+        }
+        std::cout << m_ivars.back() << '\n';
+    }
 
 protected:
 
