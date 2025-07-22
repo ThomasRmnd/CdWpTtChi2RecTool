@@ -49,6 +49,7 @@ bool CdWpTtChi2RecTool::initialize() {
         m_json = SniperJSON::load(ifs);
     }
 
+    m_reg.configure(m_json);
     if (!m_reg.initialize()) return false;
     LogInfo << m_name << " initialized successfully\n";
 
