@@ -113,11 +113,11 @@ DEFINIT_GLOBAL_PREDICTOR_CDWP(Predictor<FhtMethodTag>, pred_fht_no_refr_ls_no_hi
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<TtMethodTag>, pred_tt, TtPredictor)
 std::shared_ptr<Predictor<TtMethodTag>> g_pred_tt_single_tt = std::make_shared<TtPredictor<ParamsType::SingleTt>>();
 
-std::shared_ptr<Transformer> g_trans_calib_hama = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_HAMAMATSU, 0.0);
-std::shared_ptr<Transformer> g_trans_calib_nnvt = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_NNVT, 0.0);
-std::shared_ptr<Transformer> g_trans_calib_highqe = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_20INCH_HIGHQENNVT, 0.0);
-std::shared_ptr<Transformer> g_trans_calib_spmt = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_3INCH, 0.0);
-std::shared_ptr<Transformer> g_trans_calib_wp = std::make_shared<CalibrationTransformer>("CalibrationTransformer", RecPmtType::PMT_WP, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_hama = std::make_shared<CalibrationTransformer>("CalibrationTransformer_Hamamatsu", RecPmtType::PMT_20INCH_HAMAMATSU, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_nnvt = std::make_shared<CalibrationTransformer>("CalibrationTransformer_NNVT", RecPmtType::PMT_20INCH_NNVT, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_highqe = std::make_shared<CalibrationTransformer>("CalibrationTransformer_HighQENNVT", RecPmtType::PMT_20INCH_HIGHQENNVT, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_spmt = std::make_shared<CalibrationTransformer>("CalibrationTransformer_3inch", RecPmtType::PMT_3INCH, 0.0);
+std::shared_ptr<Transformer> g_trans_calib_wp = std::make_shared<CalibrationTransformer>("CalibrationTransformer_WP", RecPmtType::PMT_WP, 0.0);
 
 // ################################################################################################
 // ========================================= CD Strategy ==========================================
