@@ -13,7 +13,7 @@ public:
 
     virtual ~Configurable() = default;
 
-    virtual void configure(const SniperJSON& config) {}
+    virtual void configure(const SniperJSON&) {}
 
 protected:
 
