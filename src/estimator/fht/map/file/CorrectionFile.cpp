@@ -7,14 +7,15 @@
 CorrectionFile::MapType CorrectionFile::s_cache;
 
 CorrectionFile::CorrectionFile(const std::string& filename) {
-    TFile* f = TFile::Open(filename.c_str(), "READ");
+    /* TFile* f = TFile::Open(filename.c_str(), "READ");
     if (!f || f->IsZombie()) {
         LogError << "Failed to open file: " << filename;
         m_file.reset();
         return;
     }
     gROOT->GetListOfFiles()->Remove(f);
-    m_file.reset(f);  
+    m_file.reset(f); */
+    m_file = TFile::Open(filename.c_str(), "READ");
 }
 
 std::shared_ptr<CorrectionFile> CorrectionFile::open(const std::string& filename) {
