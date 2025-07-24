@@ -24,7 +24,6 @@ private:
 
     typedef std::unordered_map<std::string, std::weak_ptr<CorrectionFile>> MapType;
 
-    // std::shared_ptr<TFile> m_file;
     TFile* m_file = nullptr;
     static MapType s_cache;
 
