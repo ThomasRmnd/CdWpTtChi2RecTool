@@ -5,8 +5,11 @@
 #include "utils/Method.hpp"
 
 /**
- * @class Chi2
  * @brief Base class for raw \f$ \chi^2 \f$ calculation
+ * 
+ * @class Chi2
+ * 
+ * @tparam _Tag Method tag
  */
 template<typename _Tag>
 class Chi2 : public Configurable {

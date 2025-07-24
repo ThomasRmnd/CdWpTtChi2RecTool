@@ -4,8 +4,9 @@
 #include "chi2/Chi2.hpp"
 
 /**
- * @class TtChi2
  * @brief Derived class for raw \f$ \chi^2 \f$ calculation for the TT method
+ * 
+ * @class TtChi2
  */
 class TtChi2 : public Chi2<TtMethodTag> {
 

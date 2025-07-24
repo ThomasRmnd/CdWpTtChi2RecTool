@@ -19,6 +19,11 @@ public:
         std::transform(first, last, theo, [&](const RecPmtProp& pmt) { 
             return m_fht->calculate(pmt); // assumes pmt is in CD
         });
+        std::size_t max_cout = 10ul;
+        for (const_iterator it = first; it != last; ++it) {
+            std::cout << it->fht << ' ' << *(theo + std::distance(first, it)) << '\n'; 
+            if (--max_cout == 0ul) break;
+        }
     }
 
     ParamsType getIParamsType() override {

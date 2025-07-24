@@ -6,6 +6,13 @@
 #include "utils/constants.hpp"
 #include "utils/vec3.hpp"
 
+struct SingleAcrylicParamsTag {};
+struct SingleStoppingAcrylicParamsTag {};
+struct DoubleAcrylicParamsTag {};
+struct TripleAcrylicParamsTag {};
+struct SingleCdParamsTag {};
+struct SingleTtParamsTag {};
+
 enum class ParamsType {
     Unknown,
     SingleAcrylic,         // single through-going muon, with entry point contained in the Acrylic sphere
@@ -15,13 +22,6 @@ enum class ParamsType {
     SingleCd,              // single through-going muon, with entry point contained in the CD sphere
     SingleTt,              // single muon (through-going or stopping), with entry point at the TT level
 };
-
-// struct SingleAcrylicParamsTag {};
-// struct SingleStoppingAcrylicParamsTag {};
-// struct DoubleAcrylicParamsTag {};
-// struct TripleAcrylicParamsTag {};
-// struct SingleCdParamsTag {};
-// struct SingleTtParamsTag {};
 
 class IParamsHandler {
 
