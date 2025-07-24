@@ -43,7 +43,7 @@ inline constexpr _Tp n_ls_v = static_cast<_Tp>(1.485); // refractive index of th
 inline constexpr double n_ls = n_ls_v<double>;
 
 template<typename _Tp>
-inline constexpr _Tp n_w_v = static_cast<_Tp>(1.335); // refractive index of the water (1)
+inline constexpr _Tp n_w_v = static_cast<_Tp>(1.355); // refractive index of the water (1)
 
 inline constexpr double n_w = n_w_v<double>;
 
