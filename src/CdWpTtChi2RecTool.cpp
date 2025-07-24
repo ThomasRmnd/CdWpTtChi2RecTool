@@ -91,8 +91,6 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
 
     strat->save(trks, totpe);
 
-    std::cin.get();
-
     return true;
 }
 
