@@ -15,27 +15,48 @@ ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name
     m_shift{2.0},
     m_range{5.0},
     m_pe_thold{10.0},
-    m_radius{9418.0},
-    m_lwr_q_thold{0.9},
+    m_ipos_radius{9418.0},
+    m_q_ratio{0.9},
     m_dir_corr_factor{1.5},
-    m_radius_end{10000.0},
+    m_fpos_radius{10000.0},
     m_hist{std::make_unique<TH1D>("h__ClusterMaxChargeInitializer", "h__ClusterMaxChargeInitializer", 1000, 0.0, 1000.0)}
 {
     m_hist->SetDirectory(0);
 }
 
-ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name, double pmt_cnt_thold, double shift, double range, double pe_thold, double radius, double lwr_q_thold, double dir_corr_factor, double radius_end) : 
+ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name, double pmt_cnt_thold, double shift, double range, double pe_thold, double ipos_radius, double q_ratio, double dir_corr_factor, double fpos_radius) : 
     Initializer<FhtMethodTag>{name},
     m_pmt_cnt_thold{pmt_cnt_thold},
     m_shift{shift},
     m_range{range},
     m_pe_thold{pe_thold},
-    m_radius{radius},
-    m_lwr_q_thold{lwr_q_thold},
+    m_ipos_radius{ipos_radius},
+    m_q_ratio{q_ratio},
     m_dir_corr_factor{dir_corr_factor},
-    m_radius_end{radius_end},
+    m_fpos_radius{fpos_radius},
     m_hist{std::make_unique<TH1D>("h__ClusterMaxChargeInitializer", "h__ClusterMaxChargeInitializer", 1000, 0.0, 1000.0)}
 {
+    m_hist->SetDirectory(0);
+}
+
+void ClusterMaxChargeInitializer::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    setConfigValue(m_pmt_cnt_thold, "PmtThreshold", config);
+    setConfigValue(m_shift, "TimeShift", config);
+    setConfigValue(m_range, "TimeRange", config);
+    setConfigValue(m_pe_thold, "ChargeThreshold", config);
+    setConfigValue(m_ipos_radius, "IposRadius", config);
+    setConfigValue(m_q_ratio, "ChargeRatio", config);
+    setConfigValue(m_dir_corr_factor, "DirectionCorrectionFactor", config);
+    setConfigValue(m_fpos_radius, "FposRadius", config);
+    int nbins = 0;
+    double xmin = 0.0, xmax = 0.0;
+    if (
+        !setConfigValue(nbins, "HistogramNbins", config) ||
+        !setConfigValue(xmin, "HistogramXmin", config) ||
+        !setConfigValue(xmax, "HistogramXmax", config)
+    ) return;
+    m_hist = std::make_unique<TH1D>("h__WaterPhaseInitializer", "h__WaterPhaseInitializer", nbins, xmin, xmax);
     m_hist->SetDirectory(0);
 }
 
@@ -49,7 +70,7 @@ bool ClusterMaxChargeInitializer::getTable(RecPmtTable::const_iterator ftable, R
     }
 
     int idx = m_hist->GetMaximumBin();
-    while (m_hist->GetBinContent(idx) > m_pmt_cnt_thold && idx > 0) {
+    while (m_hist->GetBinContent(idx) > m_pmt_cnt_thold && idx > 1) {
         --idx;
     }
     double itime = m_hist->GetBinCenter(idx) - m_shift;
@@ -105,15 +126,15 @@ vec3 ClusterMaxChargeInitializer::getFPos(RecPmtTable::const_iterator ftable, Re
     double max_q = 0.0;
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
         if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
-        if (m_radius_end < mag(it->pos - pos_q_cntrd) || mag(it->pos - ipos) < m_radius) continue;
+        if (m_fpos_radius < mag(it->pos - pos_q_cntrd) || mag(it->pos - ipos) < m_ipos_radius) continue;
         if (max_q < it->q) max_q = it->q;
     }
     vec3 fpos;
     std::size_t n = 0;
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
         if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
-        if (m_radius_end < mag(it->pos - pos_q_cntrd) || mag(it->pos - ipos) < m_radius) continue;
-        if (it->q < m_lwr_q_thold * max_q) continue;
+        if (m_fpos_radius < mag(it->pos - pos_q_cntrd) || mag(it->pos - ipos) < m_ipos_radius) continue;
+        if (it->q < m_q_ratio * max_q) continue;
         fpos += it->pos;
         ++n;
     }

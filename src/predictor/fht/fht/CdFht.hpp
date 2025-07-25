@@ -144,7 +144,7 @@ private:
  * @brief Derived class to calculate expected FHT for CD PMT
  * This calculation is designed for water phase
  */
-template<ParamsType _ParamsTag>
+template<typename _ParamsTag>
 class WaterPhaseCdFht final : public CdFht<_ParamsTag> {
 
 public:

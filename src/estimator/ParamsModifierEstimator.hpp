@@ -22,14 +22,16 @@ protected:
 
 };
 
-template<ParamsType _IPt>
+template<typename _ParamsType>
 class ParamsConstrainerEstimator : public ParamsModifierEstimator {
+
+    static_assert(std::is_base_of<ParamsTag, _ParamsType>::value, "Tag must derive from ParamsTag");
 
 public:
 
     ParamsConstrainerEstimator(const std::string& name) : ParamsModifierEstimator(name) {}
 
-    ParamsConstrainerEstimator(const std::string& name, const std::shared_ptr<Estimator> esti, const std::array<bool, ParamsTraits<_IPt>::size>& constrains) : 
+    ParamsConstrainerEstimator(const std::string& name, const std::shared_ptr<Estimator> esti, const std::array<bool, ParamsTraits<_ParamsType>::size>& constrains) : 
         ParamsModifierEstimator(name, esti),
         m_constrains(constrains)
     {}
@@ -37,33 +39,33 @@ public:
     ~ParamsConstrainerEstimator() override = default;
 
     bool estimate(RecPmtTable& table) override {
-        if (m_params.size() != ParamsTraits<_IPt>::size) {
-            LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_IPt>::size << " but got " << m_params.size() << '\n';
+        if (m_params.size() != ParamsTraits<_ParamsType>::size) {
+            LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_ParamsType>::size << " but got " << m_params.size() << '\n';
             return false;
         }
-        for (std::size_t i = 0; i < ParamsTraits<_IPt>::size; ++i) {
+        for (std::size_t i = 0; i < ParamsTraits<_ParamsType>::size; ++i) {
             if (m_constrains[i]) m_steps[i] = 0.0;
         }
         return ParamsModifierEstimator::estimate(table);
     }
 
     ParamsType getIParamsType() override {
-        return _IPt;
+        return ParamsType<_ParamsType>::type;
     }
 
     ParamsType getOParamsType() override {
-        return _IPt;
+        return ParamsType<_ParamsType>::type;
     }
 
 private:
 
-    std::array<bool, ParamsTraits<_IPt>::size> m_constrains;
+    std::array<bool, ParamsTraits<_ParamsType>::size> m_constrains;
 
 };
 
 namespace details {
 
-inline void convert_params(std::vector<double>& params, std::vector<double>& steps, std::vector<std::string>& names, TrackSetterHelper<ParamsType::SingleAcrylic>, TrackSetterHelper<ParamsType::SingleStoppingAcrylic>) {
+inline void convert_params(std::vector<double>& params, std::vector<double>& steps, std::vector<std::string>& names, SingleAcrylicParamsTag, SingleStoppingAcrylicParamsTag) {
     params.push_back(1.0);
     steps.push_back(0.1);
     names.push_back("length");
@@ -71,8 +73,11 @@ inline void convert_params(std::vector<double>& params, std::vector<double>& ste
 
 } // namespace details
 
-template<ParamsType _IPt, ParamsType _OPt>
+template<typename _LhsParamsType, typename _RhsParamsType>
 class ParamsConverterEstimator : public ParamsModifierEstimator {
+
+    static_assert(std::is_base_of<ParamsTag, _LhsParamsType>::value, "Tag must derive from ParamsTag");
+    static_assert(std::is_base_of<ParamsTag, _RhsParamsType>::value, "Tag must derive from ParamsTag");
 
 public:
 
@@ -81,20 +86,20 @@ public:
     ~ParamsConverterEstimator() override = default;
 
     bool estimate(RecPmtTable& table) override {
-        if (m_params.size() != ParamsTraits<_IPt>::size) {
-            LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_IPt>::size << " but got " << m_params.size() << '\n';
+        if (m_params.size() != ParamsTraits<_LhsParamsType>::size) {
+            LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_LhsParamsType>::size << " but got " << m_params.size() << '\n';
             return false;
         }
-        details::convert_params(m_params, m_steps, m_names, TrackSetterHelper<_IPt>{}, TrackSetterHelper<_OPt>{});
+        details::convert_params(m_params, m_steps, m_names, _LhsParamsType{}, _RhsParamsType{});
         return ParamsModifierEstimator::estimate(table);
     };
 
     ParamsType getIParamsType() override {
-        return _IPt;
+        return ParamsTraits<_LhsParamsType>::type;
     };
 
     ParamsType getOParamsType() override {
-        return _OPt;
+        return ParamsTraits<_RhsParamsType>::type;
     };
 
 };

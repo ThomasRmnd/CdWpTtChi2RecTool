@@ -55,24 +55,24 @@
 #endif // __USE_CCA_FILES_CORRECTION_MAP__
 
 #define DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Base, name, Derived, ...) \
-    std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<ParamsType::SingleAcrylic>>(__VA_ARGS__); \
-    std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<ParamsType::SingleStoppingAcrylic>>(__VA_ARGS__); \
-    std::shared_ptr<Base> g_##name##_double = std::make_shared<Derived<ParamsType::DoubleAcrylic>>(__VA_ARGS__);
+    std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(__VA_ARGS__); \
+    std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<SingleStoppingAcrylicParamsTag>>(__VA_ARGS__); \
+    std::shared_ptr<Base> g_##name##_double = std::make_shared<Derived<DoubleAcrylicParamsTag>>(__VA_ARGS__);
 
 #define DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(Base, name, Derived, ...) \
-    std::shared_ptr<Base<ParamsType::SingleAcrylic>> g_##name##_single = std::make_shared<Derived<ParamsType::SingleAcrylic>>(__VA_ARGS__); \
-    std::shared_ptr<Base<ParamsType::SingleStoppingAcrylic>> g_##name##_single_stopping = std::make_shared<Derived<ParamsType::SingleStoppingAcrylic>>(__VA_ARGS__); \
-    std::shared_ptr<Base<ParamsType::DoubleAcrylic>> g_##name##_double = std::make_shared<Derived<ParamsType::DoubleAcrylic>>(__VA_ARGS__);
+    std::shared_ptr<Base<SingleAcrylicParamsTag>> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(__VA_ARGS__); \
+    std::shared_ptr<Base<SingleStoppingAcrylicParamsTag>> g_##name##_single_stopping = std::make_shared<Derived<SingleStoppingAcrylicParamsTag>>(__VA_ARGS__); \
+    std::shared_ptr<Base<DoubleAcrylicParamsTag>> g_##name##_double = std::make_shared<Derived<DoubleAcrylicParamsTag>>(__VA_ARGS__);
 
 #define DEFINIT_GLOBAL_PREDICTOR(Base, name, Derived, fhtname) \
-    std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<ParamsType::SingleAcrylic>>(g_##fhtname##_single); \
-    std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<ParamsType::SingleStoppingAcrylic>>(g_##fhtname##_single_stopping); \
-    std::shared_ptr<Base> g_##name##_double = std::make_shared<Derived<ParamsType::DoubleAcrylic>>(g_##fhtname##_double);
+    std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(g_##fhtname##_single); \
+    std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<SingleStoppingAcrylicParamsTag>>(g_##fhtname##_single_stopping); \
+    std::shared_ptr<Base> g_##name##_double = std::make_shared<Derived<DoubleAcrylicParamsTag>>(g_##fhtname##_double);
 
 #define DEFINIT_GLOBAL_PREDICTOR_CDWP(Base, name, Derived, cdfhtname, wpfhtname) \
-    std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<ParamsType::SingleAcrylic>>(g_##cdfhtname##_single, g_##wpfhtname##_single); \
-    std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<ParamsType::SingleStoppingAcrylic>>(g_##cdfhtname##_single_stopping, g_##wpfhtname##_single_stopping); \
-    std::shared_ptr<Base> g_##name##_double = std::make_shared<Derived<ParamsType::DoubleAcrylic>>(g_##cdfhtname##_double, g_##wpfhtname##_double);
+    std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(g_##cdfhtname##_single, g_##wpfhtname##_single); \
+    std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<SingleStoppingAcrylicParamsTag>>(g_##cdfhtname##_single_stopping, g_##wpfhtname##_single_stopping); \
+    std::shared_ptr<Base> g_##name##_double = std::make_shared<Derived<DoubleAcrylicParamsTag>>(g_##cdfhtname##_double, g_##wpfhtname##_double);
 
 std::shared_ptr<Chi2<FhtMethodTag>> g_chi2_fht = std::make_shared<FhtChi2>("FhtChi2");
 std::shared_ptr<Chi2<TtMethodTag>> g_chi2_tt = std::make_shared<TtChi2>("TtChi2", 13.0);
@@ -105,13 +105,13 @@ DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_wp, WpTime
 std::shared_ptr<Optimizer> g_opti = std::make_shared<RootOptimizer>(1000000, 100000, 0.001);
 
 DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CdFht, cd_fht, NoRefractionLsCdFht)
-DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(WpFht, wp_fht, NoGeomWpFht)
+DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(WpFht, wp_fht, NoDiffusionWpFht)
 
 DEFINIT_GLOBAL_PREDICTOR(Predictor<FhtMethodTag>, pred_fht_cd_no_refr_ls, CdFhtPredictor, cd_fht)
 DEFINIT_GLOBAL_PREDICTOR(Predictor<FhtMethodTag>, pred_fht_wp_no_hit, WpFhtPredictor, wp_fht)
 DEFINIT_GLOBAL_PREDICTOR_CDWP(Predictor<FhtMethodTag>, pred_fht_no_refr_ls_no_hit, CdWpFhtPredictor, cd_fht, wp_fht)
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<TtMethodTag>, pred_tt, TtPredictor)
-std::shared_ptr<Predictor<TtMethodTag>> g_pred_tt_single_tt = std::make_shared<TtPredictor<ParamsType::SingleTt>>();
+std::shared_ptr<Predictor<TtMethodTag>> g_pred_tt_single_tt = std::make_shared<TtPredictor<SingleTtParamsTag>>();
 
 std::shared_ptr<Transformer> g_trans_calib_hama = std::make_shared<CalibrationTransformer>("CalibrationTransformer_Hamamatsu", RecPmtType::PMT_20INCH_HAMAMATSU, 0.0);
 std::shared_ptr<Transformer> g_trans_calib_nnvt = std::make_shared<CalibrationTransformer>("CalibrationTransformer_NNVT", RecPmtType::PMT_20INCH_NNVT, 0.0);
@@ -160,15 +160,15 @@ void CdStrategy::create() {
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
-    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
+    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<SingleAcrylicParamsTag>>(
         "CdStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
-        std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
+        std::vector<std::shared_ptr<CorrectionMap<SingleAcrylicParamsTag>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
     );
     m_pipe->addStep(esti_corrmap_loop);
 }
 
 void CdStrategy::prepare() {
-    getDefaultParams<ParamsType::SingleAcrylic>();
+    getDefaultParams<SingleAcrylicParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -177,7 +177,7 @@ void CdStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start, dir, end;
     double t_start, length, t_end;
-    TrackSetterHelper<ParamsType::SingleAcrylic>::set(params, t_start, start, dir, length);
+    TrackSetterHelper<SingleAcrylicParamsTag>::set(params, t_start, start, dir, length);
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
@@ -234,16 +234,16 @@ void CdStoppingStrategy::create() {
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
-    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
+    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<SingleAcrylicParamsTag>>(
         "CdStoppingStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
-        std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
+        std::vector<std::shared_ptr<CorrectionMap<SingleAcrylicParamsTag>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
     );
     m_pipe->addStep(esti_corrmap_loop);
 
 }
 
 void CdStoppingStrategy::prepare() {
-    getDefaultParams<ParamsType::SingleAcrylic>();
+    getDefaultParams<SingleAcrylicParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -252,7 +252,7 @@ void CdStoppingStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start, dir, end;
     double t_start, length, t_end;
-    TrackSetterHelper<ParamsType::SingleAcrylic>::set(params, t_start, start, dir, length);
+    TrackSetterHelper<SingleAcrylicParamsTag>::set(params, t_start, start, dir, length);
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
@@ -309,11 +309,11 @@ void CdDoubleStrategy::create() {
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
-    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<ParamsConstrainerEstimator<ParamsType::DoubleAcrylic>>(
+    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<ParamsConstrainerEstimator<DoubleAcrylicParamsTag>>(
         "CdDoubleStrategy__ParamsConstrainerEstimator",
-        std::make_shared<CorrectionMapLoopEstimator<ParamsType::DoubleAcrylic>>(
+        std::make_shared<CorrectionMapLoopEstimator<DoubleAcrylicParamsTag>>(
             "CdDoubleStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
-            std::vector<std::shared_ptr<CorrectionMap<ParamsType::DoubleAcrylic>>>{g_corr_map_nnvt_double, g_corr_map_hamamatsu_double, g_corr_map_3inch_double}, 2u
+            std::vector<std::shared_ptr<CorrectionMap<DoubleAcrylicParamsTag>>>{g_corr_map_nnvt_double, g_corr_map_hamamatsu_double, g_corr_map_3inch_double}, 2u
         ),
         std::array<bool, 8>{false, false, false, false, false, false, true, true}
     );
@@ -321,7 +321,7 @@ void CdDoubleStrategy::create() {
 }
 
 void CdDoubleStrategy::prepare() {
-    getDefaultParams<ParamsType::DoubleAcrylic>();
+    getDefaultParams<DoubleAcrylicParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -330,8 +330,8 @@ void CdDoubleStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start_1, start_2, dir_1, dir_2, end_1, end_2;
     double t_start_1, t_start_2, length_1, length_2, t_end_1, t_end_2;
-    TrackSetterHelper<ParamsType::DoubleAcrylic>::set(params, t_start_1, start_1, dir_1, length_1);
-    TrackSetterHelper<ParamsType::DoubleAcrylic>::set(params, t_start_2, start_2, dir_2, length_2);
+    TrackSetterHelper<DoubleAcrylicParamsTag>::set(params, t_start_1, start_1, dir_1, length_1);
+    TrackSetterHelper<DoubleAcrylicParamsTag>::set(params, t_start_2, start_2, dir_2, length_2);
     end_1 = start_1 + dir_1 * length_1;
     end_2 = start_2 + dir_2 * length_2;
     t_end_1 = t_start_1 + length_1 / constants::c;
@@ -389,7 +389,7 @@ void TtStrategy::create() {
 }
 
 void TtStrategy::prepare() {
-    getDefaultParams<ParamsType::SingleTt>();
+    getDefaultParams<SingleTtParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -398,7 +398,7 @@ void TtStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start, dir, end;
     double t_start, length, t_end;
-    TrackSetterHelper<ParamsType::SingleTt>::set(params, t_start, start, dir, length);
+    TrackSetterHelper<SingleTtParamsTag>::set(params, t_start, start, dir, length);
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
@@ -466,15 +466,15 @@ void CdWpStrategy::create() {
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
-    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
+    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<SingleAcrylicParamsTag>>(
         "CdWpStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
-        std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2u
+        std::vector<std::shared_ptr<CorrectionMap<SingleAcrylicParamsTag>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2u
     );
     m_pipe->addStep(esti_corrmap_loop);
 }
 
 void CdWpStrategy::prepare() {
-    getDefaultParams<ParamsType::SingleAcrylic>();
+    getDefaultParams<SingleAcrylicParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -483,7 +483,7 @@ void CdWpStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start, dir, end;
     double t_start, length, t_end;
-    TrackSetterHelper<ParamsType::SingleAcrylic>::set(params, t_start, start, dir, length);
+    TrackSetterHelper<SingleAcrylicParamsTag>::set(params, t_start, start, dir, length);
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
@@ -545,13 +545,13 @@ void CdTtStrategy::create() {
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
-    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
+    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<SingleAcrylicParamsTag>>(
         "CdTtStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
-        std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
+        std::vector<std::shared_ptr<CorrectionMap<SingleAcrylicParamsTag>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
     );
 
     std::shared_ptr<CostFunction<TtMethodTag>> tt_cost = std::make_shared<TtCostFunction>(
-        std::make_shared<TtPredictor<ParamsType::SingleTt>>(),
+        std::make_shared<TtPredictor<SingleTtParamsTag>>(),
         g_chi2_tt
     );
 
@@ -570,10 +570,10 @@ void CdTtStrategy::create() {
         g_chi2_tt_joint
     );
 
-    std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator<ParamsType::SingleAcrylic>>(
+    std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator<SingleAcrylicParamsTag>>(
         "CdTtStrategy__FhtTtCorrectionMapEstimator",
         g_opti, fht_tt_cost, 
-        std::dynamic_pointer_cast<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(esti_corrmap_loop), 
+        std::dynamic_pointer_cast<CorrectionMapLoopEstimator<SingleAcrylicParamsTag>>(esti_corrmap_loop), 
         std::dynamic_pointer_cast<TtMinimizerEstimator>(esti_tt),
         10, 2
     );
@@ -581,7 +581,7 @@ void CdTtStrategy::create() {
 }
 
 void CdTtStrategy::prepare() {
-    getDefaultParams<ParamsType::SingleAcrylic>();
+    getDefaultParams<SingleAcrylicParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -590,7 +590,7 @@ void CdTtStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start, dir, end;
     double t_start, length, t_end;
-    TrackSetterHelper<ParamsType::SingleAcrylic>::set(params, t_start, start, dir, length);
+    TrackSetterHelper<SingleAcrylicParamsTag>::set(params, t_start, start, dir, length);
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
@@ -663,9 +663,9 @@ void CdWpTtStrategy::create() {
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
-    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(
+    std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator<SingleAcrylicParamsTag>>(
         "CdWpTtStrategy__CorrectionMapLoopEstimator", g_opti, cost, 
-        std::vector<std::shared_ptr<CorrectionMap<ParamsType::SingleAcrylic>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2
+        std::vector<std::shared_ptr<CorrectionMap<SingleAcrylicParamsTag>>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2
     );
 
     std::shared_ptr<CostFunction<TtMethodTag>> tt_cost = std::make_shared<TtCostFunction>(
@@ -688,10 +688,10 @@ void CdWpTtStrategy::create() {
         g_chi2_tt_joint
     );
 
-    std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator<ParamsType::SingleAcrylic>>(
+    std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator<SingleAcrylicParamsTag>>(
         "CdWpTtStrategy__FhtTtCorrectionMapEstimator",
         g_opti, fht_tt_cost, 
-        std::dynamic_pointer_cast<CorrectionMapLoopEstimator<ParamsType::SingleAcrylic>>(esti_corrmap_loop), 
+        std::dynamic_pointer_cast<CorrectionMapLoopEstimator<SingleAcrylicParamsTag>>(esti_corrmap_loop), 
         std::dynamic_pointer_cast<TtMinimizerEstimator>(esti_tt),
         10, 2
     );
@@ -699,7 +699,7 @@ void CdWpTtStrategy::create() {
 }
 
 void CdWpTtStrategy::prepare() {
-    getDefaultParams<ParamsType::SingleAcrylic>();
+    getDefaultParams<SingleAcrylicParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -708,7 +708,7 @@ void CdWpTtStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start, dir, end;
     double t_start, length, t_end;
-    TrackSetterHelper<ParamsType::SingleAcrylic>::set(params, t_start, start, dir, length);
+    TrackSetterHelper<SingleAcrylicParamsTag>::set(params, t_start, start, dir, length);
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
@@ -761,8 +761,8 @@ void CdWaterPhaseStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
-        std::make_shared<CdFhtPredictor<ParamsType::SingleCd>>(
-            std::make_shared<WaterPhaseCdFht<ParamsType::SingleCd>>()
+        std::make_shared<CdFhtPredictor<SingleCdParamsTag>>(
+            std::make_shared<WaterPhaseCdFht<SingleCdParamsTag>>()
         ),
         g_chi2_fht
     );
@@ -772,7 +772,7 @@ void CdWaterPhaseStrategy::create() {
 }
 
 void CdWaterPhaseStrategy::prepare() {
-    getDefaultParams<ParamsType::SingleCd>();
+    getDefaultParams<SingleCdParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -781,7 +781,7 @@ void CdWaterPhaseStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start, dir, end;
     double t_start, length, t_end;
-    TrackSetterHelper<ParamsType::SingleCd>::set(params, t_start, start, dir, length);
+    TrackSetterHelper<SingleCdParamsTag>::set(params, t_start, start, dir, length);
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
@@ -845,9 +845,9 @@ void CdWpWaterPhaseStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
-        std::make_shared<CdWpFhtPredictor<ParamsType::SingleCd>>(
-            std::make_shared<WaterPhaseCdFht<ParamsType::SingleCd>>(),
-            std::make_shared<NoGeomWpFht<ParamsType::SingleCd>>()
+        std::make_shared<CdWpFhtPredictor<SingleCdParamsTag>>(
+            std::make_shared<WaterPhaseCdFht<SingleCdParamsTag>>(),
+            std::make_shared<NoDiffusionWpFht<SingleCdParamsTag>>()
         ),
         g_chi2_fht
     );
@@ -857,7 +857,7 @@ void CdWpWaterPhaseStrategy::create() {
 }
 
 void CdWpWaterPhaseStrategy::prepare() {
-    getDefaultParams<ParamsType::SingleCd>();
+    getDefaultParams<SingleCdParamsTag>();
     m_pipe->setParams(m_params, m_steps, m_names);
 }
 
@@ -866,7 +866,7 @@ void CdWpWaterPhaseStrategy::save(RecTrks* tracks, double totpe) {
     double cost = m_pipe->getCost();
     vec3 start, dir, end;
     double t_start, length, t_end;
-    TrackSetterHelper<ParamsType::SingleCd>::set(params, t_start, start, dir, length);
+    TrackSetterHelper<SingleCdParamsTag>::set(params, t_start, start, dir, length);
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {

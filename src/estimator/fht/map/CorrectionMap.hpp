@@ -10,8 +10,10 @@
 #include "utils/TrackParams.hpp"
 #include "utils/vec3.hpp"
 
-template<ParamsType _Pt>
-class CorrectionMap : public ToolBase, public PmtTypeChecker, public TrackSetter<_Pt> {
+template<typename _ParamsType>
+class CorrectionMap : public ToolBase, public PmtTypeChecker, public TrackSetter<_ParamsType> {
+
+    static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
 
 public:
 

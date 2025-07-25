@@ -1,12 +1,18 @@
 #ifndef CDWPTTCHI2RECTOOL_INITIALIZER_FHT_WATERPHASEINITIALIZER_HPP_
 #define CDWPTTCHI2RECTOOL_INITIALIZER_FHT_WATERPHASEINITIALIZER_HPP_
 
-#include "initializer/Initializer.hpp"
-
 #include <memory>
 
 #include <TH1D.h>
 
+#include "initializer/Initializer.hpp"
+
+/**
+ * @class WaterPhaseInitializer
+ * 
+ * @brief Derived class to calculate track parameters initial guess for FHT method
+ * This initial guess is designed for water phase
+ */
 class WaterPhaseInitializer : public Initializer<FhtMethodTag> {
 
 public:
@@ -16,9 +22,18 @@ public:
 
     ~WaterPhaseInitializer() override = default;
 
-    bool initiate(const vector_type& table) override;
-
     ParamsType getOParamsType() override;
+
+    void configure(const SniperJSON& config);
+
+    /**
+     * @brief Calculate the track parameters initial guess
+     * 
+     * @param data experimental data vector
+     * 
+     * @return Boolean whether the calculation is successfull or not
+     */
+    bool initiate(const vector_type& table) override;
 
 private:
 

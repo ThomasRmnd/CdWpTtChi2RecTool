@@ -9,17 +9,17 @@
 
 #include "utils/Geometry.hpp"
 
-template<ParamsType _Pt>
-class WpTimeShiftCorrectionMap : public CorrectionMap<_Pt> {
+template<typename _ParamsType>
+class WpTimeShiftCorrectionMap : public CorrectionMap<_ParamsType> {
 
 public:
 
     WpTimeShiftCorrectionMap(const std::string& name) :
-        CorrectionMap<_Pt>(name)
+        CorrectionMap<_ParamsType>(name)
     {}
 
     WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
-        CorrectionMap<_Pt>(name, RecPmtType::PMT_WP, filename, mapname)
+        CorrectionMap<_ParamsType>(name, RecPmtType::PMT_WP, filename, mapname)
     {}
 
     ~WpTimeShiftCorrectionMap() override = default;
@@ -88,16 +88,16 @@ private:
 };
 
 template<>
-class WpTimeShiftCorrectionMap<ParamsType::DoubleAcrylic> : public CorrectionMap<ParamsType::DoubleAcrylic> {
+class WpTimeShiftCorrectionMap<DoubleAcrylicParamsTag> : public CorrectionMap<DoubleAcrylicParamsTag> {
 
 public:
 
     WpTimeShiftCorrectionMap(const std::string& name) :
-        CorrectionMap<ParamsType::DoubleAcrylic>(name)
+        CorrectionMap<DoubleAcrylicParamsTag>(name)
     {}
 
     WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
-        CorrectionMap<ParamsType::DoubleAcrylic>(name, RecPmtType::PMT_WP, filename, mapname)
+        CorrectionMap<DoubleAcrylicParamsTag>(name, RecPmtType::PMT_WP, filename, mapname)
     {}
 
     ~WpTimeShiftCorrectionMap() override = default;

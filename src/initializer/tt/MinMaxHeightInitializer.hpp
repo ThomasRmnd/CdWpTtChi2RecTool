@@ -3,6 +3,11 @@
 
 #include "initializer/Initializer.hpp"
 
+/**
+ * @class MinMaxHeightInitializer
+ * 
+ * @brief Derived class to calculate track parameters initial guess for TT method
+ */
 class MinMaxHeightInitializer : public Initializer<TtMethodTag> {
 
 public:
@@ -11,9 +16,16 @@ public:
     
     ~MinMaxHeightInitializer() override = default;
 
-    bool initiate(const vector_type& data) override;
-
     ParamsType getOParamsType() override;
+
+    /**
+     * @brief Calculate the track parameters initial guess
+     * 
+     * @param data experimental data vector
+     * 
+     * @return Boolean whether the calculation is successfull or not
+     */
+    bool initiate(const vector_type& data) override;
 
 };
 

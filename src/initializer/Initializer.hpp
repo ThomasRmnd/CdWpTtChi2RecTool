@@ -1,24 +1,30 @@
 #ifndef CDWPTTCHI2RECTOOL_INITIALIZER_INITIALIZER_HPP_
 #define CDWPTTCHI2RECTOOL_INITIALIZER_INITIALIZER_HPP_
 
+#include "SniperKernel/ToolBase.h"
+
 #include "utils/Configurable.hpp"
 #include "utils/Method.hpp"
 #include "utils/TrackParams.hpp"
 
-template<typename _Tag>
-class Initializer : public Configurable, public OParamsHandler {
+/**
+ * @class Initializer
+ * @tparam _MethodTag Method tag
+ * 
+ * @brief Base class to calculate track parameters initial guess
+ */
+template<typename _MethodTag>
+class Initializer : public OParamsHandler, public Configurable, public ToolBase {
 
-    static_assert(std::is_base_of<MethodTag, _Tag>::value, "Tag must be derived from MethodTag");
+    static_assert(std::is_base_of<MethodTag, _MethodTag>::value, "Tag must be derived from MethodTag");
 
 public:
 
-    typedef typename MethodTraits<_Tag>::vector_type vector_type;
+    typedef typename MethodTraits<_MethodTag>::vector_type vector_type;
 
-    using Configurable::Configurable;
+    Initializer(const std::string& name) : Configurable{name}, ToolBase{name} {}
 
     virtual ~Initializer() = default;
-
-    virtual bool initiate(const vector_type& data) = 0;
 
     const std::vector<double>& getParams() const {
         return m_params;
@@ -31,6 +37,15 @@ public:
         }
         std::cout << m_params.back() << '\n';
     }
+
+    /**
+     * @brief Calculate the track parameters initial guess
+     * 
+     * @param data experimental data vector
+     * 
+     * @return Boolean whether the calculation is successfull or not
+     */
+    virtual bool initiate(const vector_type& data) = 0;
 
 protected:
 

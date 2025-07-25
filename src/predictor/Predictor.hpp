@@ -7,19 +7,19 @@
 
 /**
  * @class Predictor
- * @tparam _ParamsTag Method tag
+ * @tparam _MethodTag Method tag
  * 
  * @brief Base class to calculate expected data
  */
-template<typename _ParamsTag>
+template<typename _MethodTag>
 class Predictor : public IParamsHandler, public Configurable {
 
-    static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
+    static_assert(std::is_base_of<ParamsTag, _MethodTag>::value, "Tag must derive from MethodTag");
 
 public:
 
-    typedef typename MethodTraits<_ParamsTag>::const_iterator const_iterator;
-    typedef typename MethodTraits<_ParamsTag>::theo_iterator theo_iterator;
+    typedef typename MethodTraits<_MethodTag>::const_iterator const_iterator;
+    typedef typename MethodTraits<_MethodTag>::theo_iterator theo_iterator;
 
     Predictor() : Configurable{} {}
     Predictor(const std::string& name) : Configurable{name} {}

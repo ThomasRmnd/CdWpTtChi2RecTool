@@ -4,6 +4,12 @@
 #include "initializer/Initializer.hpp"
 #include "utils/DensityPeaksClustering.hpp"
 
+/**
+ * @class ClusterBundleInitializer
+ * 
+ * @brief Derived class to calculate track parameters initial guess for FHT method
+ * This initial guess is designed for LS phase double track 
+ */
 class ClusterBundleInitializer : public Initializer<FhtMethodTag> {
 
 public:
@@ -13,9 +19,18 @@ public:
 
     ~ClusterBundleInitializer() override = default;
 
-    bool initiate(const RecPmtTable& table) override;
-
     ParamsType getOParamsType() override;
+
+    void configure(const SniperJSON& config);
+
+    /**
+     * @brief Calculate the track parameters initial guess
+     * 
+     * @param data experimental data vector
+     * 
+     * @return Boolean whether the calculation is successfull or not
+     */
+    bool initiate(const RecPmtTable& table) override;
 
 private:
 

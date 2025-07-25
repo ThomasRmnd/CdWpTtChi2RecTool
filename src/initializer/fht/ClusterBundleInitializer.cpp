@@ -21,6 +21,16 @@ ClusterBundleInitializer::ClusterBundleInitializer(const std::string& name, doub
     m_dist_thold{dist_thold}
 {}
 
+ParamsType ClusterBundleInitializer::getOParamsType() {
+    return ParamsType::DoubleAcrylic;
+}
+
+void ClusterBundleInitializer::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    setConfigValue(m_dens_thold, "DensityThreshold", config);
+    setConfigValue(m_dist_thold, "DistanceThreshold", config);
+}
+
 bool ClusterBundleInitializer::initiate(const RecPmtTable& table) {
     unsigned int count = std::count_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
     LogDebug << count << " PMTs are used for the initialization\n";
@@ -257,8 +267,4 @@ bool ClusterBundleInitializer::strategy4ClusterSpe(const RecPmtTable& table) {
     };
 
     return true;
-}
-
-ParamsType ClusterBundleInitializer::getOParamsType() {
-    return ParamsType::DoubleAcrylic;
 }

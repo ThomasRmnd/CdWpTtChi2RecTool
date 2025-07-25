@@ -9,17 +9,17 @@
 
 #include "estimator/fht/map/CorrParam.hpp"
 
-template<ParamsType _Pt>
-class CorrectionMap3d : public CorrectionMap<_Pt> {
+template<typename _ParamsType>
+class CorrectionMap3d : public CorrectionMap<_ParamsType> {
 
 public:
 
     CorrectionMap3d(const std::string& name) :
-        CorrectionMap<_Pt>(name)
+        CorrectionMap<_ParamsType>(name)
     {}
 
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
-        CorrectionMap<_Pt>(name, pmt_type, filename, mapname),
+        CorrectionMap<_ParamsType>(name, pmt_type, filename, mapname),
         m_param_x(param_x),
         m_param_y(param_y),
         m_param_z(param_z)
@@ -28,7 +28,7 @@ public:
     ~CorrectionMap3d() override = default;
 
     bool initialize() override {
-        if (!CorrectionMap<_Pt>::initialize()) return false;
+        if (!CorrectionMap<_ParamsType>::initialize()) return false;
         if (!m_param_x) {
             LogError << "CorrParam x is not set\n";
             return false;
@@ -138,16 +138,16 @@ private:
 };
 
 template<>
-class CorrectionMap3d<ParamsType::DoubleAcrylic> : public CorrectionMap<ParamsType::DoubleAcrylic> {
+class CorrectionMap3d<DoubleAcrylicParamsTag> : public CorrectionMap<DoubleAcrylicParamsTag> {
 
 public:
 
     CorrectionMap3d(const std::string& name) :
-        CorrectionMap<ParamsType::DoubleAcrylic>(name)
+        CorrectionMap<DoubleAcrylicParamsTag>(name)
     {}
 
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
-        CorrectionMap<ParamsType::DoubleAcrylic>(name, pmt_type, filename, mapname),
+        CorrectionMap<DoubleAcrylicParamsTag>(name, pmt_type, filename, mapname),
         m_param_x(param_x),
         m_param_y(param_y),
         m_param_z(param_z)
@@ -156,7 +156,7 @@ public:
     ~CorrectionMap3d() override = default;
 
     bool initialize() override {
-        if (!CorrectionMap<ParamsType::DoubleAcrylic>::initialize()) return false;
+        if (!CorrectionMap<DoubleAcrylicParamsTag>::initialize()) return false;
         if (!m_param_x) {
             LogError << "CorrParam x is not set\n";
             return false;
@@ -173,7 +173,7 @@ public:
     }
 
     void setTrack(const double* params) override {
-        CorrectionMap<ParamsType::DoubleAcrylic>::setTrack(params);
+        CorrectionMap<DoubleAcrylicParamsTag>::setTrack(params);
         m_half_length_1 = 0.5 * m_length_1;
         m_t_end_1 = m_t_0_1 + m_length_1 / constants::c; // m_length_1 * constants::inv_c
         m_p_end_1 = m_orig_1 + m_dir * m_length_1;

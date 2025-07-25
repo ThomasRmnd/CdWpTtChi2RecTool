@@ -5,12 +5,16 @@
 
 DECLARE_TOOL(MinMaxHeightInitializer);
 
-bool MinMaxHeightInitializer::initiate(const std::vector<vec3>& hits) {
+ParamsType MinMaxHeightInitializer::getOParamsType() {
+    return ParamsType::SingleTt;
+}
+
+bool MinMaxHeightInitializer::initiate(const std::vector<vec3>& data) {
     std::size_t min_idx = 0, max_idx = 0;
 
-    for (std::size_t k = 1; k < hits.size(); ++k) {
-        if (hits[k].z < hits[min_idx].z) min_idx = k;
-        if (hits[max_idx].z < hits[k].z) max_idx = k;
+    for (std::size_t k = 1; k < data.size(); ++k) {
+        if (data[k].z < data[min_idx].z) min_idx = k;
+        if (data[max_idx].z < data[k].z) max_idx = k;
     }
 
     if (min_idx == max_idx) {
@@ -19,17 +23,13 @@ bool MinMaxHeightInitializer::initiate(const std::vector<vec3>& hits) {
     }
 
     m_params = std::vector<double>{
-        hits[max_idx].x, 
-        hits[max_idx].y, 
-        hits[max_idx].z,
-        hits[min_idx].x - hits[max_idx].x, 
-        hits[min_idx].y - hits[max_idx].y, 
-        hits[min_idx].z - hits[max_idx].z
+        data[max_idx].x, 
+        data[max_idx].y, 
+        data[max_idx].z,
+        data[min_idx].x - data[max_idx].x, 
+        data[min_idx].y - data[max_idx].y, 
+        data[min_idx].z - data[max_idx].z
     };
 
     return true;
-}
-
-ParamsType MinMaxHeightInitializer::getOParamsType() {
-    return ParamsType::SingleTt;
 }

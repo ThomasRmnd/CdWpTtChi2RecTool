@@ -22,9 +22,29 @@ WaterPhaseInitializer::WaterPhaseInitializer(const std::string& name, double dt_
     m_dt_f2itime{dt_f2itime},
     m_dt{dt},
     m_q_ratio{q_ratio},
-    m_hist{std::make_unique<TH1D>("hist", "hist", 200, 0.0, 1000.0)}
+    m_hist{std::make_unique<TH1D>("h__WaterPhaseInitializer", "h__WaterPhaseInitializer", 200, 0.0, 1000.0)}
 {
     m_hist->SetDirectory(0);
+}
+
+void WaterPhaseInitializer::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    setConfigValue(m_dt_f2itime, "MaxTimeFromExit", config);
+    setConfigValue(m_dt, "EntryTimeWindow", config);
+    setConfigValue(m_q_ratio, "ChargeRatio", config);
+    int nbins = 0;
+    double xmin = 0.0, xmax = 0.0;
+    if (
+        !setConfigValue(nbins, "HistogramNbins", config) ||
+        !setConfigValue(xmin, "HistogramXmin", config) ||
+        !setConfigValue(xmax, "HistogramXmax", config)
+    ) return;
+    m_hist = std::make_unique<TH1D>("h__WaterPhaseInitializer", "h__WaterPhaseInitializer", nbins, xmin, xmax);
+    m_hist->SetDirectory(0);
+}
+
+ParamsType WaterPhaseInitializer::getOParamsType() {
+    return ParamsType::SingleCd;
 }
 
 bool WaterPhaseInitializer::getTable(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) {
@@ -129,47 +149,16 @@ bool WaterPhaseInitializer::initiate(const RecPmtTable& table) {
     vec3 ipos = getIPos();
     vec3 fpos = getFPos(ftable, ltable, itime);
 
-#define __CDWPTTCHI2RECTOOL_WATERPHASEINITIALIZER_SIMPLE_OUTPUT_PARAMS__
-
-#ifdef __CDWPTTCHI2RECTOOL_WATERPHASEINITIALIZER_SIMPLE_OUTPUT_PARAMS__
     double ipos_theta = theta(ipos);
     double ipos_phi = phi(ipos);
     ipos = from_spherical(constants::r_cd, ipos_theta, ipos_phi);
     double fpos_theta = theta(fpos);
     double fpos_phi = phi(fpos);
     fpos = from_spherical(constants::r_cd, fpos_theta, fpos_phi);
-#endif // __CDWPTTCHI2RECTOOL_WATERPHASEINITIALIZER_SIMPLE_OUTPUT_PARAMS__
 
     vec3 dir = unit(fpos - ipos);
-
-#ifndef __CDWPTTCHI2RECTOOL_WATERPHASEINITIALIZER_SIMPLE_OUTPUT_PARAMS__
-    double _b = dot(dir, ipos);
-    double _c = mag2(ipos) - constants::r_cd * constants::r_cd;
-
-    double _delta = _b * _b - _c;
-    if (_delta < 0.0) {
-        ipos_theta = theta(ipos);
-        ipos_phi = phi(ipos);
-        ipos = from_spherical(constants::r_cd, ipos_theta, ipos_phi);
-        fpos_theta = theta(fpos);
-        fpos_phi = phi(fpos);
-        fpos = from_spherical(constants::r_cd, fpos_theta, fpos_phi);
-    }
-    else {
-        double _d2 = -_b + std::sqrt(_delta);
-        fpos = ipos + dir * _d2;
-        double _d1 = -_b - std::sqrt(_delta);
-        ipos = ipos + dir * _d1;
-    }
-
-    dir = unit(fpos - ipos);
-#endif // __CDWPTTCHI2RECTOOL_WATERPHASEINITIALIZER_SIMPLE_OUTPUT_PARAMS__
 
     m_params = std::vector<double>{itime, theta(ipos), phi(ipos), theta(dir), phi(dir)};
 
     return true;
-}
-
-ParamsType WaterPhaseInitializer::getOParamsType() {
-    return ParamsType::SingleCd;
 }

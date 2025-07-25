@@ -8,7 +8,8 @@ TtChi2::TtChi2(const std::string& name, double res) :
 {}
 
 void TtChi2::configure(const SniperJSON& config) {
-    double res = getConfigValue<double>("SpatialRes", config);
+    double res = 0.0;
+    if (!setConfigValue(res, "SpatialRes", config)) return;
     m_ires2 = 1 / (res * res);
 }
 

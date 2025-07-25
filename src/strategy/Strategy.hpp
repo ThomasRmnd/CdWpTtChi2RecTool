@@ -85,9 +85,9 @@ protected:
     std::vector<double> m_steps;
     std::vector<std::string> m_names;
 
-    template<ParamsType _Pt>
+    template<typename _ParamsType>
     void getDefaultParams() {
-        typedef ParamsTraits<_Pt> _Traits;
+        typedef ParamsTraits<_ParamsType> _Traits;
         m_params = std::vector<double>(_Traits::defaults, _Traits::defaults + _Traits::size);
         m_steps = std::vector<double>(_Traits::steps, _Traits::steps + _Traits::size);
         m_names = std::vector<std::string>(_Traits::names, _Traits::names + _Traits::size);
@@ -218,9 +218,9 @@ public:
     extern std::shared_ptr<Class> g_##name##_double;
 
 #define DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(Class, name) \
-    extern std::shared_ptr<Class<ParamsType::SingleAcrylic>>         g_##name##_single; \
-    extern std::shared_ptr<Class<ParamsType::SingleStoppingAcrylic>> g_##name##_single_stopping; \
-    extern std::shared_ptr<Class<ParamsType::DoubleAcrylic>>         g_##name##_double;
+    extern std::shared_ptr<Class<SingleAcrylicParamsTag>>         g_##name##_single; \
+    extern std::shared_ptr<Class<SingleStoppingAcrylicParamsTag>> g_##name##_single_stopping; \
+    extern std::shared_ptr<Class<DoubleAcrylicParamsTag>>         g_##name##_double;
 
 #include <memory>
 
