@@ -6,7 +6,7 @@
 #include "utils/Configurable.hpp"
 #include "utils/RecPmtProp.hpp"
 
-class Transformer : public Configurable, public PmtTypeChecker {
+class Transformer : public ToolBase, public Configurable, public PmtTypeChecker {
 
 public:
 

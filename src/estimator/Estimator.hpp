@@ -7,7 +7,7 @@
 #include "utils/RecPmtProp.hpp"
 #include "utils/TrackParams.hpp"
 
-class Estimator : public Configurable, public IParamsHandler, public OParamsHandler {
+class Estimator : public ToolBase, public Configurable, public IParamsHandler, public OParamsHandler {
 
 public:
 
