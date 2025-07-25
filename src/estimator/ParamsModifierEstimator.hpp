@@ -50,11 +50,11 @@ public:
     }
 
     ParamsType getIParamsType() override {
-        return ParamsType<_ParamsType>::type;
+        return ParamsTraits<_ParamsType>::type;
     }
 
     ParamsType getOParamsType() override {
-        return ParamsType<_ParamsType>::type;
+        return ParamsTraits<_ParamsType>::type;
     }
 
 private:
