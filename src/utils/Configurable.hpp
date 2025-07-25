@@ -22,7 +22,7 @@ protected:
 
     template<typename _Tp>
     bool setConfigValue(_Tp& member, const std::string& membername, const SniperJSON& config) {
-        std::string fullkey = c_name + "__" + membername;
+        std::string fullkey = m_name + "__" + membername;
         SniperJSON::map_iterator it = config.find(fullkey);
         if (it == config.map_end()) return false;
         member = it->second.get<_Tp>();
