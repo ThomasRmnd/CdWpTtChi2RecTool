@@ -14,7 +14,7 @@
 template<typename _MethodTag>
 class Predictor : public IParamsHandler, public Configurable {
 
-    static_assert(std::is_base_of<ParamsTag, _MethodTag>::value, "Tag must derive from MethodTag");
+    static_assert(std::is_base_of<MethodTag, _MethodTag>::value, "Tag must derive from MethodTag");
 
 public:
 
