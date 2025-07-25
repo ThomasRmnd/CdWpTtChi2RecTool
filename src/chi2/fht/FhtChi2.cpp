@@ -1,16 +1,9 @@
 #include "chi2/fht/FhtChi2.hpp"
 
-#include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-#include "utils/Chi2.hpp"
-
-DECLARE_TOOL(FhtChi2);
-
-FhtChi2::FhtChi2(const std::string& name) :
-    Chi2<FhtMethodTag>{name}
-{}
+#include <numeric>
 
 double FhtChi2::calculate(const_iterator first, const_iterator last, theo_const_iterator theo) {
-    return chi2FhtMethod(first, last, theo);
+    return std::transform_reduce(first, last, theo, 0.0, std::plus<double>(), [](const RecPmtProp& pmt, double value) {
+        return std::pow((pmt.fht - value) * pmt.inv_res, 2.0);
+    });
 }

@@ -3,6 +3,11 @@
 
 #include "cost/CostFunction.hpp"
 
+/**
+ * @class FhtCostFunction
+ * 
+ * @brief Derived class for cost calculation for FHT method
+ */
 class FhtCostFunction : public CostFunction<FhtMethodTag> {
 
 public:
@@ -11,16 +16,22 @@ public:
 
     ~FhtCostFunction() override = default;
 
-    void set(const vector_type& table) override {
-        m_first = table.begin();
-        m_last = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_CD | RecPmtType::PMT_WP); }).base();
-        m_theo.resize(std::distance(m_first, m_last));
-    }
+    /**
+     * @brief Set the experimental data
+     * 
+     * @param data experimental data vector
+     */
+    void set(const vector_type& table) override;
 
-    double operator()(const double* params) override {
-        m_pred->predict(m_first, m_last, m_theo.begin(), params);
-        return m_chi2->calculate(m_first, m_last, m_theo.begin()) / static_cast<double>(std::distance(m_first, m_last) - g_track_type_to_size.at(getIParamsType()));
-    }
+    /**
+     * @brief 1. Calculate the expected data based on the track parameters
+     * 2. Calculate the cost by comparing with the experimental data provided 
+     * 
+     * @param params track parameters
+     * 
+     * @return Cost
+     */
+    double operator()(const double* params) override;
 
 };
 

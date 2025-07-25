@@ -5,21 +5,20 @@
 #include "utils/Method.hpp"
 
 /**
- * @brief Base class for raw \f$ \chi^2 \f$ calculation
- * 
  * @class Chi2
+ * @tparam _MethodTag Method tag
  * 
- * @tparam _Tag Method tag
+ * @brief Base class for raw \f$ \chi^2 \f$ calculation
  */
-template<typename _Tag>
+template<typename _MethodTag>
 class Chi2 : public Configurable {
 
-    static_assert(std::is_base_of<MethodTag, _Tag>::value, "Tag must derive from MethodTag");
+    static_assert(std::is_base_of<MethodTag, _MethodTag>::value, "Tag must derive from MethodTag");
 
 public:
 
-    typedef typename MethodTraits<_Tag>::const_iterator const_iterator;
-    typedef typename MethodTraits<_Tag>::theo_const_iterator theo_const_iterator;
+    typedef typename MethodTraits<_MethodTag>::const_iterator const_iterator;
+    typedef typename MethodTraits<_MethodTag>::theo_const_iterator theo_const_iterator;
 
     using Configurable::Configurable;
 

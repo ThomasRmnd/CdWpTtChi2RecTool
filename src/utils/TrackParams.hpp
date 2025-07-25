@@ -6,19 +6,20 @@
 #include "utils/constants.hpp"
 #include "utils/vec3.hpp"
 
-struct SingleAcrylicParamsTag {};
-struct SingleStoppingAcrylicParamsTag {};
-struct DoubleAcrylicParamsTag {};
-struct TripleAcrylicParamsTag {};
-struct SingleCdParamsTag {};
-struct SingleTtParamsTag {};
+struct ParamsTag {};
+struct SingleAcrylicParamsTag : public ParamsTag {};
+struct SingleStoppingAcrylicParamsTag : public ParamsTag {};
+struct DoubleAcrylicParamsTag : public ParamsTag {};
+struct BundleAcrylicParamsTag : public ParamsTag {};
+struct SingleCdParamsTag : public ParamsTag {};
+struct SingleTtParamsTag : public ParamsTag {};
 
 enum class ParamsType {
     Unknown,
     SingleAcrylic,         // single through-going muon, with entry point contained in the Acrylic sphere
     SingleStoppingAcrylic, // single stopping muon, with entry point contained in the Acrylic sphere
     DoubleAcrylic,         // double muon (through-going or stopping for now), with entry point at the Acrylic sphere
-    TripleAcrylic,         // triple muon (through-going or stopping for now), with entry point at the Acrylic sphere
+    BundleAcrylic,         // bundle muon (through-going or stopping for now), with entry point at the Acrylic sphere
     SingleCd,              // single through-going muon, with entry point contained in the CD sphere
     SingleTt,              // single muon (through-going or stopping), with entry point at the TT level
 };
@@ -43,16 +44,16 @@ public:
 
 };
 
-template<ParamsType _Pt>
+template<typename _ParamsTag>
 struct TrackSetterHelper;
 
-template<ParamsType _Pt>
+template<typename _ParamsTag>
 struct ParamsTraits;
 
-// ParamsType::SingleAcrylic: t_0, theta_i, phi_i, theta_d, phi_d
+// SingleAcrylic: t_0, theta_i, phi_i, theta_d, phi_d
 
 template<>
-struct TrackSetterHelper<ParamsType::SingleAcrylic> {
+struct TrackSetterHelper<SingleAcrylicParamsTag> {
 
     static void set(const double* params, double& t_0, vec3& orig, vec3& dir, double& length) {
         t_0 = params[0];
@@ -64,7 +65,7 @@ struct TrackSetterHelper<ParamsType::SingleAcrylic> {
 };
 
 template<>
-struct ParamsTraits<ParamsType::SingleAcrylic> {
+struct ParamsTraits<SingleAcrylicParamsTag> {
 
     static constexpr ParamsType type = ParamsType::SingleAcrylic;
     static constexpr std::size_t size = 5ul;
@@ -74,10 +75,10 @@ struct ParamsTraits<ParamsType::SingleAcrylic> {
 
 };
 
-// ParamsType::SingleStoppingAcrylic: t_0, theta_i, phi_i, theta_d, phi_d, length
+// SingleStoppingAcrylic: t_0, theta_i, phi_i, theta_d, phi_d, length
 
 template<>
-struct TrackSetterHelper<ParamsType::SingleStoppingAcrylic> {
+struct TrackSetterHelper<SingleStoppingAcrylicParamsTag> {
 
     static void set(const double* params, double& t_0, vec3& orig, vec3& dir, double& length) {
         t_0 = params[0];
@@ -89,7 +90,7 @@ struct TrackSetterHelper<ParamsType::SingleStoppingAcrylic> {
 };
 
 template<>
-struct ParamsTraits<ParamsType::SingleStoppingAcrylic> {
+struct ParamsTraits<SingleStoppingAcrylicParamsTag> {
 
     static constexpr ParamsType type = ParamsType::SingleStoppingAcrylic;
     static constexpr std::size_t size = 6ul;
@@ -99,10 +100,10 @@ struct ParamsTraits<ParamsType::SingleStoppingAcrylic> {
 
 };
 
-// ParamsType::DoubleAcrylic: t_0_1, theta_i_1, phi_i_1, t_0_2, theta_i_2, phi_i_2, theta_d, phi_d
+// DoubleAcrylic: t_0_1, theta_i_1, phi_i_1, t_0_2, theta_i_2, phi_i_2, theta_d, phi_d
 
 template<>
-struct TrackSetterHelper<ParamsType::DoubleAcrylic> {
+struct TrackSetterHelper<DoubleAcrylicParamsTag> {
 
     // first call to setTrack is for the first track, second call is for the second track
     static void set(const double* params, double& t_0, vec3& orig, vec3& dir, double& length) {
@@ -118,7 +119,7 @@ struct TrackSetterHelper<ParamsType::DoubleAcrylic> {
 };
 
 template<>
-struct ParamsTraits<ParamsType::DoubleAcrylic> {
+struct ParamsTraits<DoubleAcrylicParamsTag> {
 
     static constexpr ParamsType type = ParamsType::DoubleAcrylic;
     static constexpr std::size_t size = 8ul;
@@ -128,10 +129,11 @@ struct ParamsTraits<ParamsType::DoubleAcrylic> {
 
 };
 
-// ParamsType::TripleAcrylic: t_0_1, theta_i_1, phi_i_1, t_0_2, theta_i_2, phi_i_2, t_0_3, theta_i_3, phi_i_3, theta_d, phi_d
+// BundleAcrylic: t_0_1, theta_i_1, phi_i_1, t_0_2, theta_i_2, phi_i_2, t_0_3, theta_i_3, phi_i_3, theta_d, phi_d
+// TODO: change it to resizable number of tracks
 
 template<>
-struct TrackSetterHelper<ParamsType::TripleAcrylic> {
+struct TrackSetterHelper<BundleAcrylicParamsTag> {
 
     // first call to setTrack is for the first track, second call is for the second track, third call is for the third track
     static void set(const double* params, double& t_0, vec3& orig, vec3& dir, double& length) {
@@ -147,9 +149,9 @@ struct TrackSetterHelper<ParamsType::TripleAcrylic> {
 };
 
 template<>
-struct ParamsTraits<ParamsType::TripleAcrylic> {
+struct ParamsTraits<BundleAcrylicParamsTag> {
 
-    static constexpr ParamsType type = ParamsType::TripleAcrylic;
+    static constexpr ParamsType type = ParamsType::BundleAcrylic;
     static constexpr std::size_t size = 8ul;
     static constexpr double defaults[8] = {300.0, 0.0, 0.0, 300.0, 0.0, 0.0, -constants::pi, 0.0};
     static constexpr double steps[8] = {5.0, 0.1, 0.1, 5., 0.1, 0.1, 0.1, 0.1};
@@ -157,10 +159,10 @@ struct ParamsTraits<ParamsType::TripleAcrylic> {
 
 };
 
-// ParamsType::SingleCd: t_0, theta_i, phi_i, theta_d, phi_d
+// SingleCd: t_0, theta_i, phi_i, theta_d, phi_d
 
 template<>
-struct TrackSetterHelper<ParamsType::SingleCd> {
+struct TrackSetterHelper<SingleCdParamsTag> {
 
     static void set(const double* params, double& t_0, vec3& orig, vec3& dir, double& length) {
         t_0 = params[0];
@@ -172,7 +174,7 @@ struct TrackSetterHelper<ParamsType::SingleCd> {
 };
 
 template<>
-struct ParamsTraits<ParamsType::SingleCd> {
+struct ParamsTraits<SingleCdParamsTag> {
 
     static constexpr ParamsType type = ParamsType::SingleCd;
     static constexpr std::size_t size = 5ul;
@@ -186,7 +188,7 @@ struct ParamsTraits<ParamsType::SingleCd> {
 // TODO: change it to: x, y, 22000.0 (?), dx, dy, 1.0
 
 template<>
-struct TrackSetterHelper<ParamsType::SingleTt> {
+struct TrackSetterHelper<SingleTtParamsTag> {
 
     static void set(const double* params, double& t_0, vec3& orig, vec3& dir, double& length) {
         t_0 = 0.0;
@@ -198,7 +200,7 @@ struct TrackSetterHelper<ParamsType::SingleTt> {
 };
 
 template<>
-struct ParamsTraits<ParamsType::SingleTt> {
+struct ParamsTraits<SingleTtParamsTag> {
 
     static constexpr ParamsType type = ParamsType::SingleTt;
     static constexpr std::size_t size = 6u; // TODO: change it to 4
@@ -208,15 +210,17 @@ struct ParamsTraits<ParamsType::SingleTt> {
 
 };
 
-template<ParamsType _Pt>
+template<typename _ParamsTag>
 class TrackSetter {
+
+    static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
 
 public:
 
     virtual ~TrackSetter() = default;
 
     virtual void setTrack(const double* params) {
-        TrackSetterHelper<_Pt>::set(params, m_t_0, m_orig, m_dir, m_length);
+        TrackSetterHelper<_ParamsTag>::set(params, m_t_0, m_orig, m_dir, m_length);
 
     }
 
@@ -229,15 +233,15 @@ protected:
 };
 
 template<>
-class TrackSetter<ParamsType::DoubleAcrylic> {
+class TrackSetter<DoubleAcrylicParamsTag> {
 
 public:
 
     virtual ~TrackSetter() = default;
 
     virtual void setTrack(const double* params) {
-        TrackSetterHelper<ParamsType::DoubleAcrylic>::set(params, m_t_0_1, m_orig_1, m_dir, m_length_1);
-        TrackSetterHelper<ParamsType::DoubleAcrylic>::set(params, m_t_0_2, m_orig_2, m_dir, m_length_2);
+        TrackSetterHelper<DoubleAcrylicParamsTag>::set(params, m_t_0_1, m_orig_1, m_dir, m_length_1);
+        TrackSetterHelper<DoubleAcrylicParamsTag>::set(params, m_t_0_2, m_orig_2, m_dir, m_length_2);
     }
 
 protected:
@@ -249,16 +253,16 @@ protected:
 };
 
 template<>
-class TrackSetter<ParamsType::TripleAcrylic> {
+class TrackSetter<BundleAcrylicParamsTag> {
 
 public:
 
     virtual ~TrackSetter() = default;
 
     virtual void setTrack(const double* params) {
-        TrackSetterHelper<ParamsType::TripleAcrylic>::set(params, m_t_0_1, m_orig_1, m_dir, m_length_1);
-        TrackSetterHelper<ParamsType::TripleAcrylic>::set(params, m_t_0_2, m_orig_2, m_dir, m_length_2);
-        TrackSetterHelper<ParamsType::TripleAcrylic>::set(params, m_t_0_3, m_orig_3, m_dir, m_length_3);
+        TrackSetterHelper<BundleAcrylicParamsTag>::set(params, m_t_0_1, m_orig_1, m_dir, m_length_1);
+        TrackSetterHelper<BundleAcrylicParamsTag>::set(params, m_t_0_2, m_orig_2, m_dir, m_length_2);
+        TrackSetterHelper<BundleAcrylicParamsTag>::set(params, m_t_0_3, m_orig_3, m_dir, m_length_3);
     }
 
 protected:
@@ -270,12 +274,12 @@ protected:
 };
 
 inline static const std::unordered_map<ParamsType, std::size_t> g_track_type_to_size = {
-    {ParamsType::SingleAcrylic,         ParamsTraits<ParamsType::SingleAcrylic>::size},
-    {ParamsType::SingleStoppingAcrylic, ParamsTraits<ParamsType::SingleStoppingAcrylic>::size},
-    {ParamsType::DoubleAcrylic,         ParamsTraits<ParamsType::DoubleAcrylic>::size},
-    {ParamsType::TripleAcrylic,         ParamsTraits<ParamsType::TripleAcrylic>::size},
-    {ParamsType::SingleCd,              ParamsTraits<ParamsType::SingleCd>::size},
-    {ParamsType::SingleTt,              ParamsTraits<ParamsType::SingleTt>::size}
+    {ParamsType::SingleAcrylic,         ParamsTraits<SingleAcrylicParamsTag>::size},
+    {ParamsType::SingleStoppingAcrylic, ParamsTraits<SingleStoppingAcrylicParamsTag>::size},
+    {ParamsType::DoubleAcrylic,         ParamsTraits<DoubleAcrylicParamsTag>::size},
+    {ParamsType::BundleAcrylic,         ParamsTraits<BundleAcrylicParamsTag>::size},
+    {ParamsType::SingleCd,              ParamsTraits<SingleCdParamsTag>::size},
+    {ParamsType::SingleTt,              ParamsTraits<SingleTtParamsTag>::size}
 };
 
 #endif // CDWPTTCHI2RECTOOL_UTILS_TRACKPARAMS_HPP_

@@ -4,20 +4,20 @@
 #include "chi2/Chi2.hpp"
 
 /**
- * @brief Derived class for raw \f$ \chi^2 \f$ calculation for the FHT method
- * 
  * @class FhtChi2
+ * 
+ * @brief Derived class for raw \f$ \chi^2 \f$ calculation for the FHT method
  */
 class FhtChi2 : public Chi2<FhtMethodTag> {
 
 public:
 
-    FhtChi2(const std::string& name);
+    using Chi2<FhtMethodTag>::Chi2;
 
     ~FhtChi2() override = default;
 
     /**
-     * @brief Calculate the raw \f$ \chi^2 \f$ for the FHT method
+     * @brief Calculate the raw \f$ \chi^2 \f$
      * 
      * @param first the beginning iterator of the experimental data 
      * @param last the end iterator of the experimental data

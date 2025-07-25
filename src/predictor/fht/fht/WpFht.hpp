@@ -1,30 +1,60 @@
 #ifndef CDWPTTCHI2RECTOOL_PREDICTOR_FHT_FHT_WPFHT_HPP_
 #define CDWPTTCHI2RECTOOL_PREDICTOR_FHT_FHT_WPFHT_HPP_
 
-#include "utils/TrackParams.hpp"
-
 #include "SniperKernel/SniperLog.h"
 
+#include "utils/constants.hpp"
 #include "utils/Geometry.hpp"
+#include "utils/RecPmtProp.hpp"
+#include "utils/TrackParams.hpp"
 
-template<ParamsType _Pt>
-class WpFht : public TrackSetter<_Pt> {
+/**
+ * @class WpFht
+ * @tparam _ParamsTag Method tag
+ * 
+ * @brief Base class to calculate expected FHT for WP PMT
+ */
+template<typename _ParamsType>
+class WpFht : public TrackSetter<_ParamsType> {
+
+    static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
 
 public:
 
     virtual ~WpFht() override = default;
 
+    /**
+     * @brief Calculate the expected FHT
+     * 
+     * @param pmt PMT information
+     * 
+     * @return FHT
+     */
     virtual double calculate(const RecPmtProp& pmt) = 0;
 
 };
 
-template<ParamsType _Pt>
-class NoGeomWpFht final : public WpFht<_Pt> {
+/**
+ * @class NoDiffusionWpFht
+ * @tparam _ParamsTag Method tag
+ * 
+ * @brief Derived class to calculate expected FHT for WP PMT
+ * This calculation do not take into account diffusions produced by the Tyvek
+ */
+template<typename _ParamsType>
+class NoDiffusionWpFht final : public WpFht<_ParamsType> {
 
 public:
 
-    ~NoGeomWpFht() final override = default;
+    ~NoDiffusionWpFht() final override = default;
 
+    /**
+     * @brief Calculate the expected FHT
+     * 
+     * @param pmt PMT information
+     * 
+     * @return FHT
+     */
     double calculate(const RecPmtProp& pmt) {
 
         // TODO when finished checking: Following this folloing paragraph in the setTrack method {
@@ -95,13 +125,26 @@ private:
 
 };
 
+/**
+ * @class NoDiffusionWpFht<DoubleAcrylicParamsTag>
+ * 
+ * @brief Derived class to calculate expected FHT for WP PMT, specialization with DoubleAcrylicParamsTag
+ * This calculation do not take into account diffusions produced by the Tyvek
+ */
 template<>
-class NoGeomWpFht<ParamsType::DoubleAcrylic> final : public WpFht<ParamsType::DoubleAcrylic> {
+class NoDiffusionWpFht<DoubleAcrylicParamsTag> final : public WpFht<DoubleAcrylicParamsTag> {
 
 public:
 
-    ~NoGeomWpFht() final override = default;
+    ~NoDiffusionWpFht() final override = default;
 
+    /**
+     * @brief Calculate the expected FHT
+     * 
+     * @param pmt PMT information
+     * 
+     * @return FHT
+     */
     double calculate(const RecPmtProp& pmt) {
 
         // TODO when finished checking: Following this folloing paragraph in the setTrack method {

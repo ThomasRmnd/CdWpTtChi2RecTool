@@ -32,7 +32,10 @@ bool CdWpTtChi2RecTool::initialize() {
         m_reg.book(std::make_shared<CdTtStrategy>());
         m_reg.book(std::make_shared<CdWpTtStrategy>());
     }
-    if (m_auto_fact) m_fact = std::make_shared<AutomaticStrategyFactory>(m_reg, nullptr);
+    if (m_auto_fact) {
+        std::shared_ptr<Classifier> clsfr = nullptr;
+        m_fact = std::make_shared<AutomaticStrategyFactory>(m_reg, clsfr);
+    }
     else {
         if (m_manual_reco_mode == 1) m_fact = std::make_shared<ManualStrategyFactory>(m_reg, ParamsType::SingleAcrylic);
         else if (m_manual_reco_mode == 2) m_fact = std::make_shared<ManualStrategyFactory>(m_reg, ParamsType::SingleStoppingAcrylic);

@@ -1,15 +1,16 @@
 #ifndef CDWPTTCHI2RECTOOL_UTILS_CONFIGURABLE_HPP_
 #define CDWPTTCHI2RECTOOL_UTILS_CONFIGURABLE_HPP_
 
-#include "SniperKernel/ToolBase.h"
+#include <string>
 
 #include "SniperKernel/SniperJSON.h"
 
-class Configurable : public ToolBase {
+class Configurable {
 
 public:
 
-    using ToolBase::ToolBase;
+    Configurable() : c_name{} {}
+    Configurable(const std::string& name) : c_name{name} {}
 
     virtual ~Configurable() = default;
 
@@ -17,9 +18,11 @@ public:
 
 protected:
 
+    const std::string c_name;
+
     template<typename _Tp>
     _Tp getConfigValue(const std::string& membername, const SniperJSON& config) {
-        std::string fullkey = m_name + "__" + membername;
+        std::string fullkey = c_name + "__" + membername;
         SniperJSON::map_iterator it = config.find(fullkey);
         if (it == config.map_end()) {
             LogError << "Cannot retrieve the member value " << membername << '\n';

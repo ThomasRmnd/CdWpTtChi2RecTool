@@ -3,6 +3,10 @@ PKG(CdWpTtChi2RecTool
     src/chi2/fht/FhtChi2.cpp
     src/chi2/tt/TtChi2.cpp
 
+    src/cost/fht/FhtCostFunction.cpp
+    src/cost/fht_tt/FhtTtCostFunction.cpp
+    src/cost/tt/TtCostFunction.cpp
+
     src/estimator/Estimator.cpp
     src/estimator/ParamsModifierEstimator.cpp
     src/estimator/Pipeline.cpp

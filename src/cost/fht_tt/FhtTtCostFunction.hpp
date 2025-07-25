@@ -3,6 +3,11 @@
 
 #include "cost/CostFunction.hpp"
 
+/**
+ * @class FhtTtCostFunction
+ * 
+ * @brief Derived class for cost calculation for joint FHT method and TT method
+ */
 class FhtTtCostFunction : public CostFunction<FhtTtMethodTag> {
 
 public:
@@ -11,28 +16,37 @@ public:
 
     ~FhtTtCostFunction() override = default;
 
-    void set(const RecPmtTable& table) override {
-        m_ftable = table.begin();
-        m_ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_CD | RecPmtType::PMT_WP); }).base();
-        m_fht_theo.resize(std::distance(m_ftable, m_ltable));
-    }
+    /**
+     * @brief Set the FHT experimental data
+     * 
+     * @param data FHT experimental data vector
+     */
+    void set(const RecPmtTable& table) override;
 
-    void set(const std::vector<vec3>& hits) override {
-        m_fhits = hits.begin();
-        m_lhits = hits.end();
-        m_hits_theo.resize(hits.size());
-    }
+    /**
+     * @brief Set the TT experimental data
+     * 
+     * @param data TT experimental data vector
+     */
+    void set(const std::vector<vec3>& hits) override;
     
-    double operator()(const double* params) override {
-        m_pred_fht->predict(m_ftable, m_ltable, m_fht_theo.begin(), params);
-        m_pred_tt->predict(m_fhits, m_lhits, m_hits_theo.begin(), params);
-        return 
-            ( m_chi2_fht->calculate(m_ftable, m_ltable, m_fht_theo.begin()) + m_chi2_tt->calculate(m_fhits, m_lhits, m_hits_theo.begin()) )
-            / static_cast<double>(std::distance(m_ftable, m_ltable) + 3ul * std::distance(m_fhits, m_lhits) - g_track_type_to_size.at(getIParamsType()));
-    }
+    /**
+     * @brief 1. Calculate the expected data based on the track parameters
+     * 2. Calculate the cost by comparing with the experimental data set 
+     * 
+     * @param params track parameters
+     * 
+     * @return Cost
+     */
+    double operator()(const double* params) override;
 
 };
 
+/**
+ * @class FhtTtReducedCostFunction
+ * 
+ * @brief Derived class for cost calculation for joint FHT method and TT method
+ */
 class FhtTtReducedCostFunction : public CostFunction<FhtTtMethodTag> {
 
 public:
@@ -41,25 +55,29 @@ public:
 
     ~FhtTtReducedCostFunction() override = default;
 
-    void set(const RecPmtTable& table) override {
-        m_ftable = table.begin();
-        m_ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_CD | RecPmtType::PMT_WP); }).base();
-        m_fht_theo.resize(std::distance(m_ftable, m_ltable));
-    }
+    /**
+     * @brief Set the FHT experimental data
+     * 
+     * @param data FHT experimental data vector
+     */
+    void set(const RecPmtTable& table) override;
 
-    void set(const std::vector<vec3>& hits) override {
-        m_fhits = hits.begin();
-        m_lhits = hits.end();
-        m_hits_theo.resize(hits.size());
-    }
+    /**
+     * @brief Set the TT experimental data
+     * 
+     * @param data TT experimental data vector
+     */
+    void set(const std::vector<vec3>& hits) override;
 
-    double operator()(const double* params) override {
-        m_pred_fht->predict(m_ftable, m_ltable, m_fht_theo.begin(), params);
-        m_pred_tt->predict(m_fhits, m_lhits, m_hits_theo.begin(), params);
-        return 
-            m_chi2_fht->calculate(m_ftable, m_ltable, m_fht_theo.begin()) / static_cast<double>(std::distance(m_ftable, m_ltable) - g_track_type_to_size.at(getIParamsType())) +
-            m_chi2_tt->calculate(m_fhits, m_lhits, m_hits_theo.begin()) / static_cast<double>(3ul * std::distance(m_fhits, m_lhits) - g_track_type_to_size.at(getIParamsType()));
-    }
+    /**
+     * @brief 1. Calculate the expected data based on the track parameters
+     * 2. Calculate the cost by comparing with the experimental data set 
+     * 
+     * @param params track parameters
+     * 
+     * @return Cost
+     */
+    double operator()(const double* params) override;
 
 };
 
