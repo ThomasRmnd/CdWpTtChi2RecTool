@@ -49,11 +49,11 @@ public:
         return ParamsModifierEstimator::estimate(table);
     }
 
-    ParamsTag getIParamsType() override {
+    ParamsType getIParamsType() override {
         return ParamsTraits<_ParamsTag>::type;
     }
 
-    ParamsTag getOParamsType() override {
+    ParamsType getOParamsType() override {
         return ParamsTraits<_ParamsTag>::type;
     }
 
@@ -94,11 +94,11 @@ public:
         return ParamsModifierEstimator::estimate(table);
     };
 
-    ParamsTag getIParamsType() override {
+    ParamsType getIParamsType() override {
         return ParamsTraits<_LhsParamsTag>::type;
     };
 
-    ParamsTag getOParamsType() override {
+    ParamsType getOParamsType() override {
         return ParamsTraits<_RhsParamsTag>::type;
     };
 
