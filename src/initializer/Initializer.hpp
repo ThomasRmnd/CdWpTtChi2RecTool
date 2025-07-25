@@ -1,8 +1,6 @@
 #ifndef CDWPTTCHI2RECTOOL_INITIALIZER_INITIALIZER_HPP_
 #define CDWPTTCHI2RECTOOL_INITIALIZER_INITIALIZER_HPP_
 
-#include "SniperKernel/ToolBase.h"
-
 #include "utils/Configurable.hpp"
 #include "utils/Method.hpp"
 #include "utils/TrackParams.hpp"
@@ -14,7 +12,7 @@
  * @brief Base class to calculate track parameters initial guess
  */
 template<typename _MethodTag>
-class Initializer : public OParamsHandler, public Configurable, public ToolBase {
+class Initializer : public OParamsHandler, public Configurable {
 
     static_assert(std::is_base_of<MethodTag, _MethodTag>::value, "Tag must be derived from MethodTag");
 

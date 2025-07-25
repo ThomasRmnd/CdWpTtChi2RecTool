@@ -5,21 +5,20 @@
 
 #include "SniperKernel/SniperJSON.h"
 #include "SniperKernel/SniperLog.h"
+#include "SniperKernel/ToolBase.h"
 
-class Configurable {
+class Configurable : public ToolBase {
 
 public:
 
-    Configurable() : c_name{} {}
-    Configurable(const std::string& name) : c_name{name} {}
+    Configurable() : ToolBase{""} {}
+    Configurable(const std::string& name) : ToolBase{name} {}
 
     virtual ~Configurable() = default;
 
     virtual void configure(const SniperJSON&) {}
 
 protected:
-
-    const std::string c_name;
 
     template<typename _Tp>
     bool setConfigValue(_Tp& member, const std::string& membername, const SniperJSON& config) {
