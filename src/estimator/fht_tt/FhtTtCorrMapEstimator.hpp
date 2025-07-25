@@ -9,7 +9,7 @@
 #include "estimator/fht/CorrectionMapEstimator.hpp"
 #include "estimator/tt/TtMinimizerEstimator.hpp"
 
-template<typename _ParamsType>
+template<typename _ParamsTag>
 class FhtTtCorrMapEstimator : public MinimizerEstimator<FhtTtMethodTag> {
 
     static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
@@ -33,7 +33,7 @@ public:
         c_max_nb_hits(0), c_nb_loop(0)
     {};
 
-    FhtTtCorrMapEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<FhtTtMethodTag>>& func, const std::shared_ptr<CorrectionMapLoopEstimator<_ParamsType>>& fht_esti, const std::shared_ptr<TtMinimizerEstimator>& tt_esti, std::size_t max_nb_trks, std::size_t nb_loop) :
+    FhtTtCorrMapEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<FhtTtMethodTag>>& func, const std::shared_ptr<CorrectionMapLoopEstimator<_ParamsTag>>& fht_esti, const std::shared_ptr<TtMinimizerEstimator>& tt_esti, std::size_t max_nb_trks, std::size_t nb_loop) :
         MinimizerEstimator<FhtTtMethodTag>(name, opti, func),
         m_fht_esti(fht_esti),
         m_tt_esti(tt_esti),
@@ -246,7 +246,7 @@ public:
 
 protected:
 
-    std::shared_ptr<CorrectionMapLoopEstimator<_ParamsType>> m_fht_esti;
+    std::shared_ptr<CorrectionMapLoopEstimator<_ParamsTag>> m_fht_esti;
     std::shared_ptr<TtMinimizerEstimator> m_tt_esti;
     const std::size_t c_max_nb_hits;
     const std::size_t c_nb_loop;

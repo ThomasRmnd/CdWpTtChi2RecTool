@@ -20,7 +20,7 @@ public:
 
     typedef typename MethodTraits<_MethodTag>::vector_type vector_type;
 
-    Initializer(const std::string& name) : Configurable{name}, ToolBase{name} {}
+    Initializer(const std::string& name) : Configurable{name} {}
 
     virtual ~Initializer() = default;
 

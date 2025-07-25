@@ -10,7 +10,7 @@
 
 #include "estimator/fht/map/CorrectionMap.hpp"
 
-template<typename _ParamsType>
+template<typename _ParamsTag>
 class CorrectionMapLoopEstimator : public MinimizerEstimator<FhtMethodTag> {
 
     static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
@@ -21,7 +21,7 @@ public:
         MinimizerEstimator<FhtMethodTag>(name)
     {};
 
-    CorrectionMapLoopEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<FhtMethodTag>>& func, const std::vector<std::shared_ptr<CorrectionMap<_ParamsType>>>& maps, std::size_t nb_loop) :
+    CorrectionMapLoopEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<FhtMethodTag>>& func, const std::vector<std::shared_ptr<CorrectionMap<_ParamsTag>>>& maps, std::size_t nb_loop) :
         MinimizerEstimator<FhtMethodTag>(name, opti, func),
         m_maps(maps),
         c_nb_loop(nb_loop)
@@ -32,25 +32,25 @@ public:
     virtual bool initialize() override {
         if (c_nb_loop == 0) LogWarn << "The number of loops is set to 0\n";
         if (m_maps.empty()) LogWarn << "There are no correction maps\n";
-        for (const std::shared_ptr<CorrectionMap<_ParamsType>>& map : m_maps) {
+        for (const std::shared_ptr<CorrectionMap<_ParamsTag>>& map : m_maps) {
             if (!map->initialize()) return false;
         }
         return MinimizerEstimator<FhtMethodTag>::initialize();
     };
 
     virtual bool finalize() override {
-        for (const std::shared_ptr<CorrectionMap<_ParamsType>>& map : m_maps) {
+        for (const std::shared_ptr<CorrectionMap<_ParamsTag>>& map : m_maps) {
             if (!map->finalize()) return false;
         }
         return MinimizerEstimator<FhtMethodTag>::finalize();
     };
 
     ParamsType getIParamsType() override {
-        if (this->m_func->getIParamsType() != ParamsTraits<_ParamsType>::type) {
+        if (this->m_func->getIParamsType() != ParamsTraits<_ParamsTag>::type) {
             LogError << "Cost function and correction maps have different parameters type\n";
             return ParamsType::Unknown;
         }
-        return ParamsTraits<_ParamsType>::type;
+        return ParamsTraits<_ParamsTag>::type;
     }
 
     ParamsType getOParamsType() override {
@@ -83,7 +83,7 @@ public:
 
 protected:
 
-    std::vector<std::shared_ptr<CorrectionMap<_ParamsType>>> m_maps;
+    std::vector<std::shared_ptr<CorrectionMap<_ParamsTag>>> m_maps;
     const std::size_t c_nb_loop;
 
     std::vector<double> m_fhts;
@@ -96,7 +96,7 @@ protected:
     }
 
     bool applyCorrMap(const std::vector<double>& params, RecPmtTable& table) {
-        for (const std::shared_ptr<CorrectionMap<_ParamsType>>& map : m_maps) {
+        for (const std::shared_ptr<CorrectionMap<_ParamsTag>>& map : m_maps) {
             map->setTrack(params.data());
             map->correct(table);
         }

@@ -85,9 +85,9 @@ protected:
     std::vector<double> m_steps;
     std::vector<std::string> m_names;
 
-    template<typename _ParamsType>
+    template<typename _ParamsTag>
     void getDefaultParams() {
-        typedef ParamsTraits<_ParamsType> _Traits;
+        typedef ParamsTraits<_ParamsTag> _Traits;
         m_params = std::vector<double>(_Traits::defaults, _Traits::defaults + _Traits::size);
         m_steps = std::vector<double>(_Traits::steps, _Traits::steps + _Traits::size);
         m_names = std::vector<std::string>(_Traits::names, _Traits::names + _Traits::size);

@@ -15,7 +15,7 @@ CalibrationTransformer::CalibrationTransformer(const std::string& name, const Re
 {}
 
 void CalibrationTransformer::configure(const SniperJSON& config) {
-    m_offset = getConfigValue<double>("TimeOffset", config);
+    setConfigValue(m_offset, "TimeOffset", config);
 }
 
 void CalibrationTransformer::transformPmt(RecPmtProp& pmt) {

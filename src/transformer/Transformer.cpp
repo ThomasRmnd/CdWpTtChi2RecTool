@@ -3,13 +3,11 @@
 #include "SniperKernel/SniperLog.h"
 
 Transformer::Transformer(const std::string& name) :
-    ToolBase(name),
     Configurable(name),
     PmtTypeChecker(RecPmtType::PMT_UNKNOWN)
 {}
 
 Transformer::Transformer(const std::string& name, const RecPmtType& pmt_type) :
-    ToolBase(name),
     Configurable(name),
     PmtTypeChecker(pmt_type)
 {}

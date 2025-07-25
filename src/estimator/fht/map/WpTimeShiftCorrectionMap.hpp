@@ -9,17 +9,17 @@
 
 #include "utils/Geometry.hpp"
 
-template<typename _ParamsType>
-class WpTimeShiftCorrectionMap : public CorrectionMap<_ParamsType> {
+template<typename _ParamsTag>
+class WpTimeShiftCorrectionMap : public CorrectionMap<_ParamsTag> {
 
 public:
 
     WpTimeShiftCorrectionMap(const std::string& name) :
-        CorrectionMap<_ParamsType>(name)
+        CorrectionMap<_ParamsTag>(name)
     {}
 
     WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
-        CorrectionMap<_ParamsType>(name, RecPmtType::PMT_WP, filename, mapname)
+        CorrectionMap<_ParamsTag>(name, RecPmtType::PMT_WP, filename, mapname)
     {}
 
     ~WpTimeShiftCorrectionMap() override = default;

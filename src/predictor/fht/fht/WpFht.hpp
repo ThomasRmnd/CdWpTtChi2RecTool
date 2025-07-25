@@ -14,8 +14,8 @@
  * 
  * @brief Base class to calculate expected FHT for WP PMT
  */
-template<typename _ParamsType>
-class WpFht : public TrackSetter<_ParamsType> {
+template<typename _ParamsTag>
+class WpFht : public TrackSetter<_ParamsTag> {
 
     static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
 
@@ -41,8 +41,8 @@ public:
  * @brief Derived class to calculate expected FHT for WP PMT
  * This calculation do not take into account diffusions produced by the Tyvek
  */
-template<typename _ParamsType>
-class NoDiffusionWpFht final : public WpFht<_ParamsType> {
+template<typename _ParamsTag>
+class NoDiffusionWpFht final : public WpFht<_ParamsTag> {
 
 public:
 

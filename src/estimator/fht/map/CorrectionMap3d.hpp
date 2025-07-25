@@ -9,17 +9,17 @@
 
 #include "estimator/fht/map/CorrParam.hpp"
 
-template<typename _ParamsType>
-class CorrectionMap3d : public CorrectionMap<_ParamsType> {
+template<typename _ParamsTag>
+class CorrectionMap3d : public CorrectionMap<_ParamsTag> {
 
 public:
 
     CorrectionMap3d(const std::string& name) :
-        CorrectionMap<_ParamsType>(name)
+        CorrectionMap<_ParamsTag>(name)
     {}
 
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
-        CorrectionMap<_ParamsType>(name, pmt_type, filename, mapname),
+        CorrectionMap<_ParamsTag>(name, pmt_type, filename, mapname),
         m_param_x(param_x),
         m_param_y(param_y),
         m_param_z(param_z)
@@ -28,7 +28,7 @@ public:
     ~CorrectionMap3d() override = default;
 
     bool initialize() override {
-        if (!CorrectionMap<_ParamsType>::initialize()) return false;
+        if (!CorrectionMap<_ParamsTag>::initialize()) return false;
         if (!m_param_x) {
             LogError << "CorrParam x is not set\n";
             return false;
