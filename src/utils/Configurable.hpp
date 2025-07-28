@@ -21,7 +21,7 @@ enum Level {
 #define MYSNIPERLOG(Flag, ObjName) SniperLog::Logger(Flag, scope(), ObjName, __func__)
 #define MYLOG(Flag, ObjName) (logLevel() > Flag ? SniperLog::Logger::Silencer : MYSNIPERLOG(Flag, ObjName))
 
-SniperLog::Logger Log(Level level, const char* objname) {
+SniperLog::Logger Log(Level level, const std::string& objname) {
     return MYLOG(level, objname);
 }
 
