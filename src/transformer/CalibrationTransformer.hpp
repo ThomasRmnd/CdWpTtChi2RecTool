@@ -23,9 +23,10 @@ protected:
 
     double m_offset;
 
-    CalibrationTransformer(const std::string& name);
-
     void transformPmt(RecPmtProp& pmt) override;
+
+    friend DLElement* SniperCreateDLE_T<CalibrationTransformer>(const std::string&);
+    CalibrationTransformer(const std::string& name);
 
 };
 
