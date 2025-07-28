@@ -13,6 +13,7 @@ class CalibrationTransformer : public Transformer {
 
 public:
 
+    CalibrationTransformer(const std::string& name);
     CalibrationTransformer(const std::string& name, const RecPmtType& type, double offset);
 
     ~CalibrationTransformer() override = default;

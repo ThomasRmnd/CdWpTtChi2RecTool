@@ -4,6 +4,11 @@
 
 DECLARE_TOOL(FhtChargeTholdTransformer);
 
+FhtChargeTholdTransformer::FhtChargeTholdTransformer(const std::string& name) :
+    Transformer(name, RecPmtType::PMT_UNKNOWN),
+    m_q_thold(0.0)
+{}
+
 FhtChargeTholdTransformer::FhtChargeTholdTransformer(const std::string& name, const RecPmtType& type, double q_thold) :
     Transformer(name, type),
     m_q_thold(q_thold)

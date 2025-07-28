@@ -14,8 +14,6 @@ class WaterPhaseTransformer : public Transformer {
 
 public:
 
-    using Transformer::Transformer;
-
     ~WaterPhaseTransformer() override = default;
 
     void transform(RecPmtTable& table) override;
@@ -46,6 +44,7 @@ protected:
 
 #else
 
+    WaterPhaseTransformer(const std::string& name);
     WaterPhaseTransformer(const std::string& name, int nb_bins, double xmin, double xmax, double q_thold_itime, double ratio_entries_ftime, double r, unsigned int neigh_thold, double dt);
 
 protected:

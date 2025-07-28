@@ -13,6 +13,7 @@ class FhtChargeTholdTransformer : public Transformer {
 
 public:
 
+    FhtChargeTholdTransformer(const std::string& name);
     FhtChargeTholdTransformer(const std::string& name, const RecPmtType& type, double q_thold);
 
     ~FhtChargeTholdTransformer() override = default;

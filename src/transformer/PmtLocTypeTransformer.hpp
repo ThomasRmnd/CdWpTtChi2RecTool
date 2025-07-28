@@ -13,7 +13,8 @@ class PmtLocTypeTransformer : public Transformer {
 
 public:
 
-    using Transformer::Transformer;
+    PmtLocTypeTransformer(const std::string& name);
+    PmtLocTypeTransformer(const std::string& name, const RecPmtType& pmt_type);
     
     ~PmtLocTypeTransformer() override = default;
 

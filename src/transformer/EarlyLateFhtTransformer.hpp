@@ -17,6 +17,7 @@ class EarlyLateFhtTransformer : public Transformer {
 
 public:
 
+    EarlyLateFhtTransformer(const std::string& name);
     EarlyLateFhtTransformer(const std::string& name, const RecPmtType& type, int nb_bins, double xmin, double xmax, double pmt_thold, double shift, double relative_cut);
 
     ~EarlyLateFhtTransformer() override = default;
