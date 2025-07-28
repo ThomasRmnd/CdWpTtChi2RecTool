@@ -6,15 +6,24 @@
 #include "utils/Configurable.hpp"
 #include "utils/RecPmtProp.hpp"
 
+/**
+ * @class Transformer
+ * 
+ * @brief Base class for transformer (filters, correctors, etc)
+ */
 class Transformer : public Configurable, public PmtTypeChecker {
 
 public:
 
-    Transformer(const std::string& name);
     Transformer(const std::string& name, const RecPmtType& pmt_type);
 
     virtual ~Transformer() = default;
 
+    /**
+     * @brief Transform (remove/change) all PMTs of the target PMT type
+     * 
+     * @param table experiemental data vector
+     */
     virtual void transform(RecPmtTable& table);
 
 protected:

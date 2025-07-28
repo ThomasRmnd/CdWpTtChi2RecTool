@@ -24,7 +24,7 @@ private:
 
     typedef std::unordered_map<std::string, std::weak_ptr<CorrectionFile>> MapType;
 
-    TFile* m_file = nullptr;
+    TFile* m_file = nullptr; // let ROOT manage its lifetime
     static MapType s_cache;
 
     CorrectionFile(const std::string& filename);

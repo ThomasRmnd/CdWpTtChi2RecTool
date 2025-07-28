@@ -16,6 +16,22 @@ EarlyLateFhtTransformer::EarlyLateFhtTransformer(const std::string& name, const 
     m_hist->SetDirectory(0);
 }
 
+void EarlyLateFhtTransformer::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    setConfigValue(m_pmt_thold, "PmtThreshold", config);
+    setConfigValue(m_shift, "TimeShift", config);
+    setConfigValue(m_relative_cut, "RelativeTimeCut", config);
+    int nbins = 0;
+    double xmin = 0.0, xmax = 0.0;
+    if (
+        !setConfigValue(nbins, "HistogramNbins", config) ||
+        !setConfigValue(xmin, "HistogramXmin", config) ||
+        !setConfigValue(xmax, "HistogramXmax", config)
+    ) return;
+    m_hist = std::make_unique<TH1D>("h__EarlyLateFhtTransformer", "h__EarlyLateFhtTransformer", nbins, xmin, xmax);
+    m_hist->SetDirectory(0);
+}
+
 double EarlyLateFhtTransformer::getITime(const RecPmtTable& table) {
     m_hist->Reset();
     for (const RecPmtProp& pmt : table) {

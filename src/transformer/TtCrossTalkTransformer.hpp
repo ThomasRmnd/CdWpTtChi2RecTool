@@ -7,6 +7,12 @@
 #include <unordered_set>
 #include <vector>
 
+/**
+ * @class TtCrossTalkTransformer
+ * 
+ * @brief Derived class for transformer.
+ * This transformer is used to remove cross-talk for TT PMTs
+ */
 class TtCrossTalkTransformer : public Transformer {
 
     struct HitStrip {
@@ -23,6 +29,11 @@ public:
 
     ~TtCrossTalkTransformer() override = default;
 
+    /**
+     * @brief Transform (remove/change) all PMTs of the target PMT type
+     * 
+     * @param table experiemental data vector
+     */
     void transform(RecPmtTable& table) override;
 
 protected:

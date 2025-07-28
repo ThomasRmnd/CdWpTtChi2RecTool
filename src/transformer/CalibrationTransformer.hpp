@@ -3,11 +3,16 @@
 
 #include "transformer/Transformer.hpp"
 
+/**
+ * @class CalibrationTransformer
+ * 
+ * @brief Derived class for transformer.
+ * This transformer is used to shift/offset the FHT of PMTs (as a calibration)
+ */
 class CalibrationTransformer : public Transformer {
 
 public:
 
-    CalibrationTransformer(const std::string& name);
     CalibrationTransformer(const std::string& name, const RecPmtType& type, double offset);
 
     ~CalibrationTransformer() override = default;
