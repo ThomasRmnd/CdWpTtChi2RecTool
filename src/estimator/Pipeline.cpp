@@ -1,9 +1,6 @@
 #include "estimator/Pipeline.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(Pipeline);
 
 void Pipeline::configure(const SniperJSON& config) {
     for (Step& step : m_pipe) {

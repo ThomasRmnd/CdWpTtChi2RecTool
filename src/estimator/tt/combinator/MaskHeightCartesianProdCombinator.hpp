@@ -9,7 +9,6 @@ class MaskHeightCartesianProdCombinator : public Combinator {
 
 public:
 
-    using Combinator::Combinator;
     MaskHeightCartesianProdCombinator(const std::string& name, std::size_t max_nb_heights);
     ~MaskHeightCartesianProdCombinator() override = default;
 

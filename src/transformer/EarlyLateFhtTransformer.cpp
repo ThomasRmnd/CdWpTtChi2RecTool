@@ -1,20 +1,6 @@
 #include "transformer/EarlyLateFhtTransformer.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(EarlyLateFhtTransformer);
-
-EarlyLateFhtTransformer::EarlyLateFhtTransformer(const std::string& name) :
-    Transformer(name, RecPmtType::PMT_UNKNOWN),
-    m_hist(std::make_unique<TH1D>("h__EarlyLateFhtTransformer", "h__EarlyLateFhtTransformer", 1, 0.0, 1.0)),
-    m_pmt_thold(0.0),
-    m_shift(0.0),
-    m_relative_cut(0.0),
-    m_itime(0.0)
-{
-    m_hist->SetDirectory(0);
-}
 
 EarlyLateFhtTransformer::EarlyLateFhtTransformer(const std::string& name, const RecPmtType& type, int nb_bins, double xmin, double xmax, double pmt_thold, double shift, double relative_cut) :
     Transformer(name, type),

@@ -1,9 +1,6 @@
 #include "initializer/tt/MinMaxHeightInitializer.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(MinMaxHeightInitializer);
 
 ParamsType MinMaxHeightInitializer::getOParamsType() {
     return ParamsType::SingleTt;

@@ -1,11 +1,11 @@
 #ifndef CDWPTTCHI2RECTOOL_TRANSFORMER_WPGEOMTIMETRANSFORMER_HPP_
 #define CDWPTTCHI2RECTOOL_TRANSFORMER_WPGEOMTIMETRANSFORMER_HPP_
 
-#include "transformer/Transformer.hpp"
-
 #include <memory>
 
 #include <TH1D.h>
+
+#include "transformer/Transformer.hpp"
 
 struct ClusteredPmt {
 
@@ -18,7 +18,6 @@ class WpGeomTimeTransformer : public Transformer {
 
 public:
 
-    WpGeomTimeTransformer(const std::string& name);
     WpGeomTimeTransformer(const std::string& name, double time_window_early, double time_window_late, double thold_sep, double thold_q_ratio, double radius_time, double radius_arclength);
 
     ~WpGeomTimeTransformer() override = default;

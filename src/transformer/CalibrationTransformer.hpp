@@ -1,8 +1,6 @@
 #ifndef CDWPTTCHI2RECTOOL_TRANSFORMER_CALIBRATIONTRANSFORMER_HPP_
 #define CDWPTTCHI2RECTOOL_TRANSFORMER_CALIBRATIONTRANSFORMER_HPP_
 
-#include "SniperKernel/ToolFactory.h"
-
 #include "transformer/Transformer.hpp"
 
 /**
@@ -26,9 +24,6 @@ protected:
     double m_offset;
 
     void transformPmt(RecPmtProp& pmt) override;
-
-    friend DLElement* SniperCreateDLE_T<CalibrationTransformer>(const std::string&);
-    CalibrationTransformer(const std::string& name);
 
 };
 

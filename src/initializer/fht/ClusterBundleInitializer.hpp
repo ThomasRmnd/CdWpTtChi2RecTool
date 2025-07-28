@@ -14,7 +14,6 @@ class ClusterBundleInitializer : public Initializer<FhtMethodTag> {
 
 public:
 
-    ClusterBundleInitializer(const std::string& name);
     ClusterBundleInitializer(const std::string& name, double dens_thold, double dist_thold);
 
     ~ClusterBundleInitializer() override = default;

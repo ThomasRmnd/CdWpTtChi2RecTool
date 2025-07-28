@@ -1,21 +1,8 @@
 #include "initializer/fht/WaterPhaseInitializer.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
 
 #include "utils/constants.hpp"
-
-DECLARE_TOOL(WaterPhaseInitializer);
-
-WaterPhaseInitializer::WaterPhaseInitializer(const std::string& name) : 
-    Initializer<FhtMethodTag>{name},
-    m_dt_f2itime{200.0},
-    m_dt{20.0},
-    m_q_ratio{0.5},
-    m_hist{std::make_unique<TH1D>("h__WaterPhaseInitializer", "h__WaterPhaseInitializer", 200, 0.0, 1000.0)}
-{
-    m_hist->SetDirectory(0);
-}
 
 WaterPhaseInitializer::WaterPhaseInitializer(const std::string& name, double dt_f2itime, double dt, double q_ratio) : 
     Initializer<FhtMethodTag>{name},

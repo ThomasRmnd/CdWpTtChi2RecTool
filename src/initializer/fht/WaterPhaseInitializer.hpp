@@ -17,7 +17,6 @@ class WaterPhaseInitializer : public Initializer<FhtMethodTag> {
 
 public:
 
-    WaterPhaseInitializer(const std::string& name);
     WaterPhaseInitializer(const std::string& name, double dt_f2itime, double dt, double q_ratio);
 
     ~WaterPhaseInitializer() override = default;

@@ -1,9 +1,6 @@
 #include "estimator/fht/FhtMinimizerEstimator.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(FhtMinimizerEstimator);
 
 bool FhtMinimizerEstimator::estimate(RecPmtTable& table) {
     if (m_params.empty()) {

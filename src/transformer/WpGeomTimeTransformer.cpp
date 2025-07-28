@@ -6,13 +6,6 @@
 #include <unordered_map>
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(WpGeomTimeTransformer);
-
-WpGeomTimeTransformer::WpGeomTimeTransformer(const std::string& name) : 
-    Transformer(name, RecPmtType::PMT_WP)
-{}
 
 WpGeomTimeTransformer::WpGeomTimeTransformer(const std::string& name, double time_window_early, double time_window_late, double thold_sep, double thold_q_ratio, double radius_time, double radius_arclength) : 
     Transformer(name, RecPmtType::PMT_WP), 

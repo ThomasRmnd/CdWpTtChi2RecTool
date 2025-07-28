@@ -1,11 +1,8 @@
 #include "transformer/TtCrossTalkTransformer.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
 
 #include "Identifier/TtID.h"
-
-DECLARE_TOOL(TtCrossTalkTransformer);
 
 TtCrossTalkTransformer::TtCrossTalkTransformer(const std::string& name) : 
     Transformer(name, RecPmtType::PMT_TT)

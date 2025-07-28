@@ -1,17 +1,6 @@
 #include "estimator/tt/TtMinimizerEstimator.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(TtMinimizerEstimator);
-
-TtMinimizerEstimator::TtMinimizerEstimator(const std::string& name) :
-    MinimizerEstimator<TtMethodTag>(name, nullptr, nullptr),
-    m_conv(nullptr),
-    c_max_nb_hits(0ul),
-    m_comb(nullptr),
-    m_init(nullptr)
-{}
 
 TtMinimizerEstimator::TtMinimizerEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<TtMethodTag>>& func, const std::shared_ptr<Converter>& conv, std::size_t max_nb_hits, const std::shared_ptr<Combinator>& comb, const std::shared_ptr<Initializer<TtMethodTag>>& init) :
     MinimizerEstimator<TtMethodTag>(name, opti, func),

@@ -3,16 +3,6 @@
 #include <algorithm>
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(ClusterBundleInitializer);
-
-ClusterBundleInitializer::ClusterBundleInitializer(const std::string& name) : 
-    Initializer<FhtMethodTag>(name),
-    m_dpc{},
-    m_dens_thold{1000.0},
-    m_dist_thold{5000.0}
-{}
 
 ClusterBundleInitializer::ClusterBundleInitializer(const std::string& name, double dens_thold, double dist_thold) : 
     Initializer<FhtMethodTag>(name),

@@ -17,7 +17,6 @@ class ClusterMaxChargeInitializer : public Initializer<FhtMethodTag> {
 
 public:
 
-    ClusterMaxChargeInitializer(const std::string& name);
     ClusterMaxChargeInitializer(const std::string& name, double pmt_cnt_thold, double shift, double range, double pe_thold, double ipos_radius, double q_ratio, double dir_corr_factor, double fpos_radius);
 
     ~ClusterMaxChargeInitializer() override = default;

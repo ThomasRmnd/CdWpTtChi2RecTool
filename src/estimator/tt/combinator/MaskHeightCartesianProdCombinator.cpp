@@ -1,9 +1,6 @@
 #include "estimator/tt/combinator/MaskHeightCartesianProdCombinator.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(MaskHeightCartesianProdCombinator);
 
 MaskHeightCartesianProdCombinator::MaskHeightCartesianProdCombinator(const std::string& name, std::size_t max_nb_heights) :
     Combinator(name),

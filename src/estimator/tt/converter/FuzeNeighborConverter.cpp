@@ -1,11 +1,8 @@
 #include "estimator/tt/converter/FuzeNeighborConverter.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
 
 #include "Identifier/TtID.h"
-
-DECLARE_TOOL(FuzeNeighborConverter);
 
 bool FuzeNeighborConverter::convert(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) {
     if (!getWallHits(ftable, ltable)) return false;

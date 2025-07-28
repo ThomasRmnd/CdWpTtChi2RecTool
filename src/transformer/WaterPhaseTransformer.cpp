@@ -1,9 +1,6 @@
 #include "transformer/WaterPhaseTransformer.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(WaterPhaseTransformer);
 
 #ifdef __USE_WATERPHASETRANSFORMER_J24_3_0_SIMULATIONS_IMPLEMENTATION__
 
@@ -173,18 +170,6 @@ void WaterPhaseTransformer::transformPmt(RecPmtProp& pmt) {
 }
 
 #else
-
-WaterPhaseTransformer::WaterPhaseTransformer(const std::string& name) :
-    Transformer(name, RecPmtType::PMT_CD),
-    m_hist(std::make_unique<TH1D>("h__WaterPhaseTransformer", "h__WaterPhaseTransformer", 1, 0.0, 1.0)),
-    m_q_thold_itime(0.0),
-    m_ratio_entries_ftime(0.0),
-    m_r2(0.0),
-    m_neigh_thold(0u),
-    m_dt(0.0)
-{
-    m_hist->SetDirectory(0);
-}
 
 WaterPhaseTransformer::WaterPhaseTransformer(const std::string& name, int nb_bins, double xmin, double xmax, double q_thold_itime, double ratio_entries_ftime, double r, unsigned int neigh_thold, double dt) :
     Transformer(name, RecPmtType::PMT_CD),

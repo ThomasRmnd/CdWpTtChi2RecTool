@@ -24,7 +24,6 @@ class TtMinimizerEstimator : public MinimizerEstimator<TtMethodTag> {
 
 public:
 
-    TtMinimizerEstimator(const std::string& name);
     TtMinimizerEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<TtMethodTag>>& func, const std::shared_ptr<Converter>& conv, std::size_t max_nb_hits, const std::shared_ptr<Combinator>& comb, const std::shared_ptr<Initializer<TtMethodTag>>& init);
 
     ~TtMinimizerEstimator() override = default;

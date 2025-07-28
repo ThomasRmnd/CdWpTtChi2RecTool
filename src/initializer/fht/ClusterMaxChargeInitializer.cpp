@@ -5,24 +5,6 @@
 #include <TH1D.h>
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(ClusterMaxChargeInitializer);
-
-ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name) : 
-    Initializer<FhtMethodTag>{name},
-    m_pmt_cnt_thold{5.0},
-    m_shift{2.0},
-    m_range{5.0},
-    m_pe_thold{10.0},
-    m_ipos_radius{9418.0},
-    m_q_ratio{0.9},
-    m_dir_corr_factor{1.5},
-    m_fpos_radius{10000.0},
-    m_hist{std::make_unique<TH1D>("h__ClusterMaxChargeInitializer", "h__ClusterMaxChargeInitializer", 1000, 0.0, 1000.0)}
-{
-    m_hist->SetDirectory(0);
-}
 
 ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name, double pmt_cnt_thold, double shift, double range, double pe_thold, double ipos_radius, double q_ratio, double dir_corr_factor, double fpos_radius) : 
     Initializer<FhtMethodTag>{name},

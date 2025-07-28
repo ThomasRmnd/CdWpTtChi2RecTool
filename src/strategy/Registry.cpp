@@ -1,9 +1,6 @@
 #include "strategy/Registry.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
-
-DECLARE_TOOL(StrategyRegistry);
 
 void StrategyRegistry::configure(const SniperJSON& config) {
     m_config = config;
