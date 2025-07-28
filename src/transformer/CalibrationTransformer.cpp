@@ -1,7 +1,5 @@
 #include "transformer/CalibrationTransformer.hpp"
 
-#include "SniperKernel/ToolFactory.h"
-
 DECLARE_TOOL(CalibrationTransformer);
 
 CalibrationTransformer::CalibrationTransformer(const std::string& name) :

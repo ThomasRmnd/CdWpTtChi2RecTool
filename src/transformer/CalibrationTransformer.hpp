@@ -1,6 +1,8 @@
 #ifndef CDWPTTCHI2RECTOOL_TRANSFORMER_CALIBRATIONTRANSFORMER_HPP_
 #define CDWPTTCHI2RECTOOL_TRANSFORMER_CALIBRATIONTRANSFORMER_HPP_
 
+#include "SniperKernel/ToolFactory.h"
+
 #include "transformer/Transformer.hpp"
 
 /**
