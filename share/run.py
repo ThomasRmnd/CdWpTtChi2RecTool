@@ -41,7 +41,7 @@ prof.setLogLevel(1)
 # === BufferMemMgr ===
 import BufferMemMgr
 buf_mgr = task.createSvc("BufferMemMgr")
-buf_mgr.property("TimeWindow").set([0, 0])
+buf_mgr.property("TimeWindow").set([-1e-6, 1e-6])
 
 # === Geometry === 
 import Geometry
