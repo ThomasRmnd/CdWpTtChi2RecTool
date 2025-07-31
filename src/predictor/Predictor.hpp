@@ -12,7 +12,7 @@
  * @brief Base class to calculate expected data
  */
 template<typename _MethodTag>
-class Predictor : public IParamsHandler, public Configurable {
+class Predictor : public IParamsHandler {
 
     static_assert(std::is_base_of<MethodTag, _MethodTag>::value, "Tag must derive from MethodTag");
 
@@ -20,9 +20,6 @@ public:
 
     typedef typename MethodTraits<_MethodTag>::const_iterator const_iterator;
     typedef typename MethodTraits<_MethodTag>::theo_iterator theo_iterator;
-
-    Predictor() : Configurable{} {}
-    Predictor(const std::string& name) : Configurable{name} {}
 
     virtual ~Predictor() = default;
 

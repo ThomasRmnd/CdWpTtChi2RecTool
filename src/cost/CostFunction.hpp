@@ -42,7 +42,6 @@ public:
 
     void configure(const SniperJSON& config) override {
         if (!config.valid()) return;
-        m_pred->configure(config);
         m_chi2->configure(config);
     }
 
@@ -104,9 +103,7 @@ public:
 
     void configure(const SniperJSON& config) override {
         if (!config.valid()) return;
-        m_pred_fht->configure(config);
         m_chi2_fht->configure(config);
-        m_pred_tt->configure(config);
         m_chi2_tt->configure(config);
     }
 
