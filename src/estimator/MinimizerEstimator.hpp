@@ -1,18 +1,17 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_MINIMIZERESTIMATOR_HPP_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_MINIMIZERESTIMATOR_HPP_
 
-#include "estimator/Estimator.hpp"
-
 #include <memory>
 
-#include "utils/Method.hpp"
 #include "cost/CostFunction.hpp"
+#include "estimator/Estimator.hpp"
 #include "estimator/optimizer/Optimizer.hpp"
+#include "utils/Method.hpp"
 
-template<typename _Tag>
+template<typename _MethodTag>
 class MinimizerEstimator : public Estimator {
 
-    static_assert(std::is_base_of<MethodTag, _Tag>::value, "Tag must be derived from MethodTag");
+    static_assert(std::is_base_of<MethodTag, _MethodTag>::value, "Tag must be derived from MethodTag");
 
 public:
 
@@ -22,7 +21,7 @@ public:
         m_func(nullptr)
     {}
 
-    MinimizerEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<_Tag>>& func) :
+    MinimizerEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<_MethodTag>>& func) :
         Estimator(name),
         m_opti(opti),
         m_func(func)
@@ -59,7 +58,7 @@ public:
 protected:
 
     std::shared_ptr<Optimizer> m_opti;
-    std::shared_ptr<CostFunction<_Tag>> m_func;
+    std::shared_ptr<CostFunction<_MethodTag>> m_func;
 
 };
 

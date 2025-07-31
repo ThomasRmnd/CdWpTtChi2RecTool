@@ -1,9 +1,9 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_OPTIMIZER_HPP_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_OPTIMIZER_HPP_
 
-#include "estimator/optimizer/Optimizer.hpp"
-
 #include <Math/Minimizer.h>
+
+#include "estimator/optimizer/Optimizer.hpp"
 
 class RootOptimizer : public Optimizer {
 

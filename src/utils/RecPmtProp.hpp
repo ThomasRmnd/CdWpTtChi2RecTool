@@ -67,7 +67,7 @@ struct hash<RecPmtType> {
 
 } // namespace std
 
-inline std::unordered_map<RecPmtType, double> pmt_type_to_res = {
+inline std::unordered_map<RecPmtType, double> g_pmt_type_to_res = {
     {RecPmtType::PMT_20INCH_NNVT, 7.0}, // 5.5},
     {RecPmtType::PMT_20INCH_HIGHQENNVT, 7.0}, // 5.5},
     {RecPmtType::PMT_20INCH_HAMAMATSU, 5.0}, // 2.0},
@@ -75,7 +75,7 @@ inline std::unordered_map<RecPmtType, double> pmt_type_to_res = {
     {RecPmtType::PMT_WP, 13.0}
 };
 
-struct RecPmtProp { // sizeof = 64 (PmtType : unsigned char)
+struct RecPmtProp { // sizeof = 64
 
     vec3 pos;
     double inv_res;
@@ -86,7 +86,7 @@ struct RecPmtProp { // sizeof = 64 (PmtType : unsigned char)
     RecPmtType type;
     bool used;
 
-    // double inv_res() const { return pmt_type_to_invres[type]; }; // <-- this would allow to remove inv_res member and thus reduce sizeof(RecPmtProp) to 56
+    // double inv_res() const { return pmt_type_to_invres[type]; }; // <-- this would allow to remove inv_res member, reducing sizeof(RecPmtProp) to 56
 
 };
 
@@ -179,7 +179,7 @@ private:
     static void convertToRecPmtProp(const PmtProp& src, RecPmtProp& dst) {
         dst.pos = src.pos;
         dst.type = getRecPmtType(src);
-        dst.inv_res = 1.0 / pmt_type_to_res[dst.type];
+        dst.inv_res = 1.0 / g_pmt_type_to_res[dst.type];
         dst.totq = src.q;
         dst.q = src.hitq[0];
         dst.fht = src.fht;

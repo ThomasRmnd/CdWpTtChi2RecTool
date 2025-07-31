@@ -8,7 +8,7 @@
  * @class Chi2
  * @tparam _MethodTag Method tag
  * 
- * @brief Base class for raw \f$ \chi^2 \f$ calculation
+ * @brief Base class for raw \f$ \chi^2 \f$ calculation.
  */
 template<typename _MethodTag>
 class Chi2 : public Configurable {
@@ -25,13 +25,15 @@ public:
     virtual ~Chi2() = default;
 
     /**
-     * @brief Calculate the raw \f$ \chi^2 \f$
+     * @brief Calculate the raw \f$ \chi^2 \f$.
      * 
-     * @param first the beginning iterator of the experimental data 
-     * @param last the end iterator of the experimental data
-     * @param theo the beginning iterator of the expected data
+     * @param first The beginning iterator of the experimental data.
+     * @param last The end iterator of the experimental data.
+     * @param theo The beginning iterator of the expected data.
      * 
-     * @return Raw \f$ \chi^2 \f$
+     * @return The raw \f$ \chi^2 \f$.
+     * 
+     * The range beginning at `theo` must contain at least `last - first` elements.
      */
     virtual double calculate(const_iterator first, const_iterator last, theo_const_iterator theo) = 0;
 

@@ -11,7 +11,6 @@ class Configurable : public ToolBase {
 
 public:
 
-    Configurable() : ToolBase{""} {}
     Configurable(const std::string& name) : ToolBase{name} {}
 
     virtual ~Configurable() = default;

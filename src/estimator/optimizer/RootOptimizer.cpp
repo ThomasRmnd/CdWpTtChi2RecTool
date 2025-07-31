@@ -6,7 +6,7 @@
 #include "SniperKernel/SniperLog.h"
 
 RootOptimizer::RootOptimizer(unsigned int max_calls, unsigned int max_iter, double tol) :
-    Optimizer(max_calls, max_iter, tol),
+    Optimizer{max_calls, max_iter, tol},
     m_opti(ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad"))
 {}
 

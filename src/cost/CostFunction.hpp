@@ -28,12 +28,6 @@ public:
     typedef typename MethodTraits<_MethodTag>::const_iterator const_iterator;
     typedef typename MethodTraits<_MethodTag>::theo_vector_type theo_vector_type;
 
-    CostFunction(const std::shared_ptr<Predictor<_MethodTag>>& pred, const std::shared_ptr<Chi2<_MethodTag>>& sim) :
-        Configurable{},
-        m_pred{pred},
-        m_chi2{sim}
-    {}
-
     CostFunction(const std::string& name, const std::shared_ptr<Predictor<_MethodTag>>& pred, const std::shared_ptr<Chi2<_MethodTag>>& sim) :
         Configurable{name},
         m_pred{pred},
@@ -52,18 +46,14 @@ public:
         m_chi2->configure(config);
     }
 
-    /**
-     * @brief Set the experimental data
-     * 
-     * @param data experimental data vector
-     */
+    // Set the experimental data
     virtual void set(const vector_type& data) = 0;
 
     /**
      * @brief 1. Calculate the expected data based on the track parameters
      * 2. Calculate the cost by comparing with the experimental data provided 
      * 
-     * @param params track parameters
+     * @param params the track parameters
      * 
      * @return Cost
      */
@@ -89,17 +79,6 @@ template<>
 class CostFunction<FhtTtMethodTag> : public IParamsHandler, public Configurable {
 
 public:
-
-    CostFunction(
-        const std::shared_ptr<Predictor<FhtMethodTag>>& pred_fht, const std::shared_ptr<Chi2<FhtMethodTag>>& chi2_fht,
-        const std::shared_ptr<Predictor<TtMethodTag>>& pred_tt, const std::shared_ptr<Chi2<TtMethodTag>>& chi2_tt
-    ) :
-        Configurable{},
-        m_pred_fht{pred_fht},
-        m_chi2_fht{chi2_fht},
-        m_pred_tt{pred_tt},
-        m_chi2_tt{chi2_tt}
-    {}
 
     CostFunction(
         const std::string& name,
