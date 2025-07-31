@@ -150,6 +150,7 @@ void CdStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        "CdStrategy__FhtCostFunction",
         g_pred_fht_cd_no_refr_ls_single,
         g_chi2_fht
     );
@@ -224,6 +225,7 @@ void CdStoppingStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        "CdStoppingStrategy__FhtCostFunction",
         g_pred_fht_cd_no_refr_ls_single,
         g_chi2_fht
     );
@@ -299,6 +301,7 @@ void CdDoubleStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        "CdDoubleStrategy__FhtCostFunction",
         g_pred_fht_cd_no_refr_ls_double,
         g_chi2_fht
     );
@@ -378,6 +381,7 @@ void TtStrategy::create() {
         "TtStrategy__TtMinimizerEstimator",
         g_opti,
         std::make_shared<TtCostFunction>(
+            "TtStrategy__TtCostFunction",
             g_pred_tt_single_tt,
             g_chi2_tt
         ),
@@ -456,6 +460,7 @@ void CdWpStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        "CdWpStrategy__FhtCostFunction",
         g_pred_fht_no_refr_ls_no_hit_single,
         g_chi2_fht
     );
@@ -535,6 +540,7 @@ void CdTtStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        "CdTtStrategy__FhtMethodTag",
         g_pred_fht_cd_no_refr_ls_single,
         g_chi2_fht
     );
@@ -551,6 +557,7 @@ void CdTtStrategy::create() {
     );
 
     std::shared_ptr<CostFunction<TtMethodTag>> tt_cost = std::make_shared<TtCostFunction>(
+        "CdTtStrategy__TtCostFunction",
         std::make_shared<TtPredictor<SingleTtParamsTag>>(),
         g_chi2_tt
     );
@@ -564,6 +571,7 @@ void CdTtStrategy::create() {
     );
 
     std::shared_ptr<CostFunction<FhtTtMethodTag>> fht_tt_cost = std::make_shared<FhtTtCostFunction>(
+        "CdTtStrategy__FhtTtCostFunction",
         g_pred_fht_cd_no_refr_ls_single,
         g_chi2_fht,
         g_pred_tt_single,
@@ -653,6 +661,7 @@ void CdWpTtStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        "CdWpTtStrategy__FhtCostFunction",
         g_pred_fht_no_refr_ls_no_hit_single,
         g_chi2_fht
     );
@@ -669,6 +678,7 @@ void CdWpTtStrategy::create() {
     );
 
     std::shared_ptr<CostFunction<TtMethodTag>> tt_cost = std::make_shared<TtCostFunction>(
+        "CdWpTtStrategy__TtCostFunction",
         g_pred_tt_single_tt,
         g_chi2_tt
     );
@@ -682,6 +692,7 @@ void CdWpTtStrategy::create() {
     );
 
     std::shared_ptr<CostFunction<FhtTtMethodTag>> fht_tt_cost = std::make_shared<FhtTtCostFunction>(
+        "CdWpTtStrategy__FhtTtCostFunction",
         g_pred_fht_no_refr_ls_no_hit_single,
         g_chi2_fht,
         g_pred_tt_single,
@@ -761,6 +772,7 @@ void CdWaterPhaseStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        "CdWaterPhaseStrategy__FhtCostFunction",
         std::make_shared<CdFhtPredictor<SingleCdParamsTag>>(
             std::make_shared<WaterPhaseCdFht<SingleCdParamsTag>>()
         ),
@@ -845,6 +857,7 @@ void CdWpWaterPhaseStrategy::create() {
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
+        "CdWpWaterPhaseStrategy__FhtCostFunction",
         std::make_shared<CdWpFhtPredictor<SingleCdParamsTag>>(
             std::make_shared<WaterPhaseCdFht<SingleCdParamsTag>>(),
             std::make_shared<NoDiffusionWpFht<SingleCdParamsTag>>()
