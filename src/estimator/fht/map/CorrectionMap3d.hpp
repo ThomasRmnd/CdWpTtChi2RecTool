@@ -14,10 +14,6 @@ class CorrectionMap3d : public CorrectionMap<_ParamsTag> {
 
 public:
 
-    CorrectionMap3d(const std::string& name) :
-        CorrectionMap<_ParamsTag>(name)
-    {}
-
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
         CorrectionMap<_ParamsTag>(name, pmt_type, filename, mapname),
         m_param_x(param_x),
@@ -141,10 +137,6 @@ template<>
 class CorrectionMap3d<DoubleAcrylicParamsTag> : public CorrectionMap<DoubleAcrylicParamsTag> {
 
 public:
-
-    CorrectionMap3d(const std::string& name) :
-        CorrectionMap<DoubleAcrylicParamsTag>(name)
-    {}
 
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
         CorrectionMap<DoubleAcrylicParamsTag>(name, pmt_type, filename, mapname),

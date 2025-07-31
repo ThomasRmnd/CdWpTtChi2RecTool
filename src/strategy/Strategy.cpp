@@ -42,17 +42,14 @@
 
 #ifdef __USE_CCA_FILES_CORRECTION_MAP__
     #define CORRECTION_MAP_FILENAME "~/J22.2.0-rc2/junosw/Examples/CorrectionMaps/share/CorrectionMap_CdWp_10010020_L2_5050_Shifted_2D_CCA.root"
-    #define CORRECTION_MAP_MAPNAME_NNVT "NNVTPmtsCorrectionMap_FhtChargeThold20"
-    #define CORRECTION_MAP_MAPNAME_HAMAMATSU "HamamatsuPmtsCorrectionMap_FhtChargeThold20"
-    #define CORRECTION_MAP_MAPNAME_3INCH "3inchPmtsCorrectionMap_EarlyLateFht135"
-    #define CORRECTION_MAP_MAPNAME_WP "WpPmtsCorrectionMap_TimeGeom"
 #else
     #define CORRECTION_MAP_FILENAME "/junofs/users/traymond/data/CorrectionMaps/CorrectionMap_CdWp_10010020_L2_5050_Shifted_2D_CCA.root"
-    #define CORRECTION_MAP_MAPNAME_NNVT "NNVTPmtsCorrectionMap_FhtChargeThold20"
-    #define CORRECTION_MAP_MAPNAME_HAMAMATSU "HamamatsuPmtsCorrectionMap_FhtChargeThold20"
-    #define CORRECTION_MAP_MAPNAME_3INCH "3inchPmtsCorrectionMap_EarlyLateFht135"
-    #define CORRECTION_MAP_MAPNAME_WP "WpPmtsCorrectionMap_TimeGeom"
 #endif // __USE_CCA_FILES_CORRECTION_MAP__
+
+#define CORRECTION_MAP_MAPNAME_NNVT "NNVTPmtsCorrectionMap_FhtChargeThold20"
+#define CORRECTION_MAP_MAPNAME_HAMAMATSU "HamamatsuPmtsCorrectionMap_FhtChargeThold20"
+#define CORRECTION_MAP_MAPNAME_3INCH "3inchPmtsCorrectionMap_EarlyLateFht135"
+#define CORRECTION_MAP_MAPNAME_WP "WpPmtsCorrectionMap_TimeGeom"
 
 #define DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Base, name, Derived, ...) \
     std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(__VA_ARGS__); \

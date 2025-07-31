@@ -107,18 +107,10 @@ public:
         m_chi2_tt->configure(config);
     }
 
-    /**
-     * @brief Set the FHT experimental data
-     * 
-     * @param data FHT experimental data vector
-     */
+    // Set the FHT experimental data
     virtual void set(const RecPmtTable& table) = 0;
 
-    /**
-     * @brief Set the TT experimental data
-     * 
-     * @param data TT experimental data vector
-     */
+    // Set the TT experimental data
     virtual void set(const std::vector<vec3>& hits) = 0;
     
     /**

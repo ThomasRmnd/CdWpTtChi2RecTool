@@ -55,18 +55,10 @@ public:
 
     ~FhtTtReducedCostFunction() override = default;
 
-    /**
-     * @brief Set the FHT experimental data
-     * 
-     * @param data FHT experimental data vector
-     */
+    // Set the FHT experimental data
     void set(const RecPmtTable& table) override;
 
-    /**
-     * @brief Set the TT experimental data
-     * 
-     * @param data TT experimental data vector
-     */
+    // Set the TT experimental data
     void set(const std::vector<vec3>& hits) override;
 
     /**

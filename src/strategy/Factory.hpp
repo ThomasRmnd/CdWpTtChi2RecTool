@@ -21,6 +21,8 @@ protected:
 
     const StrategyRegistry& c_registry;
 
+    DetectorType getDetectorType(const RecPmtTable& table) const;
+
 };
 
 class ManualStrategyFactory : public StrategyFactory {

@@ -11,16 +11,11 @@
 #include "utils/vec3.hpp"
 
 template<typename _ParamsTag>
-class CorrectionMap : public ToolBase, public PmtTypeChecker, public TrackSetter<_ParamsTag> {
+class CorrectionMap : public ToolBase, public PmtTypeChecker, public TrackSetter<_ParamsTag>, public IParamsHandler {
 
     static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
 
 public:
-
-    CorrectionMap(const std::string& name) :
-        ToolBase(name),
-        PmtTypeChecker(RecPmtType::PMT_UNKNOWN)
-    {}
 
     CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname) :
         ToolBase(name),
@@ -35,6 +30,10 @@ public:
         if (!openCorrFile()) return false;
         if (!openCorrProfile()) return false;
         return true;
+    }
+
+    ParamsType getIParamsType() {
+        return ParamsTraits<_ParamsTag>::type;
     }
 
     virtual void correct(RecPmtTable& table) = 0;

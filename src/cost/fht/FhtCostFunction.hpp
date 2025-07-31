@@ -16,11 +16,7 @@ public:
 
     ~FhtCostFunction() override = default;
 
-    /**
-     * @brief Set the experimental data
-     * 
-     * @param data experimental data vector
-     */
+    // Set the experimental data
     void set(const vector_type& table) override;
 
     /**

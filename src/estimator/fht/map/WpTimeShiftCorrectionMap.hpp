@@ -14,10 +14,6 @@ class WpTimeShiftCorrectionMap : public CorrectionMap<_ParamsTag> {
 
 public:
 
-    WpTimeShiftCorrectionMap(const std::string& name) :
-        CorrectionMap<_ParamsTag>(name)
-    {}
-
     WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
         CorrectionMap<_ParamsTag>(name, RecPmtType::PMT_WP, filename, mapname)
     {}
@@ -91,10 +87,6 @@ template<>
 class WpTimeShiftCorrectionMap<DoubleAcrylicParamsTag> : public CorrectionMap<DoubleAcrylicParamsTag> {
 
 public:
-
-    WpTimeShiftCorrectionMap(const std::string& name) :
-        CorrectionMap<DoubleAcrylicParamsTag>(name)
-    {}
 
     WpTimeShiftCorrectionMap(const std::string& name, const std::string& filename, const std::string& mapname) :
         CorrectionMap<DoubleAcrylicParamsTag>(name, RecPmtType::PMT_WP, filename, mapname)
