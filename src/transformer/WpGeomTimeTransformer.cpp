@@ -164,46 +164,6 @@ bool WpGeomTimeTransformer::getEarlyLateTime() {
         found_late = true;
     }
 
-    //
-    /* m_h_fht->Reset();
-    for (const RecPmtProp& pmt : table) {
-        if (!pmt.used || !checkPmtType(pmt)) continue;
-        m_h_fht->Fill(pmt.fht);
-    }
-
-    int bin_early = 1, bin_late = m_h_fht->GetNbinsX();
-    
-    for (int k = 1; k <= m_h_fht->GetNbinsX() && !found_early; ++k) {
-        if (m_pmt_thold <= m_h_fht->GetBinContent(k)) {
-            bin_early = k;
-            found_early = true;
-        }
-    }
-    while (0.0 < m_h_fht->GetBinContent(bin_early) && 1 < bin_early) --bin_early;
-    m_time_early = m_h_fht->GetBinCenter(bin_early);
-
-    for (int k = m_h_fht->GetNbinsX(); 1 <= k && !found_late; --k) {
-        if (m_pmt_thold <= m_h_fht->GetBinContent(k)) {
-            bin_late = k;
-            found_late = true;
-        }
-    }
-    while (0.0 < m_h_fht->GetBinContent(bin_late) && bin_late < m_h_fht->GetNbinsX()) ++bin_late;
-    m_time_late = m_h_fht->GetBinCenter(bin_late); */
-    //
-
-    /* for (const RecPmtProp& pmt : table) {
-        if (!pmt.used || !checkPmtType(pmt)) continue;
-        if (pmt.fht < m_time_early) {
-            m_time_early = pmt.fht;
-            found_early = true;
-        }
-        if (pmt.fht > m_time_late) {
-            m_time_late = pmt.fht;
-            found_late = true;
-        }
-    } */
-
     if (!found_early || !found_late) {
         LogWarn << "Early/Late time not found, cannot continue WpGeomTimeTransformer\n";
         return false;

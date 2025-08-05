@@ -22,10 +22,11 @@ public:
     /**
      * @brief 1. Calculate the expected data based on the track parameters
      * 2. Calculate the cost by comparing with the experimental data provided 
+     * 3. Return the cost divided by NDF
      * 
      * @param params track parameters
      * 
-     * @return Cost
+     * @return Cost / NDF
      */
     double operator()(const double* params) override;
 

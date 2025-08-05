@@ -29,31 +29,31 @@ enum class RecPmtType : unsigned char {
 };
 
 inline constexpr RecPmtType operator|(RecPmtType lhs, RecPmtType rhs) noexcept {
-	return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) | static_cast<unsigned char>(rhs));
+    return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) | static_cast<unsigned char>(rhs));
 }
 
 inline constexpr RecPmtType operator&(RecPmtType lhs, RecPmtType rhs) noexcept {
-	return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) & static_cast<unsigned char>(rhs));
+    return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) & static_cast<unsigned char>(rhs));
 }
 
 inline constexpr RecPmtType operator^(RecPmtType lhs, RecPmtType rhs) noexcept {
-	return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) ^ static_cast<unsigned char>(rhs));
+    return static_cast<RecPmtType>(static_cast<unsigned char>(lhs) ^ static_cast<unsigned char>(rhs));
 }
 
 inline constexpr RecPmtType operator~(RecPmtType rhs) noexcept {
-	return static_cast<RecPmtType>(~static_cast<unsigned char>(rhs));
+    return static_cast<RecPmtType>(~static_cast<unsigned char>(rhs));
 }
 
 inline constexpr RecPmtType& operator|=(RecPmtType& lhs, RecPmtType rhs) noexcept {
-	return (lhs = lhs | rhs);
+    return (lhs = lhs | rhs);
 }
 
 inline constexpr RecPmtType& operator&=(RecPmtType& lhs, RecPmtType rhs) noexcept {
-	return (lhs = lhs & rhs);
+    return (lhs = lhs & rhs);
 }
 
 inline constexpr RecPmtType& operator^=(RecPmtType& lhs, RecPmtType rhs) noexcept {
-	return (lhs = lhs ^ rhs);
+    return (lhs = lhs ^ rhs);
 }
 
 namespace std {

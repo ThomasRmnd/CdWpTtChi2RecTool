@@ -85,35 +85,11 @@ public:
         double signed_pos = dot(this->m_dir, pmt.pos);
 
         if (0 < signed_pos) {
-            /* if (this->m_length <= d_1st_light && d_1st_light <= d_o_wp) {
-                vec3 p0 = m_p_1st_light;
-                vec3 d0 = unit(pmt.pos - m_p_1st_light);
-                double _b = dot(p0, d0);
-                double _c = mag2(p0) - 20050.0 * 20050.0;
-                double _d = _b * _b - _c;
-                if (_d > 0.0) {
-                    double _t = -_b - std::sqrt(_d);
-                    if (_t < mag(pmt.pos - m_p_1st_light)) return t_cherenkov;
-                }
-                else return t_cherenkov;
-            } */
-
-            double t_back = this->m_t_0 + d_o_wp * constants::inv_c + mag(pmt.pos - end_wp) * constants::inv_c_w /* -10.0 */; // 10 is a constant, maybe because of the time emission
+            double t_back = this->m_t_0 + d_o_wp * constants::inv_c + mag(pmt.pos - end_wp) * constants::inv_c_w - 10.0; // 10 is a constant, maybe because of the time emission
             return t_back;
-
-            /* double dist_to_trk = mag(cross(m_dir, pmt.pos - m_orig));
-            if (dist_to_trk <= 5000.0 && ( std::abs(pmt.fht - t_cherenkov) < std::abs(pmt.fht - t_back) )) {
-                return t_cherenkov;
-            }
-            else {
-                return t_back;
-            } */
         }
 
-        else { // signed_pos <= 0
-            return t_cherenkov;
-        }
-
+        return t_cherenkov;
     };
 
 private:
@@ -191,8 +167,8 @@ public:
         fht_2 = m_t_0_2 + dt_1st_light + mag(pmt.pos - m_p_1st_light) * constants::inv_c_w;
 
         if (0 < signed_pos) {
-            fht_1 = m_t_0_1 + d_o_wp_1 * constants::inv_c + mag(pmt.pos - end_wp_1) * constants::inv_c_w /* -10.0 */; // 10 is a constant, maybe because of the time emission
-            fht_2 = m_t_0_2 + d_o_wp_2 * constants::inv_c + mag(pmt.pos - end_wp_2) * constants::inv_c_w /* -10.0 */;
+            fht_1 = m_t_0_1 + d_o_wp_1 * constants::inv_c + mag(pmt.pos - end_wp_1) * constants::inv_c_w - 10.0; // 10 is a constant, maybe because of the time emission
+            fht_2 = m_t_0_2 + d_o_wp_2 * constants::inv_c + mag(pmt.pos - end_wp_2) * constants::inv_c_w - 10.0;
         }
         return std::min(fht_1, fht_2);
     };
