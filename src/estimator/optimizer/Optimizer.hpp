@@ -5,6 +5,11 @@
 #include <string>
 #include <vector>
 
+/**
+ * @class Optimizer
+ * 
+ * @brief Abstract base class for numerical optimizers.
+ */
 class Optimizer {
 
 public:
@@ -13,6 +18,15 @@ public:
 
     virtual ~Optimizer() = default;
 
+    /**
+     * @brief Run the optimization using the provided cost function.
+     *
+     * @tparam Func Callable type: must be convertible to `double(const double*)`.
+     * 
+     * @param func The cost function to minimize.
+     * 
+     * @return true if optimization succeeds, false otherwise.
+     */
     template<typename Func> 
     bool optimize(Func&& func) {
         std::function<double(const double*)> std_func = [&func](const double* x) { return func(x); };
@@ -38,6 +52,13 @@ protected:
     std::vector<std::string> m_names;
     double m_cost;
 
+    /**
+     * @brief Implementation-specific optimization logic.
+     *
+     * @param func Cost function.
+     * 
+     * @return true if optimization succeeds, false otherwise.
+     */
     virtual bool optimize_impl(const std::function<double(const double*)>& func) = 0;
 
 };

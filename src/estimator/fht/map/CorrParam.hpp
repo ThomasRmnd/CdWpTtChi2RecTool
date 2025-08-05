@@ -22,7 +22,7 @@ protected:
 
 };
 
-// angle formed by the PMT, the center of the CD and the track, in the plane perpendicular to the track
+// angle formed by the PMT, the center of the CD and the track's middle point, in the plane perpendicular to the track
 class AngleCorrParam final : public CorrParam {
 
 public:

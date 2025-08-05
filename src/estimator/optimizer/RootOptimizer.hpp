@@ -5,6 +5,14 @@
 
 #include "estimator/optimizer/Optimizer.hpp"
 
+/**
+ * @class RootOptimizer
+ * 
+ * @brief Optimizer implementation using ROOT's Minuit2 Migrad algorithm.
+ * 
+ * This class wraps the ROOT Minuit2 minimizer interface, providing an
+ * implementation of the abstract `Optimizer` base class.
+ */
 class RootOptimizer : public Optimizer {
 
 public:
@@ -17,6 +25,13 @@ private:
 
     ROOT::Math::Minimizer* m_opti;
 
+    /**
+     * @brief Implementation-specific optimization logic.
+     *
+     * @param func Cost function.
+     * 
+     * @return true if optimization succeeds, false otherwise.
+     */
     bool optimize_impl(const std::function<double(const double*)>& func) override;
 
 };

@@ -13,7 +13,7 @@ RootOptimizer::RootOptimizer(unsigned int max_calls, unsigned int max_iter, doub
 bool RootOptimizer::optimize_impl(const std::function<double(const double*)>& func) {
     m_opti->Clear();
     if (!m_size) {
-        LogWarn << "No variable set, cannot optimize. Skipping\n";
+        LogError << "No variable set, cannot optimize. Skipping\n";
         return false;
     }
 

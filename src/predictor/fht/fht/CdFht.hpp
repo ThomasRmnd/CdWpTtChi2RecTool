@@ -9,7 +9,7 @@
  * @class CdFht
  * @tparam _ParamsTag Method tag
  * 
- * @brief Base class to calculate expected FHT for CD PMT
+ * @brief Base class to calculate expected FHT for CD PMT.
  */
 template<typename _ParamsTag>
 class CdFht : public TrackSetter<_ParamsTag> {
@@ -35,9 +35,10 @@ public:
  * @class NoRefractionLsCdFht
  * @tparam _ParamsTag Method tag
  * 
- * @brief Derived class to calculate expected FHT for CD PMT
- * This calculation is designed for LS phase
- * It do not take into account refraction between LS and water
+ * @brief Derived class to calculate expected FHT for CD PMT.
+ * 
+ * This calculation is designed for LS phase.
+ * It do not take into account refraction between LS and water.
  */
 template<typename _ParamsTag>
 class NoRefractionLsCdFht final : public CdFht<_ParamsTag> {
@@ -49,7 +50,7 @@ public:
     void setTrack(const double* params) final override {
         CdFht<_ParamsTag>::setTrack(params);
         m_half_length = 0.5 * this->m_length;
-        m_t_end = this->m_t_0 + this->m_length / constants::c; // ~ this->m_length * constants::inv_c but even though multiplying by inversion is much faster, dividing seems to be more precise
+        m_t_end = this->m_t_0 + this->m_length / constants::c; // ~ this->m_length * constants::inv_c but even though multiplying by inversion is faster, dividing seems to be more precise
         m_p_end = this->m_orig + this->m_length * this->m_dir;
     }
 
@@ -82,9 +83,10 @@ private:
 /**
  * @class NoRefractionLsCdFht<DoubleAcrylicParamsTag>
  * 
- * @brief Derived class to calculate expected FHT for CD PMT, specialization with DoubleAcrylicParamsTag
- * This calculation is designed for LS phase
- * It do not take into account refraction between LS and water
+ * @brief Derived class to calculate expected FHT for CD PMT, specialization with DoubleAcrylicParamsTag.
+ * 
+ * This calculation is designed for LS phase.
+ * It do not take into account refraction between LS and water.
  */
 template<>
 class NoRefractionLsCdFht<DoubleAcrylicParamsTag> final : public CdFht<DoubleAcrylicParamsTag> {
@@ -96,10 +98,10 @@ public:
     void setTrack(const double* params) final override {
         CdFht<DoubleAcrylicParamsTag>::setTrack(params);
         m_half_length_1 = 0.5 * m_length_1;
-        m_t_end_1 = m_t_0_1 + m_length_1 / constants::c; // ~ m_length_1 * constants::inv_c but even though multiplying by inversion is much faster, dividing seems to be more precise
+        m_t_end_1 = m_t_0_1 + m_length_1 / constants::c; // ~ m_length_1 * constants::inv_c but even though multiplying by inversion is faster, dividing seems to be more precise
         m_p_end_1 = m_orig_1 + m_length_1 * m_dir;
         m_half_length_2 = 0.5 * m_length_2;
-        m_t_end_2 = m_t_0_2 + m_length_2 / constants::c; // ~ m_length_2 * constants::inv_c but even though multiplying by inversion is much faster, dividing seems to be more precise
+        m_t_end_2 = m_t_0_2 + m_length_2 / constants::c; // ~ m_length_2 * constants::inv_c but even though multiplying by inversion is faster, dividing seems to be more precise
         m_p_end_2 = m_orig_2 + m_length_2 * m_dir;
     }
 
@@ -141,8 +143,9 @@ private:
  * @class WaterPhaseCdFht
  * @tparam _ParamsTag Method tag
  * 
- * @brief Derived class to calculate expected FHT for CD PMT
- * This calculation is designed for water phase
+ * @brief Derived class to calculate expected FHT for CD PMT.
+ * 
+ * This calculation is designed for water phase.
  */
 template<typename _ParamsTag>
 class WaterPhaseCdFht final : public CdFht<_ParamsTag> {

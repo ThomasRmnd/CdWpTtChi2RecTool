@@ -59,14 +59,16 @@ public:
 
         // TODO when finished checking: Following this folloing paragraph in the setTrack method {
 
-        double d_i_wp = 0.0, d_o_wp = 0.0;
+        auto [d_i_wp, d_o_wp] = computeWpHits(this->orig, this->m_dir);
+
+        /* double d_i_wp = 0.0, d_o_wp = 0.0;
         if (!trajectoryHitCylinder(21750.0, 44000.0, this->m_orig, this->m_dir, d_i_wp, d_o_wp)) { // need to be changed for a analytical solution
             LogError << "Cannot project points into the WP\n";
             LogError << "Orig: " << this->m_orig.x << ' ' << this->m_orig.y << ' ' << this->m_orig.z << '\n';
             LogError << "Dir: " << this->m_dir.x << ' ' << this->m_dir.y << ' ' << this->m_dir.z << '\n';
             std::cin.get();
             return 0.0;
-        }
+        } */
 
         vec3 end_wp = this->m_orig + this->m_dir * d_o_wp;
 
