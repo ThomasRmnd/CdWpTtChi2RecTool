@@ -1,0 +1,7 @@
+# CdWpTtChi2RecTool
+
+This muon reconstruction method allows to reconstructed muons using all JUNO's subdetectors (CD, WP and TT).
+
+This method is build on multiple strategies. A `Strategy` is composed of a pipeline allowing to reconstruction the events. It is defined for a specific pair of detector association (CD, CD+WP, CD+WP+TT, etc.) and track type (single through-going, single stopping, double, etc.). A `Pipeline` is composed of a succession of components performing a series of operations to reconstruction an event. A register (`StrategyRegister`) is used to access all available strategies. Factories (`StrategyFactory`) are used to obtain the appropriate strategy for a corresponding event. `ManualStrategyFactory` will only allow to use strategies that reconstruct a certain track type, while `AutomaticStrategyFactory` will attempt to classify the event to determine which type of trajectory to use, and then provide the most appropriate strategy.  
+
+The `Pipeline` consists of tree main composents: `Transformer`, `Initializer` and `Estimator` (`Pipeline` is an `Estimator`). `Transformer` filter or modify the PMT data to improve the reconstruction. `Initializer` calculate an initial estimate of the track parameters. `Estimator` is a kind of fusion of the two, filtering and modifying PMT data and/or adjusting data with a theoretical model by minimizing $\chi^2$
