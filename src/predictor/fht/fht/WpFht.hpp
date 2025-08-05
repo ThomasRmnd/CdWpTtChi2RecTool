@@ -59,7 +59,7 @@ public:
 
         // TODO when finished checking: Following this folloing paragraph in the setTrack method {
 
-        auto [d_i_wp, d_o_wp] = computeWpHits(this->orig, this->m_dir);
+        auto [d_i_wp, d_o_wp] = computeWpHits(this->m_orig, this->m_dir);
 
         /* double d_i_wp = 0.0, d_o_wp = 0.0;
         if (!trajectoryHitCylinder(21750.0, 44000.0, this->m_orig, this->m_dir, d_i_wp, d_o_wp)) { // need to be changed for a analytical solution
