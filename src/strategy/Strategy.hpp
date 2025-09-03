@@ -238,10 +238,10 @@ extern std::shared_ptr<CorrParam> g_corr_param_dist_track_to_center_squared;
 
 #include "estimator/fht/map/CorrectionMap.hpp"
 
-DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_nnvt)
-DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_hamamatsu)
-DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_3inch)
-DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CorrectionMap, corr_map_wp)
+DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_nnvt)
+DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_hamamatsu)
+DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_3inch)
+DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_wp)
 
 #include "estimator/optimizer/Optimizer.hpp"
 
@@ -261,7 +261,7 @@ extern std::shared_ptr<Predictor<TtMethodTag>> g_pred_tt_single_tt;
 DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CdFht, cd_fht)
 DECLARE_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(WpFht, wp_fht)
 
-#include "transformer/CalibrationTransformer.hpp"
+#include "transformer/CalibTimeTransformer.hpp"
 
 extern std::shared_ptr<Transformer> g_trans_calib_hama;
 extern std::shared_ptr<Transformer> g_trans_calib_nnvt;

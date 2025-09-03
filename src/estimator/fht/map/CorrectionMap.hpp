@@ -1,42 +1,22 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_FHT_MAP_CORRECTIONMAP_HPP_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_FHT_MAP_CORRECTIONMAP_HPP_
 
-#include <TFile.h>
-
-#include "SniperKernel/ToolBase.h"
-
 #include "estimator/fht/map/file/CorrectionFile.hpp"
+#include "utils/Configurable.hpp"
 #include "utils/RecPmtProp.hpp"
 #include "utils/TrackParams.hpp"
-#include "utils/vec3.hpp"
 
-template<typename _ParamsTag>
-class CorrectionMap : public ToolBase, public PmtTypeChecker, public TrackSetter<_ParamsTag>, public IParamsHandler {
-
-    static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
+class CorrectionMap : public IParamsHandler, public PmtTypeChecker, public Configurable {
 
 public:
 
-    CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname) :
-        ToolBase(name),
-        PmtTypeChecker(pmt_type),
-        m_filename(filename),
-        m_mapname(mapname)
-    {}
+    CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname);
 
     virtual ~CorrectionMap() = default;
 
-    virtual bool initialize() override {
-        if (!openCorrFile()) return false;
-        if (!openCorrProfile()) return false;
-        return true;
-    }
+    virtual bool initialize() override;
 
-    ParamsType getIParamsType() {
-        return ParamsTraits<_ParamsTag>::type;
-    }
-
-    virtual void correct(RecPmtTable& table) = 0;
+    virtual void correct(RecPmtTable::iterator first, RecPmtTable::iterator last, const double* params) = 0;
 
 protected:
 

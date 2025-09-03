@@ -8,7 +8,7 @@
 DECLARE_TOOL(CdWpTtChi2RecTool);
 
 CdWpTtChi2RecTool::CdWpTtChi2RecTool(const std::string& name) :
-    ToolBase(name),
+    ToolBase{name},
     m_reg{"StrategyRegistry"},
     m_timer{name}
 {
@@ -93,8 +93,6 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     }
 
     strat->save(trks, totpe);
-
-    std::cin.get();
 
     return true;
 }

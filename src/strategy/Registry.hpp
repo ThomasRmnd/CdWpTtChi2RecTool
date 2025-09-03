@@ -1,11 +1,10 @@
 #ifndef CDWPTTCHI2RECTOOL_STRATEGY_REGISTRY_HPP_
 #define CDWPTTCHI2RECTOOL_STRATEGY_REGISTRY_HPP_
 
-#include "utils/Configurable.hpp"
-
 #include <unordered_map>
 
 #include "strategy/Strategy.hpp"
+#include "utils/Configurable.hpp"
 
 class StrategyRegistry : public Configurable {
 

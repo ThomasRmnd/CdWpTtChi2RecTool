@@ -3,8 +3,8 @@
 #include "SniperKernel/SniperLog.h"
 
 Transformer::Transformer(const std::string& name, const RecPmtType& pmt_type) :
-    Configurable(name),
-    PmtTypeChecker(pmt_type)
+    Configurable{name},
+    PmtTypeChecker{pmt_type}
 {}
 
 void Transformer::transform(RecPmtTable& table) {
@@ -15,7 +15,6 @@ void Transformer::transform(RecPmtTable& table) {
     std::size_t fsize = table.size();
 
     LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed\n";
-    return;
 }
 
 bool Transformer::findRange(RecPmtTable& table) {

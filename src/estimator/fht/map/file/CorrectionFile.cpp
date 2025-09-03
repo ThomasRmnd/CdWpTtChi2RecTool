@@ -1,7 +1,5 @@
 #include "estimator/fht/map/file/CorrectionFile.hpp"
 
-#include <TROOT.h>
-
 #include "SniperKernel/SniperLog.h"
 
 CorrectionFile::MapType CorrectionFile::s_cache;

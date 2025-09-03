@@ -16,7 +16,7 @@ ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name
     m_q_ratio{q_ratio},
     m_dir_corr_factor{dir_corr_factor},
     m_fpos_radius{fpos_radius},
-    m_hist{std::make_unique<TH1D>("h__ClusterMaxChargeInitializer", "h__ClusterMaxChargeInitializer", 1000, 0.0, 1000.0)}
+    m_hist{std::make_unique<TH1D>((m_name + "__Histogram").c_str(), (m_name + "__Histogram").c_str(), 1000, 0.0, 1000.0)}
 {
     m_hist->SetDirectory(0);
 }
@@ -34,11 +34,11 @@ void ClusterMaxChargeInitializer::configure(const SniperJSON& config) {
     int nbins = 0;
     double xmin = 0.0, xmax = 0.0;
     if (
-        !setConfigValue(nbins, "HistogramNbins", config) ||
-        !setConfigValue(xmin, "HistogramXmin", config) ||
-        !setConfigValue(xmax, "HistogramXmax", config)
+        !setConfigValue(nbins, "Histogram_Nbins", config) ||
+        !setConfigValue(xmin, "Histogram_Xmin", config) ||
+        !setConfigValue(xmax, "Histogram_Xmax", config)
     ) return;
-    m_hist = std::make_unique<TH1D>("h__WaterPhaseInitializer", "h__WaterPhaseInitializer", nbins, xmin, xmax);
+    m_hist = std::make_unique<TH1D>((m_name + "__Histogram").c_str(), (m_name + "__Histogram").c_str(), nbins, xmin, xmax);
     m_hist->SetDirectory(0);
 }
 

@@ -4,7 +4,7 @@
 
 EarlyLateFhtTransformer::EarlyLateFhtTransformer(const std::string& name, const RecPmtType& type, int nb_bins, double xmin, double xmax, double pmt_thold, double shift, double relative_cut) :
     Transformer(name, type),
-    m_hist(std::make_unique<TH1D>("h__EarlyLateFhtTransformer", "h__EarlyLateFhtTransformer", nb_bins, xmin, xmax)),
+    m_hist(std::make_unique<TH1D>((m_name + "__Histogram").c_str(), (m_name + "__Histogram").c_str(), nb_bins, xmin, xmax)),
     m_pmt_thold(pmt_thold),
     m_shift(shift),
     m_relative_cut(relative_cut),
@@ -21,11 +21,11 @@ void EarlyLateFhtTransformer::configure(const SniperJSON& config) {
     int nbins = 0;
     double xmin = 0.0, xmax = 0.0;
     if (
-        !setConfigValue(nbins, "HistogramNbins", config) ||
-        !setConfigValue(xmin, "HistogramXmin", config) ||
-        !setConfigValue(xmax, "HistogramXmax", config)
+        !setConfigValue(nbins, "Histogram_Nbins", config) ||
+        !setConfigValue(xmin, "Histogram_Xmin", config) ||
+        !setConfigValue(xmax, "Histogram_Xmax", config)
     ) return;
-    m_hist = std::make_unique<TH1D>("h__EarlyLateFhtTransformer", "h__EarlyLateFhtTransformer", nbins, xmin, xmax);
+    m_hist = std::make_unique<TH1D>((m_name + "__Histogram").c_str(), (m_name + "__Histogram").c_str(), nbins, xmin, xmax);
     m_hist->SetDirectory(0);
 }
 

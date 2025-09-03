@@ -1,7 +1,6 @@
 #include "estimator/ParamsModifierEstimator.hpp"
 
 #include "SniperKernel/SniperLog.h"
-#include "SniperKernel/ToolFactory.h"
 
 ParamsModifierEstimator::ParamsModifierEstimator(const std::string& name, const std::shared_ptr<Estimator>& esti) : 
     Estimator(name), m_esti(esti) 

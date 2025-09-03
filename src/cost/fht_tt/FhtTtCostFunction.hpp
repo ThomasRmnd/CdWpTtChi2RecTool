@@ -46,7 +46,8 @@ public:
 /**
  * @class FhtTtReducedCostFunction
  * 
- * @brief Derived class for cost calculation for joint FHT method and TT method
+ * @brief Derived class for cost calculation for joint FHT method and TT method.
+ * For this cost calculation, each method is devided by its own NDF.
  */
 class FhtTtReducedCostFunction : public CostFunction<FhtTtMethodTag> {
 
@@ -69,7 +70,7 @@ public:
      * 
      * @param params track parameters
      * 
-     * @return Cost / NDF
+     * @return Cost FHT / NDF FHT + Cost TT / NDF TT
      */
     double operator()(const double* params) override;
 

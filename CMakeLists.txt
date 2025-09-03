@@ -1,5 +1,9 @@
 PKG(CdWpTtChi2RecTool
 
+MODULE
+
+FILES
+
     src/chi2/fht/FhtChi2.cpp
     src/chi2/tt/TtChi2.cpp
 
@@ -7,12 +11,14 @@ PKG(CdWpTtChi2RecTool
     src/cost/fht_tt/FhtTtCostFunction.cpp
     src/cost/tt/TtCostFunction.cpp
 
+    src/estimator/CorrectionMapEstimator.cpp
     src/estimator/Estimator.cpp
     src/estimator/ParamsModifierEstimator.cpp
     src/estimator/Pipeline.cpp
     src/estimator/fht/FhtMinimizerEstimator.cpp
+    src/estimator/fht_tt/FhtTtCorrMapEstimator.cpp
+    src/estimator/fht/map/CorrectionMap.cpp
     src/estimator/fht/map/file/CorrectionFile.cpp
-    src/estimator/optimizer/NelderMeadOptimizer.cpp
     src/estimator/optimizer/Optimizer.cpp
     src/estimator/optimizer/RootOptimizer.cpp
     src/estimator/tt/TtMinimizerEstimator.cpp
@@ -28,10 +34,10 @@ PKG(CdWpTtChi2RecTool
     src/strategy/Registry.cpp
     src/strategy/Strategy.cpp
 
-    src/transformer/CalibrationTransformer.cpp
+    src/transformer/CalibTimeTransformer.cpp
     src/transformer/EarlyLateFhtTransformer.cpp
     src/transformer/FhtChargeTholdTransformer.cpp
-    src/transformer/PmtLocTypeTransformer.cpp
+    src/transformer/PmtTypeTransformer.cpp
     src/transformer/Transformer.cpp
     src/transformer/TtCrossTalkTransformer.cpp
     src/transformer/WaterPhaseTransformer.cpp

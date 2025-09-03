@@ -1,10 +1,9 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_TT_TTMINIMIZERESTIMATOR_HPP_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_TT_TTMINIMIZERESTIMATOR_HPP_
 
-#include "estimator/MinimizerEstimator.hpp"
-
 #include <cmath>
 
+#include "estimator/MinimizerEstimator.hpp"
 #include "estimator/tt/combinator/Combinator.hpp"
 #include "estimator/tt/converter/Converter.hpp"
 #include "initializer/Initializer.hpp"

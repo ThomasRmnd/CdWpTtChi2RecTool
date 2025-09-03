@@ -1,30 +1,29 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_FHT_MAP_CORRECTIONMAP3D_H_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_FHT_MAP_CORRECTIONMAP3D_H_
 
-#include "estimator/fht/map/CorrectionMap.hpp"
-
 #include <algorithm>
 
 #include <TProfile3D.h>
 
+#include "estimator/fht/map/CorrectionMap.hpp"
 #include "estimator/fht/map/CorrParam.hpp"
 
 template<typename _ParamsTag>
-class CorrectionMap3d : public CorrectionMap<_ParamsTag> {
+class CorrectionMap3d : public CorrectionMap, public TrackSetter<_ParamsTag> {
 
 public:
 
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
-        CorrectionMap<_ParamsTag>(name, pmt_type, filename, mapname),
-        m_param_x(param_x),
-        m_param_y(param_y),
-        m_param_z(param_z)
+        CorrectionMap{name, pmt_type, filename, mapname},
+        m_param_x{param_x},
+        m_param_y{param_y},
+        m_param_z{param_z}
     {}
 
     ~CorrectionMap3d() override = default;
 
     bool initialize() override {
-        if (!CorrectionMap<_ParamsTag>::initialize()) return false;
+        if (!CorrectionMap::initialize()) return false;
         if (!m_param_x) {
             LogError << "CorrParam x is not set\n";
             return false;
@@ -40,13 +39,14 @@ public:
         return true;
     }
 
-    void correct(RecPmtTable& table) override {
+    void correct(RecPmtTable::iterator first, RecPmtTable::iterator last, const double* params) override {
+        this->setTrack(params);
         m_param_x->setTrack(this->m_orig, this->m_dir);
         m_param_y->setTrack(this->m_orig, this->m_dir);
         m_param_z->setTrack(this->m_orig, this->m_dir);
-        for (RecPmtProp& pmt : table) {
-            if (!this->checkPmtType(pmt)) continue;
-            pmt.fht -= correction(pmt);
+        for (RecPmtTable::iterator it = first; it != last; ++it) {
+            if (!checkPmtType(*it)) continue;
+            it->fht -= correction(*it);
         }
         return;
     }
@@ -134,21 +134,21 @@ private:
 };
 
 template<>
-class CorrectionMap3d<DoubleAcrylicParamsTag> : public CorrectionMap<DoubleAcrylicParamsTag> {
+class CorrectionMap3d<DoubleAcrylicParamsTag> : public CorrectionMap, public TrackSetter<DoubleAcrylicParamsTag> {
 
 public:
 
     CorrectionMap3d(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname, const std::shared_ptr<CorrParam>& param_x, const std::shared_ptr<CorrParam>& param_y, const std::shared_ptr<CorrParam>& param_z) :
-        CorrectionMap<DoubleAcrylicParamsTag>(name, pmt_type, filename, mapname),
-        m_param_x(param_x),
-        m_param_y(param_y),
-        m_param_z(param_z)
+        CorrectionMap{name, pmt_type, filename, mapname},
+        m_param_x{param_x},
+        m_param_y{param_y},
+        m_param_z{param_z}
     {}
 
     ~CorrectionMap3d() override = default;
 
     bool initialize() override {
-        if (!CorrectionMap<DoubleAcrylicParamsTag>::initialize()) return false;
+        if (!CorrectionMap::initialize()) return false;
         if (!m_param_x) {
             LogError << "CorrParam x is not set\n";
             return false;
@@ -165,7 +165,7 @@ public:
     }
 
     void setTrack(const double* params) override {
-        CorrectionMap<DoubleAcrylicParamsTag>::setTrack(params);
+        TrackSetter<DoubleAcrylicParamsTag>::setTrack(params);
         m_half_length_1 = 0.5 * m_length_1;
         m_t_end_1 = m_t_0_1 + m_length_1 / constants::c; // m_length_1 * constants::inv_c
         m_p_end_1 = m_orig_1 + m_dir * m_length_1;
@@ -174,10 +174,11 @@ public:
         m_p_end_2 = m_orig_2 + m_dir * m_length_2;
     }
 
-    void correct(RecPmtTable& table) override {
-        for (RecPmtProp& pmt : table) {
-            if (!checkPmtType(pmt)) continue;
-            pmt.fht -= correction(pmt);
+    void correct(RecPmtTable::iterator first, RecPmtTable::iterator last, const double* params) override {
+        setTrack(params);
+        for (RecPmtTable::iterator it = first; it != last; ++it) {
+            if (!checkPmtType(*it)) continue;
+            it->fht -= correction(*it);
         }
         return;
     }

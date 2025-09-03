@@ -3,6 +3,8 @@
 
 #include <type_traits>
 
+#include "utils/RecPmtProp.hpp"
+
 struct MethodTag {};
 
 // These are "pure" tags, they are used for the template of Chi2, Predictor and CostFunction
@@ -14,8 +16,6 @@ struct FhtTtMethodTag : public FhtMethodTag, public TtMethodTag {};
 
 template<typename _Tag>
 struct MethodTraits;
-
-#include "utils/RecPmtProp.hpp"
 
 template<>
 struct MethodTraits<FhtMethodTag> {

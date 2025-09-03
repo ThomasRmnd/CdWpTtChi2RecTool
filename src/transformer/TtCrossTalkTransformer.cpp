@@ -27,7 +27,6 @@ void TtCrossTalkTransformer::transformPmt(RecPmtProp& pmt) {
     int ch_id = TtID::getIntID(TtID::wall_id(id), TtID::lower_pmt_index(TtID::pmt(id)), TtID::strip(id));
     if (m_ch_ids.find(ch_id) == m_ch_ids.end()) return;
     pmt.used = false;
-    return;
 }
 
 void TtCrossTalkTransformer::getHitsStrips() {
@@ -54,7 +53,6 @@ void TtCrossTalkTransformer::getHitsStrips() {
             m_hit_strips[wall_lwr_pmt_idx].push_back({strip_id, ch_id_lwr_pmt, it->q});
         }
     }
-    return;
 }
 
 void TtCrossTalkTransformer::filterCrossTalk() {
@@ -98,5 +96,4 @@ void TtCrossTalkTransformer::filterCrossTalk() {
         
         }
     }
-    return;
 }

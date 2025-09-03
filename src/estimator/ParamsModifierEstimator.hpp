@@ -9,7 +9,6 @@ class ParamsModifierEstimator : public Estimator {
 
 public:
 
-    ParamsModifierEstimator(const std::string& name) : Estimator(name) {}
     ParamsModifierEstimator(const std::string& name, const std::shared_ptr<Estimator>& esti);
 
     virtual ~ParamsModifierEstimator() = default;
@@ -28,8 +27,6 @@ class ParamsConstrainerEstimator : public ParamsModifierEstimator {
     static_assert(std::is_base_of<ParamsTag, _ParamsTag>::value, "Tag must derive from ParamsTag");
 
 public:
-
-    ParamsConstrainerEstimator(const std::string& name) : ParamsModifierEstimator(name) {}
 
     ParamsConstrainerEstimator(const std::string& name, const std::shared_ptr<Estimator> esti, const std::array<bool, ParamsTraits<_ParamsTag>::size>& constrains) : 
         ParamsModifierEstimator(name, esti),
@@ -65,7 +62,7 @@ private:
 
 namespace details {
 
-inline void convert_params(std::vector<double>& params, std::vector<double>& steps, std::vector<std::string>& names, SingleAcrylicParamsTag, SingleStoppingAcrylicParamsTag) {
+inline void convertParams(std::vector<double>& params, std::vector<double>& steps, std::vector<std::string>& names, SingleAcrylicParamsTag, SingleStoppingAcrylicParamsTag) {
     params.push_back(1.0);
     steps.push_back(0.1);
     names.push_back("length");
@@ -90,7 +87,7 @@ public:
             LogError << "Parameters have wrong sizes, expected " << ParamsTraits<_LhsParamsTag>::size << " but got " << m_params.size() << '\n';
             return false;
         }
-        details::convert_params(m_params, m_steps, m_names, _LhsParamsTag{}, _RhsParamsTag{});
+        details::convertParams(m_params, m_steps, m_names, _LhsParamsTag{}, _RhsParamsTag{});
         return ParamsModifierEstimator::estimate(table);
     };
 

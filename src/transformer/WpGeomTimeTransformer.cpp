@@ -73,7 +73,6 @@ void WpGeomTimeTransformer::transform(RecPmtTable& table) {
     if (!getMaxRange()) return;
     std::cout << "max_range: " << m_max_range << '\n';
     if (!fillClusteredTable()) return;
-    // m_thold_nb_neighbors = static_cast<unsigned int>( std::min(0.05 * m_clustered_table.size() + 5.0, 20.0) );
     m_thold_nb_neighbors = static_cast<unsigned int>( std::min(1.0/30.0 * m_clustered_table.size() + 5.0, 15.0) );
     std::cout << "Clustered table size: " << m_clustered_table.size() << " thold_nb_neighbors: " << m_thold_nb_neighbors << '\n';
     dbscan(m_thold_nb_neighbors);

@@ -48,6 +48,12 @@ public:
 
     ~NoDiffusionWpFht() final override = default;
 
+    void setTrack(const double* params) final override {
+        WpFht<_ParamsTag>::setTrack(params);
+        std::tie(m_d_i_wp, m_d_o_wp) = computeWpHits(this->m_orig, this->m_dir);
+        m_p_end_wp = this->m_orig + this->m_dir * m_d_o_wp;
+    }
+
     /**
      * @brief Calculate the expected FHT
      * 
@@ -56,26 +62,7 @@ public:
      * @return FHT
      */
     double calculate(const RecPmtProp& pmt) {
-
-        // TODO when finished checking: Following this folloing paragraph in the setTrack method {
-
-        auto [d_i_wp, d_o_wp] = computeWpHits(this->m_orig, this->m_dir);
-
-        /* double d_i_wp = 0.0, d_o_wp = 0.0;
-        if (!trajectoryHitCylinder(21750.0, 44000.0, this->m_orig, this->m_dir, d_i_wp, d_o_wp)) { // need to be changed for a analytical solution
-            LogError << "Cannot project points into the WP\n";
-            LogError << "Orig: " << this->m_orig.x << ' ' << this->m_orig.y << ' ' << this->m_orig.z << '\n';
-            LogError << "Dir: " << this->m_dir.x << ' ' << this->m_dir.y << ' ' << this->m_dir.z << '\n';
-            std::cin.get();
-            return 0.0;
-        } */
-
-        vec3 end_wp = this->m_orig + this->m_dir * d_o_wp;
-
-        // } end paragraph
-
-        // Cherenkov
-
+        // TODO: optimize
         m_p_pmt_proj = this->m_orig + dot(this->m_dir, pmt.pos - this->m_orig) * this->m_dir;
         double dt_pmt_proj = dot(m_p_pmt_proj - this->m_orig, this->m_dir) * constants::inv_c;
         double dt_1st_light = dt_pmt_proj - mag(pmt.pos - m_p_pmt_proj) * constants::inv_c_tan_cherenkov_w;
@@ -87,14 +74,16 @@ public:
         double signed_pos = dot(this->m_dir, pmt.pos);
 
         if (0 < signed_pos) {
-            double t_back = this->m_t_0 + d_o_wp * constants::inv_c + mag(pmt.pos - end_wp) * constants::inv_c_w - 10.0; // 10 is a constant, maybe because of the time emission
-            return t_back;
+            return this->m_t_0 + m_d_o_wp * constants::inv_c + mag(pmt.pos - m_p_end_wp) * constants::inv_c_w - 10.0; // 10 is an arbitrary constant, leads to better performances ==> maybe because of the Tyvek diffusion
         }
 
         return t_cherenkov;
     };
 
 private:
+
+    double m_d_i_wp, m_d_o_wp;
+    vec3 m_p_end_wp;
 
     vec3 m_p_pmt_proj, m_p_1st_light;
 
@@ -116,6 +105,14 @@ public:
 
     ~NoDiffusionWpFht() final override = default;
 
+    void setTrack(const double* params) final override {
+        WpFht<DoubleAcrylicParamsTag>::setTrack(params);
+        std::tie(m_d_i_wp_1, m_d_o_wp_1) = computeWpHits(m_orig_1, m_dir);
+        std::tie(m_d_i_wp_2, m_d_o_wp_2) = computeWpHits(m_orig_2, m_dir);
+        m_p_end_wp_1 = m_orig_1 + m_dir * m_d_o_wp_1;
+        m_p_end_wp_2 = m_orig_2 + m_dir * m_d_o_wp_2;
+    }
+
     /**
      * @brief Calculate the expected FHT
      * 
@@ -124,30 +121,7 @@ public:
      * @return FHT
      */
     double calculate(const RecPmtProp& pmt) {
-
-        // TODO when finished checking: Following this folloing paragraph in the setTrack method {
-
-        double d_i_wp_1 = 0.0, d_o_wp_1 = 0.0;
-        double d_i_wp_2 = 0.0, d_o_wp_2 = 0.0;
-        if (
-            !trajectoryHitCylinder(21750.0, 44000.0, m_orig_1, m_dir, d_i_wp_1, d_o_wp_1) ||
-            !trajectoryHitCylinder(21750.0, 44000.0, m_orig_2, m_dir, d_i_wp_2, d_o_wp_2)
-        ) { // need to be changed for a analytical solution
-            LogError << "Cannot project points into the WP\n";
-            LogError << "Orig: " << m_orig_1.x << ' ' << m_orig_1.y << ' ' << m_orig_1.z << '\n';
-            LogError << "Orig: " << m_orig_2.x << ' ' << m_orig_2.y << ' ' << m_orig_2.z << '\n';
-            LogError << "Dir: " << m_dir.x << ' ' << m_dir.y << ' ' << m_dir.z << '\n';
-            std::cin.get();
-            return 0.0;
-        }
-
-        vec3 end_wp_1 = m_orig_1 + m_dir * d_o_wp_1;
-        vec3 end_wp_2 = m_orig_2 + m_dir * d_o_wp_2;
-
-        // } end paragraph
-
-        // Cherenkov
-
+        // TODO: optimize
         double signed_pos = dot(m_dir, pmt.pos);
 
         double fht_1 = 0.0, fht_2 = 0.0;
@@ -169,13 +143,19 @@ public:
         fht_2 = m_t_0_2 + dt_1st_light + mag(pmt.pos - m_p_1st_light) * constants::inv_c_w;
 
         if (0 < signed_pos) {
-            fht_1 = m_t_0_1 + d_o_wp_1 * constants::inv_c + mag(pmt.pos - end_wp_1) * constants::inv_c_w - 10.0; // 10 is a constant, maybe because of the time emission
-            fht_2 = m_t_0_2 + d_o_wp_2 * constants::inv_c + mag(pmt.pos - end_wp_2) * constants::inv_c_w - 10.0;
+            fht_1 = m_t_0_1 + m_d_o_wp_1 * constants::inv_c + mag(pmt.pos - m_p_end_wp_1) * constants::inv_c_w - 10.0; // 10 is an arbitrary constant, leads to better performances ==> maybe because of the Tyvek diffusion
+            fht_2 = m_t_0_2 + m_d_o_wp_2 * constants::inv_c + mag(pmt.pos - m_p_end_wp_2) * constants::inv_c_w - 10.0;
         }
         return std::min(fht_1, fht_2);
     };
 
 private:
+
+    double m_d_i_wp_1, m_d_o_wp_1;
+    vec3 m_p_end_wp_1;
+
+    double m_d_i_wp_2, m_d_o_wp_2;
+    vec3 m_p_end_wp_2;
 
     vec3 m_p_pmt_proj, m_p_1st_light;
 

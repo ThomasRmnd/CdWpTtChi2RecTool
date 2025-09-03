@@ -30,8 +30,6 @@ public:
      * @param last the end iterator of the experimental data
      * @param theo the beginning iterator of the expected data
      * @param params track parameters
-     * 
-     * @return Raw \f$ \chi^2 \f$
      */
     virtual void predict(const_iterator first, const_iterator last, theo_iterator theo, const double* params) = 0;
 
