@@ -11,10 +11,10 @@ FILES
     src/cost/fht_tt/FhtTtCostFunction.cpp
     src/cost/tt/TtCostFunction.cpp
 
-    src/estimator/CorrectionMapEstimator.cpp
     src/estimator/Estimator.cpp
     src/estimator/ParamsModifierEstimator.cpp
     src/estimator/Pipeline.cpp
+    src/estimator/CorrectionMapLoopEstimator.cpp
     src/estimator/fht/FhtMinimizerEstimator.cpp
     src/estimator/fht_tt/FhtTtCorrMapEstimator.cpp
     src/estimator/fht/map/CorrectionMap.cpp
