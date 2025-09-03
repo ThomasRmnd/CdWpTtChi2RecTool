@@ -7,13 +7,13 @@
 #include "cost/fht_tt/FhtTtCostFunction.hpp"
 #include "cost/tt/TtCostFunction.hpp"
 
-#include "estimator/CorrectionMapEstimator.hpp"
 #include "estimator/ParamsModifierEstimator.hpp"
+#include "estimator/fht/CorrectionMapLoopEstimator.hpp"
 #include "estimator/fht/FhtMinimizerEstimator.hpp"
-#include "estimator/fht_tt/FhtTtMinimizerEstimator.hpp"
-#include "estimator/map/CorrectionMap3d.hpp"
-#include "estimator/map/CorrParam.hpp"
-#include "estimator/map/WpTimeShiftCorrectionMap.hpp"
+#include "estimator/fht/map/CorrectionMap3d.hpp"
+#include "estimator/fht/map/CorrParam.hpp"
+#include "estimator/fht/map/WpTimeShiftCorrectionMap.hpp"
+#include "estimator/fht_tt/FhtTtCorrMapEstimator.hpp"
 #include "estimator/optimizer/RootOptimizer.hpp"
 #include "estimator/tt/TtMinimizerEstimator.hpp"
 #include "estimator/tt/combinator/MaskHeightCartesianProdCombinator.hpp"
@@ -575,7 +575,7 @@ void CdTtStrategy::create() {
         g_chi2_tt_joint
     );
 
-    std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator<SingleAcrylicParamsTag>>(
+    std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator>(
         "CdTtStrategy__FhtTtCorrectionMapEstimator",
         g_opti, fht_tt_cost, 
         std::dynamic_pointer_cast<CorrectionMapLoopEstimator>(esti_corrmap_loop), 
@@ -696,7 +696,7 @@ void CdWpTtStrategy::create() {
         g_chi2_tt_joint
     );
 
-    std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator<SingleAcrylicParamsTag>>(
+    std::shared_ptr<Estimator> esti_fhttt_corrmap = std::make_shared<FhtTtCorrMapEstimator>(
         "CdWpTtStrategy__FhtTtCorrectionMapEstimator",
         g_opti, fht_tt_cost, 
         std::dynamic_pointer_cast<CorrectionMapLoopEstimator>(esti_corrmap_loop), 
