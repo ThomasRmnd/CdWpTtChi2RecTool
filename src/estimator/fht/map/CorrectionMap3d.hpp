@@ -22,6 +22,10 @@ public:
 
     ~CorrectionMap3d() override = default;
 
+    ParamsType getIParamsType() override {
+        return ParamsTraits<_ParamsTag>::type;
+    }
+
     bool initialize() override {
         if (!CorrectionMap::initialize()) return false;
         if (!m_param_x) {
@@ -146,6 +150,10 @@ public:
     {}
 
     ~CorrectionMap3d() override = default;
+
+    ParamsType getIParamsType() override {
+        return ParamsTraits<DoubleAcrylicParamsTag>::type;
+    }
 
     bool initialize() override {
         if (!CorrectionMap::initialize()) return false;

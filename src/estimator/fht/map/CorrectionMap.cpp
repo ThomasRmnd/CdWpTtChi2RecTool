@@ -1,8 +1,8 @@
 #include "estimator/fht/map/CorrectionMap.hpp"
 
 CorrectionMap::CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname) :
-    Configurable{name},
     PmtTypeChecker{pmt_type},
+    Configurable{name},
     m_filename{filename},
     m_mapname{mapname}
 {}

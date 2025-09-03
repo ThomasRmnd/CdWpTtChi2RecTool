@@ -24,14 +24,7 @@ protected:
     std::string m_filename;
     std::string m_mapname;
 
-    bool openCorrFile() {
-        m_file = CorrectionFile::open(m_filename);
-        if (!m_file->isOpen()) {
-            LogError << "Cannot open correction file " << m_filename << '\n';
-            return false;
-        }
-        return true;
-    }
+    bool openCorrFile();
 
     virtual bool openCorrProfile() = 0;
 

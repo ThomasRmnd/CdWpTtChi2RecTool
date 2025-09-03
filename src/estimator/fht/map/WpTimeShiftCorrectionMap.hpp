@@ -19,6 +19,10 @@ public:
 
     ~WpTimeShiftCorrectionMap() override = default;
 
+    ParamsType getIParamsType() override {
+        return ParamsTraits<_ParamsTag>::type;
+    }
+
     void setTrack(const double* params) override {
         TrackSetter<_ParamsTag>::setTrack(params);
         auto [d_i_wp, d_o_wp] = computeWpHits(this->m_orig, this->m_dir);
@@ -92,6 +96,10 @@ public:
 
     ~WpTimeShiftCorrectionMap() override = default;
 
+    ParamsType getIParamsType() override {
+        return ParamsTraits<DoubleAcrylicParamsTag>::type;
+    }
+
     void setTrack(const double* params) override {
         TrackSetter<DoubleAcrylicParamsTag>::setTrack(params);
         std::tie(m_d_i_wp_1, m_d_o_wp_1) = computeWpHits(m_orig_1, m_dir);
@@ -101,6 +109,7 @@ public:
     }
 
     void correct(RecPmtTable::iterator first, RecPmtTable::iterator last, const double* params) override {
+        setTrack(params);
         double signed_pos = 0.0;
         for (RecPmtTable::iterator it = first; it != last; ++it) {
             if (!checkPmtType(*it)) continue;
@@ -140,8 +149,6 @@ private:
     }
 
     double correction(const RecPmtProp& pmt) {
-        double signed_pos = dot(m_dir, pmt.pos);
-
         double fht_1 = m_t_0_1 + m_d_o_wp_1 * constants::inv_c + mag(pmt.pos - m_p_end_wp_1) * constants::inv_c_w - 10.0; // 10 is a constant, maybe because of the time emission
         double fht_2 = m_t_0_2 + m_d_o_wp_2 * constants::inv_c + mag(pmt.pos - m_p_end_wp_2) * constants::inv_c_w - 10.0;
 
