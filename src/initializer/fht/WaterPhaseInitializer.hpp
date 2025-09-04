@@ -42,6 +42,9 @@ private:
     std::unique_ptr<TH1D> m_hist;
     std::vector<RecPmtTable::const_iterator> m_it_table;
 
+    bool isHighlyClipping(const RecPmtTable& table);
+    bool initHighlyClipping(const RecPmtTable& table);
+
     bool getTable(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable);
     double getITime();
     vec3 getIPos();

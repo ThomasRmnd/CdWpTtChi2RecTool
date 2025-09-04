@@ -841,14 +841,9 @@ void CdWpWaterPhaseStrategy::create() {
     m_pipe->addStep(trans);
 
     std::shared_ptr<Transformer> trans_wp_q = std::make_shared<FhtChargeTholdTransformer>(
-        "CdWpWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 5.0
+        "CdWpWaterPhaseStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 30.0
     );
     m_pipe->addStep(trans_wp_q);
-
-    std::shared_ptr<Transformer> trans_wp_geomtime = std::make_shared<WpGeomTimeTransformer>(
-        "CdWpWaterPhaseStrategy__WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
-    );
-    m_pipe->addStep(trans_wp_geomtime);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(

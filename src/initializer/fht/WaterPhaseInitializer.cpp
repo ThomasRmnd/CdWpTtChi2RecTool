@@ -34,12 +34,137 @@ ParamsType WaterPhaseInitializer::getOParamsType() {
     return ParamsType::SingleCd;
 }
 
+bool WaterPhaseInitializer::isHighlyClipping(const RecPmtTable& table) {
+    std::unique_ptr<TH1D> htmp = std::make_unique<TH1D>("htmp", "htmp", 100, 0.0, 1000.0);
+    htmp->SetDirectory(0);
+    for (const RecPmtProp& pmt : table) {
+        if (!pmt.used || !hasPmtType(pmt, RecPmtType::PMT_20INCH)) continue;
+        if (pmt.q < 30.0) continue;
+        htmp->Fill(pmt.fht);
+    }
+    
+    int idx_min = htmp->GetMaximumBin();
+    while (htmp->GetBinContent(idx_min) > 1.0 && idx_min > 1) {
+        --idx_min;
+    }
+    double time_min = htmp->GetBinCenter(idx_min);
+
+    int idx_max = htmp->GetMaximumBin();
+    while (htmp->GetBinContent(idx_max) > 30.0 && idx_max < htmp->GetNbinsX()) {
+        ++idx_max;
+    }
+    double time_max = htmp->GetBinCenter(idx_max);
+    
+    return (time_max - time_min < 100.0);
+}
+
+bool WaterPhaseInitializer::initHighlyClipping(const RecPmtTable& table) {
+    std::size_t count = std::count_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_WP); });
+    bool has_wp = (count > 0ul);
+    if (has_wp) {
+        double time_early = std::numeric_limits<double>::infinity();
+        double time_late = -std::numeric_limits<double>::infinity();
+
+        bool found_early = false;
+        bool found_late = false;
+
+        RecPmtTable::const_iterator ftable = std::find_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_WP); });
+        RecPmtTable::const_iterator ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_WP); }).base();
+
+        LogDebug << "Number of WP PMTs for initialization: " << std::distance(ftable, ltable) << '\n';
+
+        for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
+            if (!it->used || !hasPmtType(*it, RecPmtType::PMT_WP)) continue;
+            if (it->q < 30.0) continue;
+            time_early = std::min(time_early, it->fht);
+            time_late = std::max(time_late, it->fht);
+            found_early = true;
+            found_late = true;
+        }
+
+        if (!found_early || !found_late) {
+            for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
+                if (!it->used || !hasPmtType(*it, RecPmtType::PMT_WP)) continue;
+                if (it->q < 10.0) continue;
+                time_early = std::min(time_early, it->fht);
+                time_late = std::max(time_late, it->fht);
+                found_early = true;
+                found_late = true;
+            }
+        }
+
+        double time_mid = 0.5 * (time_early + time_late);
+
+        vec3 pos_early;
+        vec3 pos_late;
+        double totq_early = 0.0, totq_late = 0.0;
+
+        found_early = false;
+        found_late = false;
+
+        for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
+            if (!it->used || !hasPmtType(*it, RecPmtType::PMT_WP)) continue;
+            if (it->q < 30.0) continue;
+            if (time_early <= it->fht && it->fht <= time_mid) {
+                pos_early += it->pos * it->q;
+                totq_early += it->q;
+                found_early = true;
+            }
+            if (time_mid <= it->fht && it->fht <= time_late) {
+                pos_late += it->pos * it->q;
+                totq_late += it->q;
+                found_late = true;
+            }
+        }
+
+        if (!found_early || !found_late) {
+            LogWarn << "Early/Late position not found, cannot continue WpGeometryTimeTransformer" << std::endl;
+            return false;
+        }
+
+        pos_early /= totq_early;
+        pos_late /= totq_late;
+
+        vec3 dir = unit(pos_late - pos_early);
+        m_params = std::vector<double>{time_early, theta(pos_early), phi(pos_early), theta(dir), phi(dir)};
+    }
+    else {
+        m_it_table.clear();
+        for (RecPmtTable::const_iterator it = table.begin(); it != table.end(); ++it) {
+            if (!it->used || !hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
+            if (it->q < 30.0) continue;
+            m_it_table.push_back(it);
+        }
+        if (m_it_table.empty()) {
+            LogWarn << "No valid PMTs found for highly clipping initialization\n";
+            return false;
+        }
+        double itime = std::numeric_limits<double>::infinity();
+        vec3 ipos;
+        double ftime = -std::numeric_limits<double>::infinity();
+        vec3 fpos;
+        for (RecPmtTable::const_iterator it : m_it_table) {
+            if (it->fht < itime) {
+                itime = it->fht;
+                ipos = it->pos;
+            }
+            if (ftime < it->fht) {
+                ftime = it->fht;
+                fpos = it->pos;
+            }
+        }
+        vec3 dir = unit(fpos - ipos);
+        m_params = std::vector<double>{itime, theta(ipos), phi(ipos), theta(dir), phi(dir)};
+    }
+    return true;
+}
+
 bool WaterPhaseInitializer::getTable(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) {
     m_it_table.clear();
     m_hist->Reset();
     
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
-        if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
+        if (!it->used || !hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
         if ( (it->type == RecPmtType::PMT_20INCH_NNVT) && (it->q < 20.0) ) continue;
         else if ( (it->type == RecPmtType::PMT_20INCH_HAMAMATSU) && (it->q < 5.0) ) continue;
         m_hist->Fill(it->fht);
@@ -54,7 +179,7 @@ bool WaterPhaseInitializer::getTable(RecPmtTable::const_iterator ftable, RecPmtT
 
     double itime = std::numeric_limits<double>::infinity();
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
-        if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
+        if (!it->used || !hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
         if (it->q < 30.0) continue;
         if (it->fht < ftime - m_dt_f2itime) continue;
         itime = std::min(itime, it->fht);
@@ -62,7 +187,7 @@ bool WaterPhaseInitializer::getTable(RecPmtTable::const_iterator ftable, RecPmtT
     LogDebug << "itime: " << itime << ", ftime: " << ftime << ", ftime - f2itime: " << ftime - m_dt_f2itime << '\n';
 
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
-        if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
+        if (!it->used || !hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
         if (it->fht < itime || itime + m_dt < it->fht) continue;
         m_it_table.push_back(it);
     }
@@ -97,25 +222,12 @@ vec3 WaterPhaseInitializer::getIPos() {
 }
 
 vec3 WaterPhaseInitializer::getFPos(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable, double itime) {
-    double qmax = 0.0;
-    vec3 posmax;
-    for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
-        if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
-        if (it->fht < itime + m_dt) continue;
-        if (qmax < it->q) {
-            qmax = it->q;
-            posmax = it->pos;
-        }
-
-    }
-    LogDebug << "qmax = " << qmax << '\n';
-
     vec3 fpos;
     double totq = 0.0;
     for (RecPmtTable::const_iterator it = ftable; it != ltable; ++it) {
-        if (!hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
+        if (!it->used || !hasPmtType(*it, RecPmtType::PMT_20INCH)) continue;
         if (it->fht < itime + m_dt) continue;
-        if (it->q < qmax * m_q_ratio) continue;
+        if (it->q < 10.0) continue;
         fpos += it->pos * it->q;
         totq += it->q;
 
@@ -129,6 +241,8 @@ bool WaterPhaseInitializer::initiate(const RecPmtTable& table) {
 
     RecPmtTable::const_iterator ftable = std::find_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
     RecPmtTable::const_iterator ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); }).base();
+
+    if (isHighlyClipping(table)) return initHighlyClipping(table);
 
     if (!getTable(ftable, ltable)) return false;
 
