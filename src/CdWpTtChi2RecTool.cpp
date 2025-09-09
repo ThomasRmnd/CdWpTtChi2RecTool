@@ -1,6 +1,7 @@
 #include "CdWpTtChi2RecTool.hpp"
 
 #include <fstream>
+#include <numeric>
 
 #include "SniperKernel/SniperJSON.h"
 #include "SniperKernel/ToolFactory.h"
@@ -93,6 +94,10 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     }
 
     strat->save(trks, totpe);
+
+    double totq_cd = std::accumulate(m_table.begin(), m_table.end(), 0.0, [](const RecPmtProp& pmt) { return ( (pmt.type & RecPmtType::PMT_CD) == pmt.type ) ? pmt.q : 0.0; });
+    double totq_wp = std::accumulate(m_table.begin(), m_table.end(), 0.0, [](const RecPmtProp& pmt) { return ( (pmt.type & RecPmtType::PMT_WP) == pmt.type ) ? pmt.q : 0.0; });
+    if (totq_cd > 1000.0 && totq_wp > 1000.0) std::cin.get();
 
     return true;
 }
