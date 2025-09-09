@@ -95,8 +95,12 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
 
     strat->save(trks, totpe);
 
-    double totq_cd = std::accumulate(m_table.begin(), m_table.end(), 0.0, [](double totq, const RecPmtProp& pmt) { return totq + ( (pmt.type & RecPmtType::PMT_CD) == pmt.type ) ? pmt.q : 0.0; });
-    double totq_wp = std::accumulate(m_table.begin(), m_table.end(), 0.0, [](double totq, const RecPmtProp& pmt) { return totq + ( (pmt.type & RecPmtType::PMT_WP) == pmt.type ) ? pmt.q : 0.0; });
+    double totq_cd = 0.0, totq_wp = 0.0;
+    for (const RecPmtProp& pmt : m_table) {
+        if (!pmt.used) continue;
+        if ( (pmt.type & RecPmtType::PMT_CD) == pmt.type ) totq_cd += pmt.totq;
+        if ( (pmt.type & RecPmtType::PMT_WP) == pmt.type ) totq_wp += pmt.totq;
+    }
     if (totq_cd > 1000.0 && totq_wp > 1000.0) std::cin.get();
 
     return true;

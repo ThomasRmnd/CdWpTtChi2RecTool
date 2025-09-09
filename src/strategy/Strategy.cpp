@@ -80,17 +80,17 @@ std::shared_ptr<CorrParam> g_corr_param_angle = std::make_shared<AngleCorrParam>
 std::shared_ptr<CorrParam> g_corr_param_dist_track_to_center_squared = std::make_shared<DistTrackToCenterSquaredCorrParam>();
 
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_nnvt, CorrectionMap3d, 
-    "CorrectionMap3d", RecPmtType::PMT_20INCH_NNVT | RecPmtType::PMT_20INCH_HIGHQENNVT,
+    "CorrectionMap3d_NNVT", RecPmtType::PMT_20INCH_NNVT | RecPmtType::PMT_20INCH_HIGHQENNVT,
     CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_NNVT,
     g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_hamamatsu, CorrectionMap3d,
-    "CorrectionMap3d", RecPmtType::PMT_20INCH_HAMAMATSU,
+    "CorrectionMap3d_Hamamatsu", RecPmtType::PMT_20INCH_HAMAMATSU,
     CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_HAMAMATSU,
     g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_3inch, CorrectionMap3d,
-    "CorrectionMap3d", RecPmtType::PMT_3INCH,
+    "CorrectionMap3d_3inch", RecPmtType::PMT_3INCH,
     CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_3INCH,
     g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
