@@ -16,6 +16,8 @@ FILES
     src/estimator/Pipeline.cpp
     src/estimator/fht/CorrectionMapLoopEstimator.cpp
     src/estimator/fht/FhtMinimizerEstimator.cpp
+    src/estimator/fht/map/CorrectionMap.cpp
+    src/estimator/fht/map/file/CorrectionFile.cpp
     src/estimator/fht_tt/FhtTtCorrMapEstimator.cpp
     src/estimator/fht/map/CorrectionMap.cpp
     src/estimator/fht/map/file/CorrectionFile.cpp

@@ -14,6 +14,8 @@ public:
 
     virtual ~CorrectionMap() = default;
 
+    virtual void configure(const SniperJSON&) override;
+
     virtual bool initialize() override;
 
     virtual void correct(RecPmtTable::iterator first, RecPmtTable::iterator last, const double* params) = 0;

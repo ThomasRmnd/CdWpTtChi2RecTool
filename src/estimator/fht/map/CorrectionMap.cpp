@@ -7,6 +7,11 @@ CorrectionMap::CorrectionMap(const std::string& name, const RecPmtType& pmt_type
     m_mapname{mapname}
 {}
 
+void CorrectionMap::configure(const SniperJSON& config) {
+    setConfigValue(m_filename, "Filename", config);
+    setConfigValue(m_filename, "Mapname", config);
+}
+
 bool CorrectionMap::initialize() {
     if (!openCorrFile()) return false;
     if (!openCorrProfile()) return false;
