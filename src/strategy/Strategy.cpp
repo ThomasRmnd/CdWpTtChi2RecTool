@@ -446,14 +446,9 @@ void CdWpStrategy::create() {
     m_pipe->addStep(trans_fht_spmt);
 
     std::shared_ptr<Transformer> trans_q_wp = std::make_shared<FhtChargeTholdTransformer>(
-        "CdWpStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 10.0
+        "CdWpStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 30.0
     );
     m_pipe->addStep(trans_q_wp);
-
-    std::shared_ptr<Transformer> trans_geomtime_wp = std::make_shared<WpGeomTimeTransformer>(
-        "CdWpStrategy__WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
-    );
-    m_pipe->addStep(trans_geomtime_wp);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
@@ -642,14 +637,9 @@ void CdWpTtStrategy::create() {
     m_pipe->addStep(trans_fht_spmt);
 
     std::shared_ptr<Transformer> trans_q_wp = std::make_shared<FhtChargeTholdTransformer>(
-        "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 10.0
+        "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 30.0
     );
     m_pipe->addStep(trans_q_wp);
-
-    std::shared_ptr<Transformer> trans_geomtime_wp = std::make_shared<WpGeomTimeTransformer>(
-        "CdWpTtStrategy__WpGeomTimeTransformer", 50.0, 100.0, 0.4, 0.8, 10.0, 0.05
-    );
-    m_pipe->addStep(trans_geomtime_wp);
 
     std::shared_ptr<Transformer> trans_tt = std::make_shared<TtCrossTalkTransformer>(
         "CdWpTtStrategy__TtCrossTalkTransformer"
