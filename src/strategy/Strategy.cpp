@@ -436,17 +436,17 @@ void CdWpStrategy::create() {
     m_pipe->addStep(g_trans_calib_wp);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "CdWpStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdWpStrategy__FhtChargeTholdTransformer_20inch", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
     std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdWpStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+        "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     );
     m_pipe->addStep(trans_fht_spmt);
 
     std::shared_ptr<Transformer> trans_q_wp = std::make_shared<FhtChargeTholdTransformer>(
-        "CdWpStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 30.0
+        "CdWpStrategy__FhtChargeTholdTransformer_WP", RecPmtType::PMT_WP, 30.0
     );
     m_pipe->addStep(trans_q_wp);
 
