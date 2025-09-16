@@ -84,7 +84,7 @@ struct RecPmtProp { // sizeof = 64
     double fht;
     unsigned int id;
     RecPmtType type;
-    bool used;
+    bool used = false;
 
     // double inv_res() const { return pmt_type_to_invres[type]; }; // <-- this would allow to remove inv_res member, reducing sizeof(RecPmtProp) to 56
 
@@ -128,7 +128,7 @@ public:
 
     static void convert(const PmtTable* src, RecPmtTable& dst) {
         getTotUsedAndPE(src);
-        dst.resize(m_tot_used);
+        dst.resize(m_tot_used, RecPmtProp{});
         RecPmtTable::iterator it_dst = dst.begin();
         for (PmtTable::const_iterator it_src = src->begin(); it_src != src->end(); ++it_src) {
             if (!it_src->used) continue;
@@ -161,17 +161,32 @@ private:
         if (src.loc == 3) {
             type = RecPmtType::PMT_TT;
         }
-        else if (src.loc == 2 && WpID::is20inch(id)) {
+        else if (src.loc == 2) {
             type = RecPmtType::PMT_WP;
         }
-        else if (src.loc == 1 && CdID::is20inch(id) && CdID::pmtType(id) == 1) {
-            type = RecPmtType::PMT_20INCH_HAMAMATSU;
+        else if (src.loc ==1) {
+            type = RecPmtType::PMT_CD;
+            if (CdID::is20inch(id)) {
+                type = RecPmtType::PMT_20INCH;
+                if (CdID::pmtType(id) == 1) {
+                    type = RecPmtType::PMT_20INCH_HAMAMATSU;
+                }
+                else if (CdID::pmtType(id) == 2) {
+                    type = RecPmtType::PMT_20INCH_NNVT;
+                }
+                else {
+                    throw std::runtime_error("Unknown CD 20inch PMT type: " + std::to_string(src.pmtid));
+                }
+            }
+            else if (CdID::is3inch(id)) {
+                type = RecPmtType::PMT_3INCH;
+            }
+            else {
+                throw std::runtime_error("Unknown CD PMT type: " + std::to_string(src.pmtid));
+            }
         }
-        else if (src.loc == 1 && CdID::is20inch(id) && CdID::pmtType(id) == 2) {
-            type = RecPmtType::PMT_20INCH_NNVT;
-        }
-        else if (src.loc == 1 && CdID::is3inch(id) && CdID::pmtType(id) == 3) {
-            type = RecPmtType::PMT_3INCH;
+        else {
+            throw std::runtime_error("Unknown PMT location: " + std::to_string(src.loc));
         }
         return type;
     }
