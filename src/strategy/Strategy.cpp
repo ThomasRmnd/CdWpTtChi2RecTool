@@ -34,6 +34,7 @@
 #include "transformer/CalibTimeTransformer.hpp"
 #include "transformer/EarlyLateFhtTransformer.hpp"
 #include "transformer/FhtChargeTholdTransformer.hpp"
+#include "transformer/PmtTypeTransformer.hpp"
 #include "transformer/TtCrossTalkTransformer.hpp"
 #include "transformer/WaterPhaseTransformer.hpp"
 #include "transformer/WpGeomTimeTransformer.hpp"
@@ -440,8 +441,11 @@ void CdWpStrategy::create() {
     );
     m_pipe->addStep(trans_q_lpmt);
     
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
+    //     "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // );
+    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<PmtTypeTransformer>(
+        "CdWpStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
     m_pipe->addStep(trans_fht_spmt);
 
