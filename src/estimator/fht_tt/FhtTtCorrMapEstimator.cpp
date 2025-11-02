@@ -124,54 +124,54 @@ bool FhtTtCorrMapEstimator::estimate(RecPmtTable& table) {
     double tt_cost = m_func->operator()(m_scored_hits.front().fvars.data());
     LogDebug << "CD cost: " << m_scored_hits.front().score - tt_cost << ", TT cost: " << tt_cost << std::endl;
 
-        if ( ((m_scored_hits.front().score - tt_cost) - m_cost) / m_cost < 0.175 && tt_cost < 0.05) {
-            m_cost = m_scored_hits.front().score;
-            m_params = m_scored_hits.front().fvars;
-            LogDebug << "Final parameters: ";
-            for (std::size_t k = 0; k < m_size; ++k) {
-                std::cout << m_names[k] << " = " << m_params[k] << ", ";
-            }
-            std::cout << "cost = " << m_cost << std::endl;
-            return true;
+    if ( ((m_scored_hits.front().score - tt_cost) - m_cost) / m_cost < 0.175 && tt_cost < 0.05) {
+        m_cost = m_scored_hits.front().score;
+        m_params = m_scored_hits.front().fvars;
+        LogDebug << "Final parameters: ";
+        for (std::size_t k = 0; k < m_size; ++k) {
+            std::cout << m_names[k] << " = " << m_params[k] << ", ";
         }
+        std::cout << "cost = " << m_cost << std::endl;
+        return true;
+    }
 
-        LogInfo << "The cost is too high: " << m_scored_hits.front().score << "; we will switch to 2 points reconstruction." << std::endl;
+    LogInfo << "The cost is too high: " << m_scored_hits.front().score << "; we will switch to 2 points reconstruction." << std::endl;
 
-        // Final Minimization with 2 points ----------
+    // Final Minimization with 2 points ----------
 
-        if (!m_fht_esti->setParams(m_params, m_steps, m_names)) return false;
-        if (!m_fht_esti->applyCorrMap(table)) return false;
-        m_func->set(table);
-        m_opti->setParams(m_params, m_steps, m_names);
+    if (!m_fht_esti->setParams(m_params, m_steps, m_names)) return false;
+    if (!m_fht_esti->applyCorrMap(table)) return false;
+    m_func->set(table);
+    m_opti->setParams(m_params, m_steps, m_names);
 
-        std::vector<bool> hits_mask;
-        std::vector<vec3> curr_hits;
+    std::vector<bool> hits_mask;
+    std::vector<vec3> curr_hits;
 
-        std::size_t nb_3hits = m_scored_hits.size();
-        for (std::size_t k = 0; k < nb_3hits; ++k) {
-            printHits(m_scored_hits[k].hits);
-            for (std::size_t i = m_scored_hits[k].hits.size() - 1; i > 1; --i) {
-                hits_mask.assign(m_scored_hits[k].hits.size(), false);
-                std::fill(hits_mask.end() - i, hits_mask.end(), true);
-                do {
-                    LogDebug << "Mask: ";
-                    for (bool b : hits_mask) {
-                        std::cout << b << ", ";
-                    }
-                    std::cout << std::endl;
-                    curr_hits.clear();
-                    for (std::size_t j = 0; j < hits_mask.size(); ++j) {
-                        if (hits_mask[j]) curr_hits.push_back(m_scored_hits[k].hits[j]);
-                    }
-                    m_func->set(curr_hits);
-                    printHits(curr_hits);
-                    m_opti->optimize(*m_func);
-                    m_scored_hits.push_back({curr_hits, m_opti->getCost(), m_opti->getParams()});
-                } while (std::next_permutation(hits_mask.begin(), hits_mask.end()));
-            }
+    std::size_t nb_3hits = m_scored_hits.size();
+    for (std::size_t k = 0; k < nb_3hits; ++k) {
+        printHits(m_scored_hits[k].hits);
+        for (std::size_t i = m_scored_hits[k].hits.size() - 1; i > 1; --i) {
+            hits_mask.assign(m_scored_hits[k].hits.size(), false);
+            std::fill(hits_mask.end() - i, hits_mask.end(), true);
+            do {
+                LogDebug << "Mask: ";
+                for (bool b : hits_mask) {
+                    std::cout << b << ", ";
+                }
+                std::cout << std::endl;
+                curr_hits.clear();
+                for (std::size_t j = 0; j < hits_mask.size(); ++j) {
+                    if (hits_mask[j]) curr_hits.push_back(m_scored_hits[k].hits[j]);
+                }
+                m_func->set(curr_hits);
+                printHits(curr_hits);
+                m_opti->optimize(*m_func);
+                m_scored_hits.push_back({curr_hits, m_opti->getCost(), m_opti->getParams()});
+            } while (std::next_permutation(hits_mask.begin(), hits_mask.end()));
         }
+    }
 
-        m_fht_esti->resetFht(table);
+    m_fht_esti->resetFht(table);
 
     // Second Minimization with 2 points ----------
 

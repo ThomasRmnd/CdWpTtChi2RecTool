@@ -61,8 +61,8 @@ bool CdWpTtChi2RecTool::initialize() {
 }
 
 bool CdWpTtChi2RecTool::configure(const Params* params, const PmtTable* table) {
-    m_params = params;
-    m_ref_table = table;
+    c_params = params;
+    c_ref_table = table;
     if (!initialize()) return false;
     LogInfo << m_name << " configured successfully\n";
     return true;
@@ -71,7 +71,7 @@ bool CdWpTtChi2RecTool::configure(const Params* params, const PmtTable* table) {
 bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     timer_guard tg(m_timer); // start the timer, and stop it when `tg` goes out of scope and if timer::stop() is not called
 
-    TableConverter::convert(m_ref_table, m_table);
+    TableConverter::convert(c_ref_table, m_table);
     double totpe = TableConverter::getTotPE();
 
     LogInfo << "Start reconstruction entry with " << m_table.size() << " PMTs, and " << totpe << " PEs\n";

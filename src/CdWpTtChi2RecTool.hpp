@@ -28,8 +28,8 @@ public:
 
 private:
 
-    const Params* m_params;
-    const PmtTable* m_ref_table;
+    const Params* c_params;
+    const PmtTable* c_ref_table;
 
     RecPmtTable m_table;
 
