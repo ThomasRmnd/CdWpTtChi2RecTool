@@ -444,6 +444,7 @@ void CdWpStrategy::create() {
     std::shared_ptr<Transformer> trans_t_lpmt = std::make_shared<EarlyLateFhtTransformer>(
         "CdWpStrategy__EarlyLateFhtTransformer_20inch", RecPmtType::PMT_20INCH, 1000, 0.0, 1000.0, 1.0, 0.0, 175.0
     );
+    m_pipe->addStep(trans_t_lpmt);
     
     // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
     //     "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
@@ -642,6 +643,7 @@ void CdWpTtStrategy::create() {
     std::shared_ptr<Transformer> trans_t_lpmt = std::make_shared<EarlyLateFhtTransformer>(
         "CdWpStrategy__EarlyLateFhtTransformer_20inch", RecPmtType::PMT_20INCH, 1000, 0.0, 1000.0, 1.0, 0.0, 175.0
     );
+    m_pipe->addStep(trans_t_lpmt);
     
     // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
     //     "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
