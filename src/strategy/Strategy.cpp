@@ -161,7 +161,7 @@ void CdStrategy::create() {
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
+        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
     );
     m_pipe->addStep(esti_corrmap_loop);
 }
@@ -236,7 +236,7 @@ void CdStoppingStrategy::create() {
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdStoppingStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
+        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
     );
     m_pipe->addStep(esti_corrmap_loop);
 
@@ -314,7 +314,7 @@ void CdDoubleStrategy::create() {
         "CdDoubleStrategy__ParamsConstrainerEstimator",
         std::make_shared<CorrectionMapLoopEstimator>(
             "CdDoubleStrategy__CorrectionMapLoopEstimator", esti_min, 
-            std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_double, g_corr_map_hamamatsu_double, g_corr_map_3inch_double}, 2u
+            std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_double, g_corr_map_hamamatsu_double, g_corr_map_3inch_double}, 2ul
         ),
         std::array<bool, 8>{false, false, false, false, false, false, true, true}
     );
@@ -440,6 +440,10 @@ void CdWpStrategy::create() {
         "CdWpStrategy__FhtChargeTholdTransformer_20inch", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
+
+    std::shared_ptr<Transformer> trans_t_lpmt = std::make_shared<EarlyLateFhtTransformer>(
+        "CdWpStrategy__EarlyLateFhtTransformer_20inch", RecPmtType::PMT_20INCH, 1000, 0.0, 1000.0, 1.0, 0.0, 175.0
+    );
     
     // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
     //     "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
@@ -469,7 +473,7 @@ void CdWpStrategy::create() {
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdWpStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2u
+        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2ul
     );
     m_pipe->addStep(esti_corrmap_loop);
 }
@@ -549,7 +553,7 @@ void CdTtStrategy::create() {
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdTtStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2u
+        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
     );
 
     std::shared_ptr<CostFunction<TtMethodTag>> tt_cost = std::make_shared<TtCostFunction>(
@@ -634,9 +638,16 @@ void CdWpTtStrategy::create() {
         "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
+
+    std::shared_ptr<Transformer> trans_t_lpmt = std::make_shared<EarlyLateFhtTransformer>(
+        "CdWpStrategy__EarlyLateFhtTransformer_20inch", RecPmtType::PMT_20INCH, 1000, 0.0, 1000.0, 1.0, 0.0, 175.0
+    );
     
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdWpTtStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
+    //     "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // );
+    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<PmtTypeTransformer>(
+        "CdWpStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
     m_pipe->addStep(trans_fht_spmt);
 
@@ -665,7 +676,7 @@ void CdWpTtStrategy::create() {
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdWpTtStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2
+        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2ul
     );
 
     std::shared_ptr<CostFunction<TtMethodTag>> tt_cost = std::make_shared<TtCostFunction>(
