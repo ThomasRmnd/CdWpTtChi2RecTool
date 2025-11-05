@@ -14,8 +14,8 @@ public:
 
     virtual ~CorrectionMapLoopEstimator() override = default;
 
+    void configure(const SniperJSON& config) override;
     bool initialize() override;
-
     bool finalize() override;
 
     ParamsType getIParamsType() override;

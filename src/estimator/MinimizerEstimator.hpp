@@ -29,6 +29,11 @@ public:
 
     virtual ~MinimizerEstimator() = default;
 
+    virtual void configure(const SniperJSON& config) {
+        if (!config.valid()) return;
+        m_func->configure(config);
+    }
+
     virtual bool initialize() override {
         if (!m_opti) {
             LogError << "Optimizer is not set\n";

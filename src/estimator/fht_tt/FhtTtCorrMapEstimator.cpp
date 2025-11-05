@@ -2,21 +2,29 @@
 
 FhtTtCorrMapEstimator::FhtTtCorrMapEstimator(const std::string& name) :
     MinimizerEstimator<FhtTtMethodTag>(name),
-    c_max_nb_hits(0), c_nb_loop(0)
+    m_max_nb_hits(0ul), m_nb_loop(0ul)
 {}
 
 FhtTtCorrMapEstimator::FhtTtCorrMapEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<FhtTtMethodTag>>& func, const std::shared_ptr<CorrectionMapLoopEstimator>& fht_esti, const std::shared_ptr<TtMinimizerEstimator>& tt_esti, std::size_t max_nb_trks, std::size_t nb_loop) :
     MinimizerEstimator<FhtTtMethodTag>(name, opti, func),
     m_fht_esti(fht_esti),
     m_tt_esti(tt_esti),
-    c_max_nb_hits(max_nb_trks),
-    c_nb_loop(nb_loop),
+    m_max_nb_hits(max_nb_trks),
+    m_nb_loop(nb_loop),
     m_curr_nb_hits(0)
 {}
 
+void FhtTtCorrMapEstimator::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    m_fht_esti->configure(config);
+    m_tt_esti->configure(config);
+    if (!setConfigValue(m_max_nb_hits, "MaxNumberHits", config)) return;
+    if (!setConfigValue(m_nb_loop, "NumberLoops", config)) return;
+}
+
 bool FhtTtCorrMapEstimator::initialize() {
-    if (c_max_nb_hits == 0) LogWarn << "The maximum number of TT hits is set to 0\n";
-    if (c_nb_loop == 0) LogWarn << "The number of loops is set to 0\n";
+    if (m_max_nb_hits == 0) LogWarn << "The maximum number of TT hits is set to 0\n";
+    if (m_nb_loop == 0) LogWarn << "The number of loops is set to 0\n";
     if (!m_fht_esti) {
         LogError << "FHT estimator is not set\n";
         return false;
@@ -72,7 +80,7 @@ bool FhtTtCorrMapEstimator::estimate(RecPmtTable& table) {
         LogWarn << "Failed to reconstruct with TT: TT will not be used for this event\n";
         return true;
     }
-    m_curr_nb_hits = std::min(c_max_nb_hits, m_tt_esti->getNbHits());
+    m_curr_nb_hits = std::min(m_max_nb_hits, m_tt_esti->getNbHits());
     if (!m_curr_nb_hits) {
         LogWarn << "No hits in the TT: TT will not be used for this event\n";
         return true;
@@ -95,7 +103,7 @@ bool FhtTtCorrMapEstimator::estimate(RecPmtTable& table) {
 
     // Second Minimization with 3 points or more ----------
 
-    for (std::size_t k = 1; k < c_nb_loop; ++k) {
+    for (std::size_t k = 1; k < m_nb_loop; ++k) {
         for (typename std::vector<ScoredHits>::iterator it = m_scored_hits.begin(); it != m_scored_hits.end(); ++it) {
             if (!m_fht_esti->setParams(it->fvars, m_steps, m_names)) return false;
             if (!m_fht_esti->applyCorrMap(table)) return false;
@@ -175,7 +183,7 @@ bool FhtTtCorrMapEstimator::estimate(RecPmtTable& table) {
 
     // Second Minimization with 2 points ----------
 
-    for (std::size_t k = 1; k < c_nb_loop; ++k) {
+    for (std::size_t k = 1; k < m_nb_loop; ++k) {
         for (std::size_t i = nb_3hits; i < m_scored_hits.size(); ++i) {
             if (!m_fht_esti->setParams(m_scored_hits[i].fvars, m_steps, m_names)) return false;
             if (!m_fht_esti->applyCorrMap(table)) return false;

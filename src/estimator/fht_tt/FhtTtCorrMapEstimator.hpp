@@ -28,6 +28,7 @@ public:
 
     ~FhtTtCorrMapEstimator() override = default;
 
+    void configure(const SniperJSON& config) override;
     bool initialize() override;
     bool finalize() override;
 
@@ -40,8 +41,9 @@ protected:
 
     std::shared_ptr<CorrectionMapLoopEstimator> m_fht_esti;
     std::shared_ptr<TtMinimizerEstimator> m_tt_esti;
-    const std::size_t c_max_nb_hits;
-    const std::size_t c_nb_loop;
+    std::size_t m_max_nb_hits;
+    std::size_t m_nb_loop;
+    
     std::size_t m_curr_nb_hits;
     std::vector<ScoredHits> m_scored_hits;
 

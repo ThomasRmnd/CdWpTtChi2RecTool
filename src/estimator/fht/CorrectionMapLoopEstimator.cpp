@@ -7,6 +7,15 @@ CorrectionMapLoopEstimator::CorrectionMapLoopEstimator(const std::string& name, 
     m_nb_loop{nb_loop}
 {}
 
+void CorrectionMapLoopEstimator::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    m_esti->configure(config);
+    for (std::shared_ptr<CorrectionMap> map : m_maps) {
+        map->configure(config);
+    }
+    if (!setConfigValue(m_nb_loop, "NumberLoops", config)) return;
+}
+
 bool CorrectionMapLoopEstimator::initialize() {
     if (!m_esti) {
         LogError << "Estimator is nullptr\n";
