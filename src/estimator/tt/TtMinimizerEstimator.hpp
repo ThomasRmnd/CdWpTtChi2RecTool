@@ -43,7 +43,7 @@ public:
 protected:
 
     std::shared_ptr<Converter> m_conv;
-    const std::size_t c_max_nb_hits;
+    const std::size_t m_max_nb_hits;
     std::shared_ptr<Combinator> m_comb;
     std::shared_ptr<Initializer<TtMethodTag>> m_init;
 

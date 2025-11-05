@@ -5,13 +5,20 @@
 TtMinimizerEstimator::TtMinimizerEstimator(const std::string& name, const std::shared_ptr<Optimizer>& opti, const std::shared_ptr<CostFunction<TtMethodTag>>& func, const std::shared_ptr<Converter>& conv, std::size_t max_nb_hits, const std::shared_ptr<Combinator>& comb, const std::shared_ptr<Initializer<TtMethodTag>>& init) :
     MinimizerEstimator<TtMethodTag>(name, opti, func),
     m_conv(conv),
-    c_max_nb_hits(max_nb_hits),
+    m_max_nb_hits(max_nb_hits),
     m_comb(comb),
     m_init(init)
 {}
 
+void TtMinimizerEstimator::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    MinimizerEstimator<TtMethodTag>::configure(config);
+    m_init->configure(config);
+    if (!setConfigValue(m_max_nb_hits, "MaxNumberHits", config)) return;
+}
+
 bool TtMinimizerEstimator::initialize() {
-    if (!c_max_nb_hits) LogWarn << "The maximum number of TT hits is set to 0\n";
+    if (!m_max_nb_hits) LogWarn << "The maximum number of TT hits is set to 0\n";
     if (!m_conv) {
         LogError << "Converter is not set\n";
         return false;
@@ -62,8 +69,8 @@ bool TtMinimizerEstimator::estimate(RecPmtTable& table) {
     
     RecPmtTable::const_iterator ftable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return (pmt.type & (RecPmtType::PMT_CD | RecPmtType::PMT_WP)) == pmt.type; }).base();
     if (!m_conv->convert(ftable, table.end())) return false;
-    if (c_max_nb_hits < m_conv->getHits().size()) {
-        LogError << "The number of hits is too large: max -> " << c_max_nb_hits << ", actual -> " << m_conv->getHits().size() << '\n';
+    if (m_max_nb_hits < m_conv->getHits().size()) {
+        LogError << "The number of hits is too large: max -> " << m_max_nb_hits << ", actual -> " << m_conv->getHits().size() << '\n';
         return false;
     }
     if (!m_comb->combine(m_conv->getHits())) return false;
