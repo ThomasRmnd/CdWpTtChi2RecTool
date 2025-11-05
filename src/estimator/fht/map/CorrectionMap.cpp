@@ -9,7 +9,7 @@ CorrectionMap::CorrectionMap(const std::string& name, const RecPmtType& pmt_type
 
 void CorrectionMap::configure(const SniperJSON& config) {
     setConfigValue(m_filename, "Filename", config);
-    setConfigValue(m_filename, "Mapname", config);
+    setConfigValue(m_mapname, "Mapname", config);
 }
 
 bool CorrectionMap::initialize() {
