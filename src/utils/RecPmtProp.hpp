@@ -68,9 +68,9 @@ struct hash<RecPmtType> {
 } // namespace std
 
 inline std::unordered_map<RecPmtType, double> g_pmt_type_to_res = {
-    {RecPmtType::PMT_20INCH_NNVT, 7.0},
-    {RecPmtType::PMT_20INCH_HIGHQENNVT, 7.0},
-    {RecPmtType::PMT_20INCH_HAMAMATSU, 5.0},
+    {RecPmtType::PMT_20INCH_NNVT, 8.0},
+    {RecPmtType::PMT_20INCH_HIGHQENNVT, 8.0},
+    {RecPmtType::PMT_20INCH_HAMAMATSU, 6.0},
     {RecPmtType::PMT_3INCH, 2.3},
     {RecPmtType::PMT_WP, 13.0},
     {RecPmtType::PMT_TT, 2.0}

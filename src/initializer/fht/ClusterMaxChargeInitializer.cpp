@@ -137,12 +137,12 @@ bool ClusterMaxChargeInitializer::initiate(const RecPmtTable& table) {
     if (!getTable(ftable, ltable)) return false;
     double itime = getITime();
     vec3 ipos = getIPos();
-    vec3 fpos = getFPos(ftable, ltable, ipos);
+    vec3 fpos = m_dir_corr_factor * getChargeCentroid(ftable, ltable); // getFPos(ftable, ltable, ipos);
     vec3 dir = fpos - ipos;
     // Preliminary
-    vec3 mid = ipos - dot(ipos, dir) * dir / mag2(dir);
-    mid /= 1.0225; // = (1.025 + 1.020) / 2.0 // best guess for now --> might need to improve init point for better angle 
-    dir = mid - ipos;
+    // vec3 mid = ipos - dot(ipos, dir) * dir / mag2(dir);
+    // mid /= 1.0225; // = (1.025 + 1.020) / 2.0 // best guess for now --> might need to improve init point for better angle 
+    // dir = mid - ipos;
     m_params = std::vector<double>{itime, theta(ipos), phi(ipos), theta(dir), phi(dir)};
 
     return true;
