@@ -4,14 +4,14 @@
 
 TtChi2::TtChi2(const std::string& name, double res) :
     Chi2<TtMethodTag>{name},
-    m_ires2{1 / (res * res)}
+    m_ires2{1.0 / (res * res)}
 {}
 
 void TtChi2::configure(const SniperJSON& config) {
     if (!config.valid()) return;
     double res = 0.0;
     if (!setConfigValue(res, "SpatialResolution", config)) return;
-    m_ires2 = 1 / (res * res);
+    m_ires2 = 1.0 / (res * res);
 }
 
 double TtChi2::calculate(const_iterator first, const_iterator last, theo_const_iterator theo) {

@@ -115,13 +115,13 @@ public:
     double calculate(const RecPmtProp& pmt) final override {
         m_dist_orig_to_pmt_perp = m_half_length_1 + dot(m_dir, pmt.pos);
         m_dist_1st_light = m_dist_orig_to_pmt_perp - mag(pmt.pos - (m_orig_1 + m_dist_orig_to_pmt_perp * m_dir)) * constants::inv_tan_cherenkov_ls;
-        if (m_dist_1st_light < 0.0) m_fht_1 = m_t_0_1 + constants::inv_c_ls * mag(pmt.pos - m_orig_1);        
+        if (m_dist_1st_light < 0.0) m_fht_1 = m_t_0_1 + constants::inv_c_ls * mag(pmt.pos - m_orig_1);
         else if (m_length_1 < m_dist_1st_light) m_fht_1 = m_t_end_1 + constants::inv_c_ls * mag(pmt.pos - m_p_end_1);
         else m_fht_1 = m_t_0_1 + constants::one_minus_n_ls_2_div_c * m_dist_1st_light + constants::n_ls_2_div_c * m_dist_orig_to_pmt_perp;
 
         m_dist_orig_to_pmt_perp = m_half_length_2 + dot(m_dir, pmt.pos);
         m_dist_1st_light = m_dist_orig_to_pmt_perp - mag(pmt.pos - (m_orig_2 + m_dist_orig_to_pmt_perp * m_dir)) * constants::inv_tan_cherenkov_ls;
-        if (m_dist_1st_light < 0.0) m_fht_2 = m_t_0_2 + constants::inv_c_ls * mag(pmt.pos - m_orig_2);        
+        if (m_dist_1st_light < 0.0) m_fht_2 = m_t_0_2 + constants::inv_c_ls * mag(pmt.pos - m_orig_2);
         else if (m_length_2 < m_dist_1st_light) m_fht_2 = m_t_end_2 + constants::inv_c_ls * mag(pmt.pos - m_p_end_2);
         else m_fht_2 = m_t_0_2 + constants::one_minus_n_ls_2_div_c * m_dist_1st_light + constants::n_ls_2_div_c * m_dist_orig_to_pmt_perp;
 

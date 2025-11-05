@@ -39,7 +39,7 @@ public:
      * 
      * The range beginning at `theo` must contain at least `last - first` elements.
      */
-    double calculate(const_iterator first, const_iterator last, theo_const_iterator theo);
+    double calculate(const_iterator first, const_iterator last, theo_const_iterator theo) override;
 
 private:
 
