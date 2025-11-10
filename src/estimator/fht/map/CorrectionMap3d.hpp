@@ -56,7 +56,7 @@ public:
             std::cout << "[CorrectionMap3d] first 5 corr values: ";
             RecPmtTable::iterator dbg = first;
             for (int i = 0; i < 5 && dbg != last; ++i, ++dbg) {
-                std::cout << *dbg << (i < 4 ? ", " : "");
+                std::cout << correction(*dbg) << (i < 4 ? ", " : "");
             }
             std::cout << "\n";
         }
