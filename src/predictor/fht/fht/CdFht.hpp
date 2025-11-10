@@ -50,8 +50,7 @@ public:
     void setTrack(const double* params) final override {
         CdFht<_ParamsTag>::setTrack(params);
         m_half_length = 0.5 * this->m_length;
-        double dt_end = this->m_length / constants::c;
-        m_t_end = this->m_t_0 + dt_end; // ~ this->m_length * constants::inv_c but even though multiplying by inversion is faster, dividing seems to be better
+        m_t_end = this->m_t_0 + this->m_length / constants::c; // ~ this->m_length * constants::inv_c but even though multiplying by inversion is faster, dividing seems to be better
         m_p_end = this->m_orig + this->m_length * this->m_dir;
     }
 
