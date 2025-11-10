@@ -11,9 +11,7 @@ void FhtCostFunction::set(const vector_type& table) {
 
 double FhtCostFunction::operator()(const double* params) {
     m_pred->predict(m_first, m_last, m_theo.begin(), params);
-    double chi2 = m_chi2->calculate(m_first, m_last, m_theo.begin()) 
+    return 
+        m_chi2->calculate(m_first, m_last, m_theo.begin()) 
         / static_cast<double>(std::distance(m_first, m_last) - g_track_type_to_size.at(getIParamsType()));
-    std::cout << chi2 << '\n';
-    return chi2;
-        
 }
