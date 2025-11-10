@@ -62,7 +62,7 @@ bool CorrectionMapLoopEstimator::estimate(RecPmtTable& table) {
         return false;
     }
     copyTable(table);
-    for (std::size_t k = 0; k < m_nb_loop; ++k) {
+    for (std::size_t k = 0ul; k < m_nb_loop; ++k) {
         if (!applyCorrMap(table)) return false;
         m_esti->setParams(m_params, m_steps, m_names);
         if (!m_esti->estimate(table)) return false;
@@ -74,8 +74,8 @@ bool CorrectionMapLoopEstimator::estimate(RecPmtTable& table) {
 }
 
 void CorrectionMapLoopEstimator::copyTable(const RecPmtTable& table) {
-    m_fhts.assign(table.size(), 0.);
-    for (std::size_t k = 0; k < table.size(); ++k) {
+    m_fhts.assign(table.size(), 0.0);
+    for (std::size_t k = 0ul; k < table.size(); ++k) {
         m_fhts[k] = table[k].fht;
     }
 }
