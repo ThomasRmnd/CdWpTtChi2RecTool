@@ -51,7 +51,6 @@ public:
         // Print expected values (debug only)
         {
             std::cout << "[CdWpFhtPredictor] theo values: ";
-            std::vector<double>::iterator dbg = theo;
             for (std::vector<double>::iterator dbg = theo; dbg != (theo + std::distance(first, last)); ++dbg) {
                 std::cout << *dbg << ' ';
             }
