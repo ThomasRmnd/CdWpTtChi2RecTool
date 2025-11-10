@@ -48,12 +48,12 @@ public:
             return m_wp_fht->calculate(pmt);
         });
 
-        // Print first 5 expected values (debug only)
+        // Print expected values (debug only)
         {
-            std::cout << "[CdWpFhtPredictor] first 5 theo values: ";
-            theo_iterator dbg = theo + std::distance(first, mid);
-            for (int i = 0; i < 10 && dbg != (theo + std::distance(first, last)); ++i, ++dbg) {
-                std::cout << *dbg << (i < 4 ? ", " : "");
+            std::cout << "[CdWpFhtPredictor] theo values: ";
+            std::vector<double>::iterator dbg = theo;
+            for (std::vector<double>::iterator dbg = theo; dbg != (theo + std::distance(first, last)); ++dbg) {
+                std::cout << *dbg << ' ';
             }
             std::cout << "\n";
         }
