@@ -47,15 +47,6 @@ public:
         std::transform(mid, last, theo + std::distance(first, mid), [&](const RecPmtProp& pmt) { 
             return m_wp_fht->calculate(pmt);
         });
-
-        // Print expected values (debug only)
-        {
-            std::cout << "[CdWpFhtPredictor] theo values: ";
-            for (std::vector<double>::iterator dbg = theo; dbg != (theo + std::distance(first, last)); ++dbg) {
-                std::cout << *dbg << ' ';
-            }
-            std::cout << "\n";
-        }
     }
 
 protected:

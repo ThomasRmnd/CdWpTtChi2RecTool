@@ -1,6 +1,5 @@
 #include "utils/Geometry.hpp"
 
-#include <cmath>
 #include <vector>
 
 #include "SniperKernel/SniperLog.h"
