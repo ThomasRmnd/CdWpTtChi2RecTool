@@ -1,9 +1,9 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_TT_COMBINATOR_MASKHEIGHTCARTESIANPRODCOMBINATOR_HPP_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_TT_COMBINATOR_MASKHEIGHTCARTESIANPRODCOMBINATOR_HPP_
 
-#include "estimator/tt/combinator/Combinator.hpp"
-
 #include <unordered_map>
+
+#include "estimator/tt/combinator/Combinator.hpp"
 
 class MaskHeightCartesianProdCombinator : public Combinator {
 
@@ -11,6 +11,8 @@ public:
 
     MaskHeightCartesianProdCombinator(const std::string& name, std::size_t max_nb_heights);
     ~MaskHeightCartesianProdCombinator() override = default;
+
+    void configure(const SniperJSON& config) override;
 
     bool combine(const std::vector<vec3>& hits) override;
 

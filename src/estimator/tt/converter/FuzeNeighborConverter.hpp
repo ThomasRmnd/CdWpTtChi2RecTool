@@ -1,10 +1,10 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_TT_CONVERTER_FUZENEIGHBORCONVERTER_HPP_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_TT_CONVERTER_FUZENEIGHBORCONVERTER_HPP_
 
-#include "estimator/tt/converter/Converter.hpp"
-
 #include <unordered_map>
 #include <vector>
+
+#include "estimator/tt/converter/Converter.hpp"
 
 class FuzeNeighborConverter : public Converter {
 
@@ -22,6 +22,8 @@ public:
     using Converter::Converter;
 
     ~FuzeNeighborConverter() override = default;
+
+    void configure(const SniperJSON& config) override;
 
     bool convert(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) override;
 

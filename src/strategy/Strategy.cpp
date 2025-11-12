@@ -102,6 +102,12 @@ DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_wp, WpTimeShiftCorr
 
 std::shared_ptr<Optimizer> g_opti = std::make_shared<RootOptimizer>(1000000, 100000, 0.001);
 
+std::shared_ptr<Combinator> g_tt_combinator = std::make_shared<MaskHeightCartesianProdCombinator>("MaskHeightCartesianProdCombinator", 6);
+
+std::shared_ptr<Converter> g_tt_converter = std::make_shared<FuzeNeighborConverter>("FuzeNeighborConverter");
+
+std::shared_ptr<Initializer<TtMethodTag>> g_tt_initializer_minmax_height = std::make_shared<MinMaxHeightInitializer>("MinMaxHeightInitializer");
+
 DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(CdFht, cd_fht, NoRefractionLsCdFht)
 DEFINIT_GLOBAL_BASED_ON_TEMPLATE_TRACK_PARAMS(WpFht, wp_fht, NoDiffusionWpFht)
 
@@ -116,6 +122,7 @@ std::shared_ptr<Transformer> g_trans_calib_nnvt = std::make_shared<CalibTimeTran
 std::shared_ptr<Transformer> g_trans_calib_highqe = std::make_shared<CalibTimeTransformer>("CalibTimeTransformer_HighQENNVT", RecPmtType::PMT_20INCH_HIGHQENNVT, 0.0);
 std::shared_ptr<Transformer> g_trans_calib_spmt = std::make_shared<CalibTimeTransformer>("CalibTimeTransformer_3inch", RecPmtType::PMT_3INCH, 0.0);
 std::shared_ptr<Transformer> g_trans_calib_wp = std::make_shared<CalibTimeTransformer>("CalibTimeTransformer_WP", RecPmtType::PMT_WP, 0.0);
+std::shared_ptr<Transformer> g_trans_tt_cross_talk = std::make_shared<TtCrossTalkTransformer>("TtCrossTalkTransformer");
 
 // ################################################################################################
 // ========================================= CD Strategy ==========================================
@@ -369,10 +376,7 @@ void TtStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("TtStrategy__Pipeline");
 
     // ======================================= Transformer ========================================
-    std::shared_ptr<Transformer> trans_tt = std::make_shared<TtCrossTalkTransformer>(
-        "TtStrategy__TtCrossTalkTransformer"
-    );
-    m_pipe->addStep(trans_tt);
+    m_pipe->addStep(g_trans_tt_cross_talk);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<Estimator> esti_tt = std::make_shared<TtMinimizerEstimator>(
@@ -383,9 +387,7 @@ void TtStrategy::create() {
             g_pred_tt_single_tt,
             g_chi2_tt
         ),
-        std::make_shared<FuzeNeighborConverter>("TtStrategy__FuzeNeighborConverter"), 25,
-        std::make_shared<MaskHeightCartesianProdCombinator>("TtStrategy__MaskHeightCartesianProdCombinator", 6),
-        std::make_shared<MinMaxHeightInitializer>("TtStrategy__MinMaxHeightInitializer")
+        g_tt_converter, 25, g_tt_combinator, g_tt_initializer_minmax_height
     );
     m_pipe->addStep(esti_tt);
 }
@@ -523,6 +525,7 @@ void CdTtStrategy::create() {
     m_pipe->addStep(g_trans_calib_highqe);
     m_pipe->addStep(g_trans_calib_nnvt);
     m_pipe->addStep(g_trans_calib_spmt);
+    m_pipe->addStep(g_trans_tt_cross_talk);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "CdTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
@@ -533,11 +536,6 @@ void CdTtStrategy::create() {
         "CdTtStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     );
     m_pipe->addStep(trans_fht_spmt);
-
-    std::shared_ptr<Transformer> trans_tt = std::make_shared<TtCrossTalkTransformer>(
-        "CdTtStrategy__TtCrossTalkTransformer"
-    );
-    m_pipe->addStep(trans_tt);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
@@ -566,9 +564,7 @@ void CdTtStrategy::create() {
     std::shared_ptr<Estimator> esti_tt = std::make_shared<TtMinimizerEstimator>(
         "CdTtStrategy__TtMinimizerEstimator",
         g_opti, tt_cost,
-        std::make_shared<FuzeNeighborConverter>("CdTtStrategy__FuzeNeighborConverter"), 25,
-        std::make_shared<MaskHeightCartesianProdCombinator>("CdTtStrategy__MaskHeightCartesianProdCombinator", 6),
-        std::make_shared<MinMaxHeightInitializer>("CdTtStrategy__MinMaxHeightInitializer")
+        g_tt_converter, 25, g_tt_combinator, g_tt_initializer_minmax_height
     );
 
     std::shared_ptr<CostFunction<FhtTtMethodTag>> fht_tt_cost = std::make_shared<FhtTtCostFunction>(
@@ -634,6 +630,7 @@ void CdWpTtStrategy::create() {
     m_pipe->addStep(g_trans_calib_nnvt);
     m_pipe->addStep(g_trans_calib_spmt);
     m_pipe->addStep(g_trans_calib_wp);
+    m_pipe->addStep(g_trans_tt_cross_talk);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
@@ -657,11 +654,6 @@ void CdWpTtStrategy::create() {
         "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 30.0
     );
     m_pipe->addStep(trans_q_wp);
-
-    std::shared_ptr<Transformer> trans_tt = std::make_shared<TtCrossTalkTransformer>(
-        "CdWpTtStrategy__TtCrossTalkTransformer"
-    );
-    m_pipe->addStep(trans_tt);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
@@ -690,9 +682,7 @@ void CdWpTtStrategy::create() {
     std::shared_ptr<Estimator> esti_tt = std::make_shared<TtMinimizerEstimator>(
         "CdWpTtStrategy__TtMinimizerEstimator",
         g_opti, tt_cost,
-        std::make_shared<FuzeNeighborConverter>("CdWpTtStrategy__FuzeNeighborConverter"), 25,
-        std::make_shared<MaskHeightCartesianProdCombinator>("CdWpTtStrategy__MaskHeightCartesianProdCombinator", 6),
-        std::make_shared<MinMaxHeightInitializer>("CdWpTtStrategy__MinMaxHeightInitializer")
+        g_tt_converter, 25, g_tt_combinator, g_tt_initializer_minmax_height
     );
 
     std::shared_ptr<CostFunction<FhtTtMethodTag>> fht_tt_cost = std::make_shared<FhtTtCostFunction>(

@@ -1,17 +1,16 @@
 #ifndef CDWPTTCHI2RECTOOL_ESTIMATOR_TT_COMBINATOR_COMBINATOR_HPP_
 #define CDWPTTCHI2RECTOOL_ESTIMATOR_TT_COMBINATOR_COMBINATOR_HPP_
 
-#include "SniperKernel/ToolBase.h"
-
+#include "utils/Configurable.hpp"
 #include "utils/vec3.hpp"
 
-class Combinator : public ToolBase {
+class Combinator : public Configurable {
 
     typedef std::vector<std::vector<vec3>> PointCombination;
 
 public:
 
-    using ToolBase::ToolBase;
+    using Configurable::Configurable;
 
     virtual bool combine(const std::vector<vec3>& hits) = 0;
 

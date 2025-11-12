@@ -4,6 +4,11 @@
 
 #include "Identifier/TtID.h"
 
+void FuzeNeighborConverter::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    // Currently no configuration parameters
+}
+
 bool FuzeNeighborConverter::convert(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable) {
     if (!getWallHits(ftable, ltable)) return false;
     if (!cleanWallHits()) return false;

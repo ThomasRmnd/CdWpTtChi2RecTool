@@ -212,6 +212,8 @@ public:
 
 };
 
+// Declare global objects used in multiple strategies
+
 #define DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(Class, name) \
     extern std::shared_ptr<Class> g_##name##_single; \
     extern std::shared_ptr<Class> g_##name##_single_stopping; \
@@ -247,6 +249,18 @@ DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_wp)
 
 extern std::shared_ptr<Optimizer> g_opti;
 
+#include "estimator/tt/combinator/Combinator.hpp"
+
+extern std::shared_ptr<Combinator> g_tt_combinator;
+
+#include "estimator/tt/converter/Converter.hpp"
+
+extern std::shared_ptr<Converter> g_tt_converter;
+
+#include "initializer/Initializer.hpp"
+
+extern std::shared_ptr<Initializer<TtMethodTag>> g_tt_initializer_minmax_height;
+
 #include "predictor/Predictor.hpp"
 
 DECLARE_GLOBAL_BASED_ON_TRACK_PARAMS(Predictor<FhtMethodTag>, pred_fht_cd_no_refr_ls)
@@ -268,6 +282,7 @@ extern std::shared_ptr<Transformer> g_trans_calib_nnvt;
 extern std::shared_ptr<Transformer> g_trans_calib_highqe;
 extern std::shared_ptr<Transformer> g_trans_calib_spmt;
 extern std::shared_ptr<Transformer> g_trans_calib_wp;
+extern std::shared_ptr<Transformer> g_trans_tt_cross_talk;
 
 
 #endif // CDWPTTCHI2RECTOOL_STRATEGY_STRATEGY_HPP_

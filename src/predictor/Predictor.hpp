@@ -1,7 +1,6 @@
 #ifndef CDWPTTCHI2RECTOOL_PREDICTOR_PREDICTOR_HPP_
 #define CDWPTTCHI2RECTOOL_PREDICTOR_PREDICTOR_HPP_
 
-#include "utils/Configurable.hpp"
 #include "utils/Method.hpp"
 #include "utils/TrackParams.hpp"
 

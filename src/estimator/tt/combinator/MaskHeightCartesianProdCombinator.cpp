@@ -5,7 +5,12 @@
 MaskHeightCartesianProdCombinator::MaskHeightCartesianProdCombinator(const std::string& name, std::size_t max_nb_heights) :
     Combinator(name),
     m_max_nb_heights(max_nb_heights)
-{};
+{}
+
+void MaskHeightCartesianProdCombinator::configure(const SniperJSON& config) {
+    if (!config.valid()) return;
+    if (!setConfigValue(m_max_nb_heights, "MaxNumberHeights", config)) return;
+}
 
 bool MaskHeightCartesianProdCombinator::combine(const std::vector<vec3>& hits) {
     m_hits_comb.clear();
