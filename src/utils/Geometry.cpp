@@ -15,8 +15,8 @@ std::pair<double, double> computeWpHits(const vec3& ipos, const vec3& dir) {
     double delta = b * b - 4 * a * c;
     double sqrt_delta = std::sqrt(delta);
 
-    d_entry = (-b - std::sqrt(delta)) / (2.0 * a);
-    d_exit = (-b + std::sqrt(delta)) / (2.0 * a); 
+    d_entry = (-b - sqrt_delta) / (2.0 * a);
+    d_exit = (-b + sqrt_delta) / (2.0 * a); 
 
     double z_entry = ipos.z + d_entry * dir.z;
     double z_exit = ipos.z + d_exit * dir.z;

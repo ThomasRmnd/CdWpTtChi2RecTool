@@ -123,6 +123,7 @@ protected:
 
 typedef std::vector<RecPmtProp> RecPmtTable;
 
+// TODO: Maybe use PMTParamSvc instead of CdID::pmtType
 class TableConverter {
 
 public:
