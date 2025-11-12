@@ -62,6 +62,7 @@ ParamsType FhtTtCorrMapEstimator::getOParamsType() {
     return m_func->getIParamsType();
 };
 
+// TODO: optimize the reconstruction speed
 bool FhtTtCorrMapEstimator::estimate(RecPmtTable& table) {
     if (m_params.empty()) {
         LogError << "No parameters were set as input. Abording\n";

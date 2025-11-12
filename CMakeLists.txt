@@ -49,7 +49,8 @@ FILES
     src/utils/Geometry.cpp
 
 DEPENDS
-        
+
+    GeometryLib
     Minuit2
     RecTools
 

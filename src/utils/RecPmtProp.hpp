@@ -8,6 +8,7 @@
 
 #include "SniperKernel/SniperLog.h"
 
+#include "Geometry/IPMTParamSvc.h"
 #include "Identifier/CdID.h"
 #include "Identifier/WpID.h"
 #include "RecTools/PmtProp.h"
@@ -87,7 +88,7 @@ struct RecPmtProp { // sizeof = 64
     RecPmtType type;
     bool used = false;
 
-    // double inv_res() const { return pmt_type_to_invres[type]; }; // <-- this would allow to remove inv_res member, reducing sizeof(RecPmtProp) to 56
+    // double inv_res() const { return g_pmt_type_to_res[type]; }; // <-- this would allow to remove inv_res member, reducing sizeof(RecPmtProp) to 56
 
 };
 
@@ -138,12 +139,14 @@ public:
         }
     }
 
+    static void setPMTSvc(IPMTParamSvc* pmt_svc) { m_pmt_svc = pmt_svc; }
     static double getTotPE() { return m_tot_pe; }
 
 private:
 
     inline static std::size_t m_tot_used = 0ul;
     inline static double m_tot_pe = 0.0;
+    inline static IPMTParamSvc* m_pmt_svc = nullptr;
 
     static void getTotUsedAndPE(const PmtTable* src) {
         m_tot_used = 0ul;
@@ -167,8 +170,34 @@ private:
             type = RecPmtType::PMT_WP;
         }
         else if (src.loc ==1) {
-            type = RecPmtType::PMT_CD;
-            if (CdID::is20inch(id)) {
+            type = resolveCdPmtType(id);
+        }
+        else {
+            throw std::runtime_error("Unknown PMT location: " + std::to_string(src.loc));
+        }
+        return type;
+    }
+
+    static RecPmtType resolveCdPmtType(const Identifier& id) {
+        RecPmtType type = RecPmtType::PMT_CD;
+        if (CdID::is20inch(id)) {
+            if (m_pmt_svc) {
+                type = RecPmtType::PMT_20INCH;
+                int id_module = CdID::module(id);
+                if (m_pmt_svc->isHamamatsu(id_module)) {
+                    type = RecPmtType::PMT_20INCH_HAMAMATSU;
+                }
+                else if (m_pmt_svc->isNormalNNVT(id_module)) {
+                    type = RecPmtType::PMT_20INCH_NNVT;
+                }
+                else if (m_pmt_svc->isHighQENNVT(id_module)) {
+                    type = RecPmtType::PMT_20INCH_HIGHQENNVT;
+                }
+                else {
+                    throw std::runtime_error("Unknown CD PMT type from PMTParamSvc: " + std::to_string(static_cast<unsigned int>(id)));
+                }
+            }
+            else {
                 type = RecPmtType::PMT_20INCH;
                 if (CdID::pmtType(id) == 1) {
                     type = RecPmtType::PMT_20INCH_HAMAMATSU;
@@ -177,18 +206,15 @@ private:
                     type = RecPmtType::PMT_20INCH_NNVT;
                 }
                 else {
-                    throw std::runtime_error("Unknown CD 20inch PMT type: " + std::to_string(src.pmtid));
+                    throw std::runtime_error("Unknown CD 20inch PMT type: " + std::to_string(static_cast<unsigned int>(id)));
                 }
             }
-            else if (CdID::is3inch(id)) {
-                type = RecPmtType::PMT_3INCH;
-            }
-            else {
-                throw std::runtime_error("Unknown CD PMT type: " + std::to_string(src.pmtid));
-            }
+        }
+        else if (CdID::is3inch(id)) {
+            type = RecPmtType::PMT_3INCH;
         }
         else {
-            throw std::runtime_error("Unknown PMT location: " + std::to_string(src.loc));
+            throw std::runtime_error("Unknown CD PMT type: " + std::to_string(static_cast<unsigned int>(id)));
         }
         return type;
     }

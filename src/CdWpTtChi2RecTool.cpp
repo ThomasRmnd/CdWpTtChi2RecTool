@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "SniperKernel/SniperJSON.h"
+#include "SniperKernel/SniperPtr.h"
 #include "SniperKernel/ToolFactory.h"
 
 #include "DataPathHelper/Path.hh"
@@ -60,6 +61,15 @@ bool CdWpTtChi2RecTool::initialize() {
 
     m_reg.configure(m_json);
     if (!m_reg.initialize()) return false;
+
+    SniperPtr<IPMTParamSvc> pmtsvc(*getRoot(), "PMTParamSvc");
+    if (pmtsvc.invalid()) {
+        LogError << "Cannot get the PMTParamSvc." << std::endl;
+        return false;
+    }
+    m_pmt_svc = pmtsvc.data();
+    TableConverter::setPMTSvc(m_pmt_svc);
+
     LogInfo << m_name << " initialized successfully\n";
 
     return true;

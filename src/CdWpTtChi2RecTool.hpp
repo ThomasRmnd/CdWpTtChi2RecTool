@@ -1,12 +1,11 @@
 #ifndef CDWPTTCHI2RECTOOL_CDWPTTCHI2RECTOOL_HPP_
 #define CDWPTTCHI2RECTOOL_CDWPTTCHI2RECTOOL_HPP_
 
-#include "SniperKernel/ToolBase.h"
-#include "RecTools/IRecMuonTool.h"
-
-#include <any>
 #include <memory>
-#include <unordered_map>
+
+#include "Geometry/IPMTParamSvc.h"
+#include "RecTools/IRecMuonTool.h"
+#include "SniperKernel/ToolBase.h"
 
 #include "strategy/Factory.hpp"
 #include "utils/RecPmtProp.hpp"
@@ -28,19 +27,20 @@ public:
 
 private:
 
-    const Params* c_params;
-    const PmtTable* c_ref_table;
-
-    RecPmtTable m_table;
-
     bool m_auto_fact;
     bool m_water_phase;
     int m_manual_reco_mode;
+    std::string m_config_file;
+
+    const Params* c_params;
+    const PmtTable* c_ref_table;
+    RecPmtTable m_table;
 
     StrategyRegistry m_reg;
-    std::string m_config_file;
     SniperJSON m_json;
     std::shared_ptr<StrategyFactory> m_fact;
+
+    IPMTParamSvc* m_pmt_svc;
 
     timer m_timer;
 
