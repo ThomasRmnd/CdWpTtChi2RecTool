@@ -180,34 +180,23 @@ private:
 
     static RecPmtType resolveCdPmtType(const Identifier& id) {
         RecPmtType type = RecPmtType::PMT_CD;
+        if (!m_pmt_svc) {
+            throw std::runtime_error("PMTParamSvc is not set in TableConverter");
+        }
         if (CdID::is20inch(id)) {
-            if (m_pmt_svc) {
-                type = RecPmtType::PMT_20INCH;
-                int id_module = CdID::module(id);
-                if (m_pmt_svc->isHamamatsu(id_module)) {
-                    type = RecPmtType::PMT_20INCH_HAMAMATSU;
-                }
-                else if (m_pmt_svc->isNormalNNVT(id_module)) {
-                    type = RecPmtType::PMT_20INCH_NNVT;
-                }
-                else if (m_pmt_svc->isHighQENNVT(id_module)) {
-                    type = RecPmtType::PMT_20INCH_HIGHQENNVT;
-                }
-                else {
-                    throw std::runtime_error("Unknown CD PMT type from PMTParamSvc: " + std::to_string(static_cast<unsigned int>(id)));
-                }
+            type = RecPmtType::PMT_20INCH;
+            int id_module = CdID::module(id);
+            if (m_pmt_svc->isHamamatsu(id_module)) {
+                type = RecPmtType::PMT_20INCH_HAMAMATSU;
+            }
+            else if (m_pmt_svc->isNormalNNVT(id_module)) {
+                type = RecPmtType::PMT_20INCH_NNVT;
+            }
+            else if (m_pmt_svc->isHighQENNVT(id_module)) {
+                type = RecPmtType::PMT_20INCH_HIGHQENNVT;
             }
             else {
-                type = RecPmtType::PMT_20INCH;
-                if (CdID::pmtType(id) == 1) {
-                    type = RecPmtType::PMT_20INCH_HAMAMATSU;
-                }
-                else if (CdID::pmtType(id) == 2) {
-                    type = RecPmtType::PMT_20INCH_NNVT;
-                }
-                else {
-                    throw std::runtime_error("Unknown CD 20inch PMT type: " + std::to_string(static_cast<unsigned int>(id)));
-                }
+                throw std::runtime_error("Unknown CD PMT type from PMTParamSvc: " + std::to_string(static_cast<unsigned int>(id)));
             }
         }
         else if (CdID::is3inch(id)) {
