@@ -1,7 +1,6 @@
 #include "CdWpTtChi2RecTool.hpp"
 
 #include <fstream>
-#include <numeric>
 
 #include "SniperKernel/SniperJSON.h"
 #include "SniperKernel/ToolFactory.h"

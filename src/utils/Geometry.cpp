@@ -1,9 +1,5 @@
 #include "utils/Geometry.hpp"
 
-#include <vector>
-
-#include "SniperKernel/SniperLog.h"
-
 std::pair<double, double> computeWpHits(const vec3& ipos, const vec3& dir) {
     double d_entry = 0.0;
     double d_exit = 0.0;

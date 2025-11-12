@@ -1,5 +1,7 @@
 #include "estimator/fht/map/CorrectionMap.hpp"
 
+#include "DataPathHelper/Path.hh"
+
 CorrectionMap::CorrectionMap(const std::string& name, const RecPmtType& pmt_type, const std::string& filename, const std::string& mapname) :
     PmtTypeChecker{pmt_type},
     Configurable{name},
@@ -19,10 +21,15 @@ bool CorrectionMap::initialize() {
 }
 
 bool CorrectionMap::openCorrFile() {
-    m_file = CorrectionFile::open(m_filename);
+    std::string filename = JUNO::Path::resolve(m_filename);
+    m_file = CorrectionFile::open(filename);
     if (!m_file->isOpen()) {
-        LogError << "Cannot open correction file " << m_filename << '\n';
-        return false;
+        LogWarn << "Cannot open correction file using the JUNO environment variables. Trying the original path\n";
+        m_file = CorrectionFile::open(m_filename);
+        if (!m_file->isOpen()) {
+            LogError << "Failed to open correction file: " << m_filename << "\n";
+            return false;
+        }
     }
     return true;
 }
