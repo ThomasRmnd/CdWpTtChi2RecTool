@@ -24,12 +24,8 @@ bool CorrectionMap::openCorrFile() {
     std::string filename = JUNO::Path::resolve(m_filename);
     m_file = CorrectionFile::open(filename);
     if (!m_file->isOpen()) {
-        LogWarn << "Cannot open correction file using the JUNO environment variables. Trying the original path\n";
-        m_file = CorrectionFile::open(m_filename);
-        if (!m_file->isOpen()) {
-            LogError << "Failed to open correction file: " << m_filename << "\n";
-            return false;
-        }
+        LogError << "Failed to open correction file: " << m_filename << "\n";
+        return false;
     }
     return true;
 }

@@ -5,6 +5,8 @@
 #include "SniperKernel/SniperJSON.h"
 #include "SniperKernel/ToolFactory.h"
 
+#include "DataPathHelper/Path.hh"
+
 DECLARE_TOOL(CdWpTtChi2RecTool);
 
 CdWpTtChi2RecTool::CdWpTtChi2RecTool(const std::string& name) :
@@ -47,8 +49,12 @@ bool CdWpTtChi2RecTool::initialize() {
         }
     }
 
-    if (!m_config_file.empty()) {
-        std::ifstream ifs(m_config_file);
+    std::string filename = JUNO::Path::resolve(m_config_file);
+    if (filename.empty()) {
+        LogWarn << "Cannot resolve config file: " << m_config_file << ", using default configuration\n";
+    }
+    else {
+        std::ifstream ifs(filename);
         m_json = SniperJSON::load(ifs);
     }
 
