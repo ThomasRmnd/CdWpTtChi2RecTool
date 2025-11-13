@@ -39,19 +39,6 @@
 #include "transformer/WaterPhaseTransformer.hpp"
 #include "transformer/WpGeomTimeTransformer.hpp"
 
-#define __USE_CCA_FILES_CORRECTION_MAP__
-
-#ifdef __USE_CCA_FILES_CORRECTION_MAP__
-    #define CORRECTION_MAP_FILENAME "~/J22.2.0-rc2/junosw/Examples/CorrectionMaps/share/CorrectionMap_CdWp_10010020_L2_5050_Shifted_2D_CCA.root"
-#else
-    #define CORRECTION_MAP_FILENAME "/junofs/users/traymond/data/CorrectionMaps/CorrectionMap_CdWp_10010020_L2_5050_Shifted_2D_CCA.root"
-#endif // __USE_CCA_FILES_CORRECTION_MAP__
-
-#define CORRECTION_MAP_MAPNAME_NNVT "NNVTPmtsCorrectionMap_FhtChargeThold20"
-#define CORRECTION_MAP_MAPNAME_HAMAMATSU "HamamatsuPmtsCorrectionMap_FhtChargeThold20"
-#define CORRECTION_MAP_MAPNAME_3INCH "3inchPmtsCorrectionMap_EarlyLateFht135"
-#define CORRECTION_MAP_MAPNAME_WP "WpPmtsCorrectionMap_TimeGeom"
-
 #define DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Base, name, Derived, ...) \
     std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(__VA_ARGS__); \
     std::shared_ptr<Base> g_##name##_single_stopping = std::make_shared<Derived<SingleStoppingAcrylicParamsTag>>(__VA_ARGS__); \
@@ -82,22 +69,22 @@ std::shared_ptr<CorrParam> g_corr_param_dist_track_to_center_squared = std::make
 
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_nnvt, CorrectionMap3d, 
     "CorrectionMap3d_NNVT", RecPmtType::PMT_20INCH_NNVT | RecPmtType::PMT_20INCH_HIGHQENNVT,
-    CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_NNVT,
+    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-9897.20250830-20250906.correctionmap.root", "NNVTPmtsCorrectionMap_FhtChargeThold20",
     g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_hamamatsu, CorrectionMap3d,
     "CorrectionMap3d_Hamamatsu", RecPmtType::PMT_20INCH_HAMAMATSU,
-    CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_HAMAMATSU,
+    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-9897.20250830-20250906.correctionmap.root", "HamamatsuPmtsCorrectionMap_FhtChargeThold20",
     g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_3inch, CorrectionMap3d,
     "CorrectionMap3d_3inch", RecPmtType::PMT_3INCH,
-    CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_3INCH,
+    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-9897.20250830-20250906.correctionmap.root", "3inchPmtsCorrectionMap_EarlyLateFht135",
     g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_wp, WpTimeShiftCorrectionMap,
     "WpTimeShiftCorrectionMap",
-    CORRECTION_MAP_FILENAME, CORRECTION_MAP_MAPNAME_WP
+    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-9897.20250830-20250906.correctionmap.root", "WpPmtsCorrectionMap_TimeGeom"
 )
 
 std::shared_ptr<Optimizer> g_opti = std::make_shared<RootOptimizer>(1000000, 100000, 0.001);

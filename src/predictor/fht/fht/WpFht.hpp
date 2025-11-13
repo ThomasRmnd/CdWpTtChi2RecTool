@@ -61,7 +61,7 @@ public:
      * 
      * @return FHT
      */
-    double calculate(const RecPmtProp& pmt) {
+    double calculate(const RecPmtProp& pmt) final override {
         // TODO: optimize
         m_p_pmt_proj = this->m_orig + dot(this->m_dir, pmt.pos - this->m_orig) * this->m_dir;
         double dt_pmt_proj = dot(m_p_pmt_proj - this->m_orig, this->m_dir) * constants::inv_c;
@@ -120,7 +120,7 @@ public:
      * 
      * @return FHT
      */
-    double calculate(const RecPmtProp& pmt) {
+    double calculate(const RecPmtProp& pmt) final override {
         // TODO: optimize
         double signed_pos = dot(m_dir, pmt.pos);
 
