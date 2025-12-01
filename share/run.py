@@ -9,19 +9,16 @@ parser.add_argument("--use-simulation", action="store_true", help="Enable SimEve
 
 parser.add_argument("--use-auto-factory", action="store_true", help="Use the automatic factory")
 parser.add_argument("--water-phase", action="store_true", help="Use water phase algorithms")
-parser.add_argument("--manual-reconstruction-mode", type=int, default=1, help="Set the reconstruction mode for the manual factory")
-parser.add_argument("--config-file", type=str, default="", help="Path for the config file")
+parser.add_argument("--manual-reconstruction-mode", type=int, default=1, help="Set the reconstruction mode for the manual factory (default: 1)")
+parser.add_argument("--config-file", type=str, default="", help="Path for the config file (default: \"\")")
 
-parser.add_argument("--time-window", nargs=2, type=float, metavar=("START", "END"), default=(-1e-6, 1e-6), help="Buffer time window")
-parser.add_argument("--log-level", type=int, default=3, help="Log level (default: 1)")
+parser.add_argument("--time-window", nargs=2, type=float, metavar=("START", "END"), default=(-1e-6, 1e-6), help="Buffer time window (default: [-1e-6, 1e-6])")
+parser.add_argument("--log-level", type=int, default=3, help="Log level (default: 3)")
 
 args = parser.parse_args()
 
 ipath = args.input
 opath = args.output
-
-lower_tw, upper_tw = args.time_window
-loglevel = args.log_level
 
 sim_hdr = [
     "/Event/Sim"
@@ -34,28 +31,23 @@ rec_hdr = [
 
 # === Sniper ====
 import Sniper
-Sniper.setLogLevel(loglevel)
+Sniper.setLogLevel(args.log_level)
 task = Sniper.TopTask("task")
-task.setLogLevel(loglevel)
+task.setLogLevel(args.log_level)
 
 # === Profiling ===
 import SniperProfiling
 prof = task.createSvc("SniperProfiling")
-prof.setLogLevel(loglevel)
+prof.setLogLevel(args.log_level)
 
 # === BufferMemMgr ===
 import BufferMemMgr
 buf_mgr = task.createSvc("BufferMemMgr")
-buf_mgr.property("TimeWindow").set([lower_tw, upper_tw])
+buf_mgr.property("TimeWindow").set(args.time_window)
 
 # === Geometry === 
 import Geometry
-geom = task.createSvc("RecGeomSvc")
-geom.property("GeomFile").set("default")
-geom.property("GeomPathInRoot").set("JunoGeom")
-geom.property("FastInit").set(True)
 pmt_svc = task.createSvc("PMTParamSvc")
-ttg_svc = task.createSvc("TTGeomSvc")
 
 # === RootIOSvc ===
 import RootIOSvc
@@ -73,7 +65,7 @@ ro_svc.property("OutputStreams").set(ofiles)
 import RecMuonAlg
 import CdWpTtChi2RecTool
 alg = RecMuonAlg.createAlg(task)
-alg.setLogLevel(loglevel)
+alg.setLogLevel(args.log_level)
 
 alg.useLoader("JointLoader")
 alg.loader.property("TimeWindow").set([-500.0, 500.0]) # ns
