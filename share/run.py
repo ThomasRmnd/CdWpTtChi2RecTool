@@ -47,12 +47,7 @@ buf_mgr.property("TimeWindow").set(args.time_window)
 
 # === Geometry === 
 import Geometry
-# geom = task.createSvc("RecGeomSvc")
-# geom.property("GeomFile").set("default")
-# geom.property("GeomPathInRoot").set("JunoGeom")
-# geom.property("FastInit").set(True)
 pmt_svc = task.createSvc("PMTParamSvc")
-# ttg_svc = task.createSvc("TTGeomSvc")
 
 # === RootIOSvc ===
 import RootIOSvc
