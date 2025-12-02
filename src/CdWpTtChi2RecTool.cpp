@@ -80,6 +80,17 @@ bool CdWpTtChi2RecTool::configure(const Params* params, const PmtTable* table) {
     c_ref_table = table;
     if (!initialize()) return false;
     LogInfo << m_name << " configured successfully\n";
+
+    std::ofstream out("lpmt_position.txt");
+    if (!out.is_open()) {
+        LogError << "Cannot open output position file\n";
+        return false;
+    }
+    for (const PmtProp& pmt : *c_ref_table) {
+        out << pmt.pos.X() << ' ' << pmt.pos.Y() << ' ' << pmt.pos.Z() << '\n';
+    }
+    out.close();
+
     return true;
 }
 
