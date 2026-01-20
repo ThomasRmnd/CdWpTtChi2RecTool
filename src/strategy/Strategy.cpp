@@ -64,27 +64,28 @@ std::shared_ptr<Chi2<TtMethodTag>> g_chi2_tt = std::make_shared<TtChi2>("TtChi2"
 std::shared_ptr<Chi2<TtMethodTag>> g_chi2_tt_joint = std::make_shared<TtChi2>("TtChi2_Joint", 130.0);
 
 std::shared_ptr<CorrParam> g_corr_param_dist_proj_pmt_to_orig = std::make_shared<DistProjPmtToOrigCorrParam>();
+std::shared_ptr<CorrParam> g_corr_param_dist_proj_pmt = std::make_shared<DistProjPmtCorrParam>();
 std::shared_ptr<CorrParam> g_corr_param_angle = std::make_shared<AngleCorrParam>();
 std::shared_ptr<CorrParam> g_corr_param_dist_track_to_center_squared = std::make_shared<DistTrackToCenterSquaredCorrParam>();
 
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_nnvt, CorrectionMap3d, 
     "CorrectionMap3d_NNVT", RecPmtType::PMT_20INCH_NNVT | RecPmtType::PMT_20INCH_HIGHQENNVT,
-    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-9897.20250830-20250906.correctionmap.root", "NNVTPmtsCorrectionMap_FhtChargeThold20",
-    g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
+    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-10084.reprod25c.correctionmap.root", "NNVTPmtsCorrectionMap_FhtChargeThold20",
+    g_corr_param_dist_proj_pmt, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_hamamatsu, CorrectionMap3d,
     "CorrectionMap3d_Hamamatsu", RecPmtType::PMT_20INCH_HAMAMATSU,
-    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-9897.20250830-20250906.correctionmap.root", "HamamatsuPmtsCorrectionMap_FhtChargeThold20",
-    g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
+    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-10084.reprod25c.correctionmap.root", "HamamatsuPmtsCorrectionMap_FhtChargeThold20",
+    g_corr_param_dist_proj_pmt, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_3inch, CorrectionMap3d,
     "CorrectionMap3d_3inch", RecPmtType::PMT_3INCH,
-    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-9897.20250830-20250906.correctionmap.root", "3inchPmtsCorrectionMap_EarlyLateFht135",
-    g_corr_param_dist_proj_pmt_to_orig, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
+    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-10084.reprod25c.correctionmap.root", "3inchPmtsCorrectionMap_EarlyLateFht135",
+    g_corr_param_dist_proj_pmt, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
 )
 DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(CorrectionMap, corr_map_wp, WpTimeShiftCorrectionMap,
     "WpTimeShiftCorrectionMap",
-    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-9897.20250830-20250906.correctionmap.root", "WpPmtsCorrectionMap_TimeGeom"
+    "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-10084.reprod25c.correctionmap.root", "WpPmtsCorrectionMap_TimeGeom"
 )
 
 std::shared_ptr<Optimizer> g_opti = std::make_shared<RootOptimizer>(1000000, 100000, 0.001);
@@ -120,7 +121,7 @@ void CdStrategy::create() {
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
     );
     m_pipe->addStep(init);
 
@@ -131,12 +132,15 @@ void CdStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "CdStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdStrategy__FhtChargeTholdTransformer_20inch", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
+    //     "CdStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // );
+    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<PmtTypeTransformer>(
+        "CdWpStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
     m_pipe->addStep(trans_fht_spmt);
 
@@ -195,7 +199,7 @@ void CdStoppingStrategy::create() {
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdStoppingStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdStoppingStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
     );
     m_pipe->addStep(init);
 
@@ -414,7 +418,7 @@ void CdWpStrategy::create() {
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdWpStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdWpStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CDWP_COMBINED
     );
     m_pipe->addStep(init);
 
@@ -429,11 +433,6 @@ void CdWpStrategy::create() {
         "CdWpStrategy__FhtChargeTholdTransformer_20inch", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
-
-    std::shared_ptr<Transformer> trans_t_lpmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdWpStrategy__EarlyLateFhtTransformer_20inch", RecPmtType::PMT_20INCH, 1000, 0.0, 1000.0, 1.0, 0.0, 175.0
-    );
-    m_pipe->addStep(trans_t_lpmt);
     
     // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
     //     "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
@@ -463,7 +462,7 @@ void CdWpStrategy::create() {
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdWpStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2ul
+        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
     );
     m_pipe->addStep(esti_corrmap_loop);
 }
@@ -503,7 +502,7 @@ void CdTtStrategy::create() {
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdTtStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdTtStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
     );
     m_pipe->addStep(init);
 
@@ -607,7 +606,7 @@ void CdWpTtStrategy::create() {
 
     // ======================================= Initializer ========================================
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdWpTtStrategy__ClusterMaxChargeInitializer", 5.0, 2.0, 5.0, 10.0, 9418.0, 0.9, 1.5, 10000.0
+        "CdWpTtStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CDWP_COMBINED
     );
     m_pipe->addStep(init);
 
@@ -657,7 +656,7 @@ void CdWpTtStrategy::create() {
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdWpTtStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single, g_corr_map_wp_single}, 2ul
+        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
     );
 
     std::shared_ptr<CostFunction<TtMethodTag>> tt_cost = std::make_shared<TtCostFunction>(

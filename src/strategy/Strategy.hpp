@@ -235,6 +235,7 @@ extern std::shared_ptr<Chi2<TtMethodTag>> g_chi2_tt_joint;
 #include "estimator/fht/map/CorrParam.hpp"
 
 extern std::shared_ptr<CorrParam> g_corr_param_dist_proj_pmt_to_orig;
+extern std::shared_ptr<CorrParam> g_corr_param_dist_proj_pmt;
 extern std::shared_ptr<CorrParam> g_corr_param_angle;
 extern std::shared_ptr<CorrParam> g_corr_param_dist_track_to_center_squared;
 

@@ -87,6 +87,21 @@ protected:
 
 };
 
+// distance between the origin point and the projection of the PMT onto the track
+class DistProjPmtCorrParam final : public CorrParam {
+
+public:
+
+    double calculate(const RecPmtProp& pmt) final override {
+        return dot(pmt.pos, m_dir);
+    };
+
+    void setTrack(const vec3& orig, const vec3& dir) final override {
+        CorrParam::setTrack(orig, dir);
+    };
+
+};
+
 // minimum distance between the track and the center of the CD
 class DistTrackToCenterCorrParam final : public CorrParam {
 
