@@ -120,17 +120,17 @@ void CdStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
         "CdStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
     );
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
-    m_pipe->addStep(g_trans_calib_hama);
-    m_pipe->addStep(g_trans_calib_highqe);
-    m_pipe->addStep(g_trans_calib_nnvt);
-    m_pipe->addStep(g_trans_calib_spmt);
-
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "CdStrategy__FhtChargeTholdTransformer_20inch", RecPmtType::PMT_20INCH, 20.0
     );
@@ -139,10 +139,10 @@ void CdStrategy::create() {
     // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
     //     "CdStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     // );
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<PmtTypeTransformer>(
-        "CdWpStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
+    std::shared_ptr<Transformer> trans_type_spmt = std::make_shared<PmtTypeTransformer>(
+        "CdStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
-    m_pipe->addStep(trans_fht_spmt);
+    m_pipe->addStep(trans_type_spmt);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
@@ -198,26 +198,29 @@ void CdStoppingStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdStoppingStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
         "CdStoppingStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
     );
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
-    m_pipe->addStep(g_trans_calib_hama);
-    m_pipe->addStep(g_trans_calib_highqe);
-    m_pipe->addStep(g_trans_calib_nnvt);
-    m_pipe->addStep(g_trans_calib_spmt);
-
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "CdStoppingStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdStoppingStrategy__FhtChargeTholdTransformer_20inch", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdStoppingStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
+    //     "CdStoppingStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // );
+    std::shared_ptr<Transformer> trans_type_spmt = std::make_shared<PmtTypeTransformer>(
+        "CdStoppingStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
-    m_pipe->addStep(trans_fht_spmt);
+    m_pipe->addStep(trans_type_spmt);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
@@ -274,26 +277,29 @@ void CdDoubleStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdDoubleStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterBundleInitializer>(
         "CdDoubleStrategy__ClusterBundleInitializer", 1000.0, 5000.0
     );
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
-    m_pipe->addStep(g_trans_calib_hama);
-    m_pipe->addStep(g_trans_calib_highqe);
-    m_pipe->addStep(g_trans_calib_nnvt);
-    m_pipe->addStep(g_trans_calib_spmt);
-
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
-        "CdDoubleStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
+        "CdDoubleStrategy__FhtChargeTholdTransformer_20inch", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
     
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdDoubleStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
+    //     "CdDoubleStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // );
+    std::shared_ptr<Transformer> trans_type_spmt = std::make_shared<PmtTypeTransformer>(
+        "CdDoubleStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
-    m_pipe->addStep(trans_fht_spmt);
+    m_pipe->addStep(trans_type_spmt);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
@@ -417,18 +423,18 @@ void CdWpStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdWpStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
-    std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdWpStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CDWP_COMBINED
-    );
-    m_pipe->addStep(init);
-
-    // ======================================= Transformer ========================================
     m_pipe->addStep(g_trans_calib_hama);
     m_pipe->addStep(g_trans_calib_highqe);
     m_pipe->addStep(g_trans_calib_nnvt);
     m_pipe->addStep(g_trans_calib_spmt);
     m_pipe->addStep(g_trans_calib_wp);
 
+    std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
+        "CdWpStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CDWP_COMBINED
+    );
+    m_pipe->addStep(init);
+
+    // ======================================= Transformer ========================================
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "CdWpStrategy__FhtChargeTholdTransformer_20inch", RecPmtType::PMT_20INCH, 20.0
     );
@@ -437,10 +443,10 @@ void CdWpStrategy::create() {
     // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
     //     "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     // );
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<PmtTypeTransformer>(
+    std::shared_ptr<Transformer> trans_type_spmt = std::make_shared<PmtTypeTransformer>(
         "CdWpStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
-    m_pipe->addStep(trans_fht_spmt);
+    m_pipe->addStep(trans_type_spmt);
 
     std::shared_ptr<Transformer> trans_q_wp = std::make_shared<FhtChargeTholdTransformer>(
         "CdWpStrategy__FhtChargeTholdTransformer_WP", RecPmtType::PMT_WP, 30.0
@@ -501,16 +507,17 @@ void CdTtStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdTtStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
         "CdTtStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
     );
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
-    m_pipe->addStep(g_trans_calib_hama);
-    m_pipe->addStep(g_trans_calib_highqe);
-    m_pipe->addStep(g_trans_calib_nnvt);
-    m_pipe->addStep(g_trans_calib_spmt);
     m_pipe->addStep(g_trans_tt_cross_talk);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
@@ -518,10 +525,13 @@ void CdTtStrategy::create() {
     );
     m_pipe->addStep(trans_q_lpmt);
     
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdTtStrategy__EarlyLateFhtTransformer", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
+    //     "CdTtStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    // );
+    std::shared_ptr<Transformer> trans_type_spmt = std::make_shared<PmtTypeTransformer>(
+        "CdTtStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
-    m_pipe->addStep(trans_fht_spmt);
+    m_pipe->addStep(trans_type_spmt);
 
     // ===================================== 1st Minimization =====================================
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
@@ -605,36 +615,32 @@ void CdWpTtStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdWpTtStrategy__Pipeline");
 
     // ======================================= Initializer ========================================
+    m_pipe->addStep(g_trans_calib_hama);
+    m_pipe->addStep(g_trans_calib_highqe);
+    m_pipe->addStep(g_trans_calib_nnvt);
+    m_pipe->addStep(g_trans_calib_spmt);
+    m_pipe->addStep(g_trans_calib_wp);
+
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
         "CdWpTtStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CDWP_COMBINED
     );
     m_pipe->addStep(init);
 
     // ======================================= Transformer ========================================
-    m_pipe->addStep(g_trans_calib_hama);
-    m_pipe->addStep(g_trans_calib_highqe);
-    m_pipe->addStep(g_trans_calib_nnvt);
-    m_pipe->addStep(g_trans_calib_spmt);
-    m_pipe->addStep(g_trans_calib_wp);
     m_pipe->addStep(g_trans_tt_cross_talk);
 
     std::shared_ptr<Transformer> trans_q_lpmt = std::make_shared<FhtChargeTholdTransformer>(
         "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_20INCH, 20.0
     );
     m_pipe->addStep(trans_q_lpmt);
-
-    std::shared_ptr<Transformer> trans_t_lpmt = std::make_shared<EarlyLateFhtTransformer>(
-        "CdWpStrategy__EarlyLateFhtTransformer_20inch", RecPmtType::PMT_20INCH, 1000, 0.0, 1000.0, 1.0, 0.0, 175.0
-    );
-    m_pipe->addStep(trans_t_lpmt);
     
     // std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<EarlyLateFhtTransformer>(
-    //     "CdWpStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
+    //     "CdWpTtStrategy__EarlyLateFhtTransformer_3inch", RecPmtType::PMT_3INCH, 1000, 0.0, 1000.0, 2.0, 2.0, 135.0
     // );
-    std::shared_ptr<Transformer> trans_fht_spmt = std::make_shared<PmtTypeTransformer>(
-        "CdWpStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
+    std::shared_ptr<Transformer> trans_type_spmt = std::make_shared<PmtTypeTransformer>(
+        "CdWpTtStrategy__PmtTypeTransformer_3inch", RecPmtType::PMT_3INCH
     );
-    m_pipe->addStep(trans_fht_spmt);
+    m_pipe->addStep(trans_type_spmt);
 
     std::shared_ptr<Transformer> trans_q_wp = std::make_shared<FhtChargeTholdTransformer>(
         "CdWpTtStrategy__FhtChargeTholdTransformer", RecPmtType::PMT_WP, 30.0

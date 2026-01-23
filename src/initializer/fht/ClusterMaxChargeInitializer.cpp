@@ -152,7 +152,7 @@ bool ClusterMaxChargeInitializer::initiate(const RecPmtTable& table) {
     LogDebug << count << " PMTs are used for the initialization\n";
 
     RecPmtTable::const_iterator it_cd = table.begin();
-    RecPmtTable::const_iterator it_wp = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); }).base();
+    RecPmtTable::const_iterator it_wp = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_CD); }).base();
     RecPmtTable::const_iterator end_wp = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_WP); }).base();
 
     bool cd_used = false;
