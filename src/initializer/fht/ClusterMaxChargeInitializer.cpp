@@ -6,7 +6,7 @@
 
 #include "SniperKernel/SniperLog.h"
 
-ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name, int nbins_cd, int nbins_wp, double xmin, double xmax, double window_min, double window_max, double qthold, double offset_final_cd, double exclusion_time_wp, double leading_entries_ratio, Mode mode) :
+ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name, int nbins_cd, int nbins_wp, double xmin, double xmax, double window_min, double window_max, double qthold, double offset_final_cd, double exclusion_time_wp, double leading_entries_ratio, DetectorMode detmode, ProjectionMode projmode) :
     Initializer<FhtMethodTag>(name),
     m_hist_cd(std::make_unique<TH1D>((m_name + "__Histogram_CD").c_str(), (m_name + "__Histogram_CD").c_str(), nbins_cd, xmin, xmax)),
     m_hist_wp(std::make_unique<TH1D>((m_name + "__Histogram_WP").c_str(), (m_name + "__Histogram_WP").c_str(), nbins_wp, xmin, xmax)),
@@ -16,10 +16,20 @@ ClusterMaxChargeInitializer::ClusterMaxChargeInitializer(const std::string& name
     m_offset_final_cd(offset_final_cd),
     m_exclusion_time_wp(exclusion_time_wp),
     m_leading_entries_ratio(leading_entries_ratio),
-    m_mode(mode)
+    m_detmode(detmode),
+    m_projmode(projmode)
 {
     m_hist_cd->SetDirectory(0);
     m_hist_wp->SetDirectory(0);
+    if (m_projmode == ProjectionMode::ACRYLIC_SPHERE) {
+        m_proj_radius = 17700.0;
+    }
+    else if (m_projmode == ProjectionMode::CD_SPHERE) {
+        m_proj_radius = 20050.0;
+    }
+    else { // default
+        m_proj_radius = 17700.0;
+    }
 }
 
 void ClusterMaxChargeInitializer::configure(const SniperJSON& config) {
@@ -49,7 +59,15 @@ void ClusterMaxChargeInitializer::configure(const SniperJSON& config) {
 }
 
 ParamsType ClusterMaxChargeInitializer::getOParamsType() {
-    return ParamsType::SingleAcrylic;
+    if (m_projmode == ProjectionMode::ACRYLIC_SPHERE) {
+        return ParamsType::SingleAcrylic;
+    }
+    else if (m_projmode == ProjectionMode::CD_SPHERE) {
+        return ParamsType::SingleCd;
+    }
+    else { // default
+        return ParamsType::SingleAcrylic;
+    }
 }
 
 bool ClusterMaxChargeInitializer::getCdInit(RecPmtTable::const_iterator ftable, RecPmtTable::const_iterator ltable, double qthold, double& itime, vec3& ipos, vec3& fpos) {
@@ -154,24 +172,26 @@ bool ClusterMaxChargeInitializer::initiate(const RecPmtTable& table) {
     RecPmtTable::const_iterator it_cd = table.begin();
     RecPmtTable::const_iterator it_wp = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_CD); }).base();
     RecPmtTable::const_iterator end_wp = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_WP); }).base();
+    bool has_cd = (std::distance(it_cd, it_wp) > 0);
+    bool has_wp = (std::distance(it_wp, end_wp) > 0);
 
     bool cd_used = false;
     double itime = 0.0;
     vec3 ipos_cd, fpos_cd;
-    if ( (m_mode & Mode::CD_ONLY) == Mode::CD_ONLY ) {
+    if ( (m_detmode & DetectorMode::CD_ONLY) == DetectorMode::CD_ONLY && has_cd ) {
         cd_used = getCdInit(it_cd, it_wp, m_qthold, itime, ipos_cd, fpos_cd);
     }
     bool wp_used = false;
     vec3 ipos_wp, fpos_wp;
-    if ( (m_mode & Mode::WP_ONLY) == Mode::WP_ONLY ) {
+    if ( (m_detmode & DetectorMode::WP_ONLY) == DetectorMode::WP_ONLY && has_wp ) {
         wp_used = getWpInit(it_wp, end_wp, m_qthold, ipos_wp, fpos_wp);
     }
 
     if (!cd_used && !wp_used) {
-        if ( (m_mode & Mode::CD_ONLY) == Mode::CD_ONLY ) {
+        if ( (m_detmode & DetectorMode::CD_ONLY) == DetectorMode::CD_ONLY && has_cd ) {
             cd_used = getCdInit(it_cd, it_wp, 0.0, itime, ipos_cd, fpos_cd);
         }
-        if ( (m_mode & Mode::WP_ONLY) == Mode::WP_ONLY ) {
+        if ( (m_detmode & DetectorMode::WP_ONLY) == DetectorMode::WP_ONLY && has_wp ) {
             wp_used = getWpInit(it_wp, end_wp, 0.0, ipos_wp, fpos_wp);
         }
         if (!cd_used && !wp_used) {
@@ -185,7 +205,7 @@ bool ClusterMaxChargeInitializer::initiate(const RecPmtTable& table) {
     vec3 dir = unit(fpos - ipos);
 
     double b_half = dot(dir, ipos);
-    double c = dot(ipos, ipos) - 17700.0 * 17700.0;
+    double c = dot(ipos, ipos) - m_proj_radius * m_proj_radius;
     double discriminant = b_half * b_half - c;
     if (discriminant >= 0.0) {
         double sqrt_discriminant = std::sqrt(discriminant);
@@ -198,6 +218,6 @@ bool ClusterMaxChargeInitializer::initiate(const RecPmtTable& table) {
     return true;
 }
 
-ClusterMaxChargeInitializer::Mode operator&(const ClusterMaxChargeInitializer::Mode& a, const ClusterMaxChargeInitializer::Mode& b) {
-    return static_cast<ClusterMaxChargeInitializer::Mode>(static_cast<int>(a) & static_cast<int>(b));
+ClusterMaxChargeInitializer::DetectorMode operator&(const ClusterMaxChargeInitializer::DetectorMode& a, const ClusterMaxChargeInitializer::DetectorMode& b) {
+    return static_cast<ClusterMaxChargeInitializer::DetectorMode>(static_cast<int>(a) & static_cast<int>(b));
 }

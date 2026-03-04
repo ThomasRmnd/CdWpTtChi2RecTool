@@ -37,7 +37,6 @@
 #include "transformer/PmtTypeTransformer.hpp"
 #include "transformer/TtCrossTalkTransformer.hpp"
 #include "transformer/WaterPhaseTransformer.hpp"
-#include "transformer/WpGeomTimeTransformer.hpp"
 
 #define DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Base, name, Derived, ...) \
     std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(__VA_ARGS__); \
@@ -126,7 +125,8 @@ void CdStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
+        "CdStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, 
+        ClusterMaxChargeInitializer::DetectorMode::CD_ONLY, ClusterMaxChargeInitializer::ProjectionMode::ACRYLIC_SPHERE
     );
     m_pipe->addStep(init);
 
@@ -204,7 +204,8 @@ void CdStoppingStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdStoppingStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
+        "CdStoppingStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, 
+        ClusterMaxChargeInitializer::DetectorMode::CD_ONLY, ClusterMaxChargeInitializer::ProjectionMode::ACRYLIC_SPHERE
     );
     m_pipe->addStep(init);
 
@@ -430,7 +431,8 @@ void CdWpStrategy::create() {
     m_pipe->addStep(g_trans_calib_wp);
 
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdWpStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CDWP_COMBINED
+        "CdWpStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, 
+        ClusterMaxChargeInitializer::DetectorMode::CDWP_COMBINED, ClusterMaxChargeInitializer::ProjectionMode::ACRYLIC_SPHERE
     );
     m_pipe->addStep(init);
 
@@ -513,7 +515,8 @@ void CdTtStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
 
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdTtStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CD_ONLY
+        "CdTtStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, 
+        ClusterMaxChargeInitializer::DetectorMode::CD_ONLY, ClusterMaxChargeInitializer::ProjectionMode::ACRYLIC_SPHERE
     );
     m_pipe->addStep(init);
 
@@ -622,7 +625,8 @@ void CdWpTtStrategy::create() {
     m_pipe->addStep(g_trans_calib_wp);
 
     std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
-        "CdWpTtStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, ClusterMaxChargeInitializer::Mode::CDWP_COMBINED
+        "CdWpTtStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, 
+        ClusterMaxChargeInitializer::DetectorMode::CDWP_COMBINED, ClusterMaxChargeInitializer::ProjectionMode::ACRYLIC_SPHERE
     );
     m_pipe->addStep(init);
 

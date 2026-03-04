@@ -108,6 +108,14 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
         return true;
     }
 
+    const std::vector<double>& params = pipe->getParams();
+    for (double par : params) {
+        if (std::isnan(par)) {
+            LogWarn << "One of the track parameters is NaN. Skipping\n";
+            return true;
+        }
+    }
+
     strat->save(trks, totpe);
 
     return true;

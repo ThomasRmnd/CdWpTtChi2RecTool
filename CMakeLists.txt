@@ -43,7 +43,6 @@ FILES
     src/transformer/Transformer.cpp
     src/transformer/TtCrossTalkTransformer.cpp
     src/transformer/WaterPhaseTransformer.cpp
-    src/transformer/WpGeomTimeTransformer.cpp
 
     src/utils/DensityPeaksClustering.cpp
     src/utils/Geometry.cpp
