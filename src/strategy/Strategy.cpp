@@ -19,7 +19,7 @@
 #include "estimator/tt/combinator/MaskHeightCartesianProdCombinator.hpp"
 #include "estimator/tt/converter/FuzeNeighborConverter.hpp"
 
-#include "initializer/fht/ClusterBundleInitializer.hpp"
+// #include "initializer/fht/ClusterBundleInitializer.hpp" WIP
 #include "initializer/fht/ClusterMaxChargeInitializer.hpp"
 #include "initializer/fht/WaterPhaseInitializer.hpp"
 #include "initializer/tt/MinMaxHeightInitializer.hpp"
@@ -274,6 +274,8 @@ void CdStoppingStrategy::save(RecTrks* tracks, double totpe) {
 // ===================================== CD Double Strategy =======================================
 // ################################################################################################
 
+/* WIP
+
 void CdDoubleStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdDoubleStrategy__Pipeline");
 
@@ -365,6 +367,8 @@ void CdDoubleStrategy::save(RecTrks* tracks, double totpe) {
         totpe, cost, 0
     );
 }
+
+*/
 
 // ################################################################################################
 // ========================================= TT Strategy ==========================================

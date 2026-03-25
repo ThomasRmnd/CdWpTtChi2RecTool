@@ -29,7 +29,7 @@ bool CdWpTtChi2RecTool::initialize() {
     else {
         m_reg.book(std::make_shared<CdStrategy>());
         m_reg.book(std::make_shared<CdStoppingStrategy>());
-        m_reg.book(std::make_shared<CdDoubleStrategy>());
+        // m_reg.book(std::make_shared<CdDoubleStrategy>());
         m_reg.book(std::make_shared<TtStrategy>());
         m_reg.book(std::make_shared<CdWpStrategy>());
         m_reg.book(std::make_shared<CdTtStrategy>());

@@ -315,7 +315,7 @@ void WpMuonClassifyRecTool::CalcDistance2Cluster()
             }    
         }    
         if (ALL_WPPMT_Charge.at(i)<initialchargecut) continue;
-        if ((ALL_WPPMT_highchargepmt_in_group.at(i)<2)||(ALL_WPPMT_highchargepmt_in_gr!,/L_WPPMT_npair.at(i)))) continue;
+        if ((ALL_WPPMT_highchargepmt_in_group.at(i)<2)||(ALL_WPPMT_highchargepmt_in_group.at(i)<int(0.34*ALL_WPPMT_npair.at(i)))) continue;
         for (int j = 0; j < TotalWPPMT; j++) {
             if (i==j) continue;
             if (ALL_WPPMT_Charge.at(j)<initialchargecut) continue;

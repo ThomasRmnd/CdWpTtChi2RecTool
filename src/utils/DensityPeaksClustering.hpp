@@ -1,5 +1,5 @@
-#ifndef WpMuonClassifyRecTool_h
-#define WpMuonClassifyRecTool_h
+#ifndef CDWPTTCHI2RECTOOL_UTILS_DENSITYPEAKSCLUSTERING_HPP_
+#define CDWPTTCHI2RECTOOL_UTILS_DENSITYPEAKSCLUSTERING_HPP_
 
 #include <cstdlib>
 #include <cassert>
@@ -46,6 +46,19 @@
 #include "Identifier/WpID.h"
 
 #include "utils/RecPmtProp.hpp"
+
+class DensityPeaksClustering {
+
+public:
+
+    void cluster(const RecPmtTable& table);
+
+    const std::vector<double>& getDensities() const;
+    const std::vector<double>& getDistances() const;
+
+private:
+
+};
 
 class WpMuonClassifyRecTool :public IRecMuonTool,  public ToolBase {
     
@@ -136,4 +149,4 @@ private:
         
 };
 
-#endif
+#endif // CDWPTTCHI2RECTOOL_UTILS_DENSITYPEAKSCLUSTERING_HPP_
