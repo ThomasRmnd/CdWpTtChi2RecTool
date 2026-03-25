@@ -1,5 +1,7 @@
 #include "estimator/fht/CorrectionMapLoopEstimator.hpp"
 
+#include <numeric>
+
 CorrectionMapLoopEstimator::CorrectionMapLoopEstimator(const std::string& name, const std::shared_ptr<Estimator>& esti, const std::vector<std::shared_ptr<CorrectionMap>>& maps, std::size_t nb_loop) :
     Estimator{name},
     m_esti{esti},
@@ -61,13 +63,20 @@ bool CorrectionMapLoopEstimator::estimate(RecPmtTable& table) {
         LogError << "No parameters were set as input. Abording\n";
         return false;
     }
+    m_cost = std::numeric_limits<double>::infinity();
+    std::vector<double> tmp_params = m_params;
+    double tmp_cost = m_cost;
     copyTable(table);
     for (std::size_t k = 0ul; k < m_nb_loop; ++k) {
         if (!applyCorrMap(table)) return false;
-        m_esti->setParams(m_params, m_steps, m_names);
+        m_esti->setParams(tmp_params, m_steps, m_names);
         if (!m_esti->estimate(table)) return false;
-        m_params = m_esti->getParams();
-        m_cost = m_esti->getCost();
+        tmp_params = m_esti->getParams();
+        tmp_cost = m_esti->getCost();
+        if (tmp_cost < m_cost) {
+            m_params = tmp_params;
+            m_cost = tmp_cost;
+        }
         resetFht(table);
     }
     return true;
