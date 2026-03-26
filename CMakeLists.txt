@@ -32,6 +32,8 @@ FILES
     src/initializer/fht/WaterPhaseInitializer.cpp
     src/initializer/tt/MinMaxHeightInitializer.cpp
 
+    src/predictor/fht/HybridLSWaterFhtPredictor.cpp
+
     src/strategy/Factory.cpp
     src/strategy/Registry.cpp
     src/strategy/Strategy.cpp

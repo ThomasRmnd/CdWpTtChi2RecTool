@@ -26,6 +26,7 @@
 
 #include "predictor/fht/CdFhtPredictor.hpp"
 #include "predictor/fht/CdWpFhtPredictor.hpp"
+#include "predictor/fht/HybridLSWaterFhtPredictor.hpp"
 #include "predictor/fht/WpFhtPredictor.hpp"
 #include "predictor/fht/fht/CdFht.hpp"
 #include "predictor/fht/fht/WpFht.hpp"
@@ -460,9 +461,17 @@ void CdWpStrategy::create() {
     m_pipe->addStep(trans_q_wp);
 
     // ===================================== 1st Minimization =====================================
+    std::shared_ptr<Predictor<FhtMethodTag>> pred_fht_hybrid_ls_water = std::make_shared<HybridLSWaterFhtPredictor>(
+        g_pred_fht_no_refr_ls_no_hit_single,
+        std::make_shared<CdWpFhtPredictor<SingleCdParamsTag>>(
+            std::make_shared<WaterPhaseCdFht<SingleCdParamsTag>>(),
+            std::make_shared<NoDiffusionWpFht<SingleCdParamsTag>>()
+        )
+    );
+
     std::shared_ptr<CostFunction<FhtMethodTag>> cost = std::make_shared<FhtCostFunction>(
         "CdWpStrategy__FhtCostFunction",
-        g_pred_fht_no_refr_ls_no_hit_single,
+        pred_fht_hybrid_ls_water, // g_pred_fht_no_refr_ls_no_hit_single,
         g_chi2_fht
     );
 
@@ -474,7 +483,7 @@ void CdWpStrategy::create() {
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdWpStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 4ul
+        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
     );
     m_pipe->addStep(esti_corrmap_loop);
 }
