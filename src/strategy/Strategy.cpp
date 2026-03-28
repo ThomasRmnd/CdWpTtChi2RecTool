@@ -12,6 +12,7 @@
 #include "estimator/fht/FhtMinimizerEstimator.hpp"
 #include "estimator/fht/map/CorrectionMap3d.hpp"
 #include "estimator/fht/map/CorrParam.hpp"
+#include "estimator/fht/map/HybridLSWaterCorrectionMap3d.hpp"
 #include "estimator/fht/map/WpTimeShiftCorrectionMap.hpp"
 #include "estimator/fht_tt/FhtTtCorrMapEstimator.hpp"
 #include "estimator/optimizer/RootOptimizer.hpp"
@@ -481,9 +482,24 @@ void CdWpStrategy::create() {
     m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
+    std::shared_ptr<CorrectionMap> corr_map_hybrid_nnvt_single = std::make_shared<HybridLSWaterCorrectionMap3d>(
+        "CdWpStrategy__HybridLSWaterCorrectionMap3d_NNVT", RecPmtType::PMT_20INCH_NNVT | RecPmtType::PMT_20INCH_HIGHQENNVT,
+        "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-10084.reprod25c.correctionmap.root", "NNVTPmtsCorrectionMap_FhtChargeThold20",
+        g_corr_param_dist_proj_pmt, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
+    );
+    std::shared_ptr<CorrectionMap> corr_map_hybrid_hama_single = std::make_shared<HybridLSWaterCorrectionMap3d>(
+        "CdWpStrategy__HybridLSWaterCorrectionMap3d_Hamamatsu", RecPmtType::PMT_20INCH_HAMAMATSU,
+        "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-10084.reprod25c.correctionmap.root", "HamamatsuPmtsCorrectionMap_FhtChargeThold20",
+        g_corr_param_dist_proj_pmt, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
+    );
+    std::shared_ptr<CorrectionMap> corr_map_hybrid_3inch_single = std::make_shared<HybridLSWaterCorrectionMap3d>(
+        "CdWpStrategy__HybridLSWaterCorrectionMap3d_3inch", RecPmtType::PMT_3INCH,
+        "data/Reconstruction/RecMuon/CdWpTtChi2RecTool/RUN.9789-10084.reprod25c.correctionmap.root", "3inchPmtsCorrectionMap_FhtChargeThold20",
+        g_corr_param_dist_proj_pmt, g_corr_param_angle, g_corr_param_dist_track_to_center_squared
+    );
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdWpStrategy__CorrectionMapLoopEstimator", esti_min, 
-        std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
+        std::vector<std::shared_ptr<CorrectionMap>>{corr_map_hybrid_nnvt_single, corr_map_hybrid_hama_single, corr_map_hybrid_3inch_single}, 2ul
     );
     m_pipe->addStep(esti_corrmap_loop);
 }
