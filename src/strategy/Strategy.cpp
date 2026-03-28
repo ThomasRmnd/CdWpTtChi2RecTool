@@ -20,6 +20,7 @@
 #include "estimator/tt/combinator/MaskHeightCartesianProdCombinator.hpp"
 #include "estimator/tt/converter/FuzeNeighborConverter.hpp"
 
+#include "initializer/fht/AcrylicToCdProjectionInitializer.hpp"
 // #include "initializer/fht/ClusterBundleInitializer.hpp" WIP
 #include "initializer/fht/ClusterMaxChargeInitializer.hpp"
 #include "initializer/fht/WaterPhaseInitializer.hpp"
@@ -436,9 +437,12 @@ void CdWpStrategy::create() {
     m_pipe->addStep(g_trans_calib_spmt);
     m_pipe->addStep(g_trans_calib_wp);
 
-    std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<ClusterMaxChargeInitializer>(
+    std::shared_ptr<Initializer<FhtMethodTag>> arcylic_init = std::make_shared<ClusterMaxChargeInitializer>(
         "CdWpStrategy__ClusterMaxChargeInitializer", 1000, 200, 0.0, 1000.0, -10.0, 10.0, 20.0, 0.0, 50.0, 0.5, 
         ClusterMaxChargeInitializer::DetectorMode::CDWP_COMBINED, ClusterMaxChargeInitializer::ProjectionMode::ACRYLIC_SPHERE
+    );
+    std::shared_ptr<Initializer<FhtMethodTag>> init = std::make_shared<AcrylicToCdProjectionInitializer>(
+        "CdWpStrategy__AcrylicToCdProjectionInitializer", arcylic_init
     );
     m_pipe->addStep(init);
 
