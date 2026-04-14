@@ -153,14 +153,14 @@ void CdStrategy::create() {
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
         "CdStrategy__FhtMinimizerEstimator", g_opti, cost
     );
-    m_pipe->addStep(esti_min);
+    // m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdStrategy__CorrectionMapLoopEstimator", esti_min, 
         std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
     );
-    m_pipe->addStep(esti_corrmap_loop);
+    // m_pipe->addStep(esti_corrmap_loop);
 }
 
 void CdStrategy::prepare() {
@@ -466,14 +466,14 @@ void CdWpStrategy::create() {
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
         "CdWpStrategy__FhtMinimizerEstimator", g_opti, cost
     );
-    m_pipe->addStep(esti_min);
+    // m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
         "CdWpStrategy__CorrectionMapLoopEstimator", esti_min, 
         std::vector<std::shared_ptr<CorrectionMap>>{g_corr_map_nnvt_single, g_corr_map_hamamatsu_single, g_corr_map_3inch_single}, 2ul
     );
-    m_pipe->addStep(esti_corrmap_loop);
+    // m_pipe->addStep(esti_corrmap_loop);
 }
 
 void CdWpStrategy::prepare() {
