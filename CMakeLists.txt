@@ -28,7 +28,7 @@ FILES
     src/estimator/tt/converter/FuzeNeighborConverter.cpp
 
     src/initializer/fht/ClusterBundleInitializer.cpp
-    src/initializer/fht/ClusterMaxChargeInitializer.cpp
+    # src/initializer/fht/ClusterMaxChargeInitializer.cpp WIP
     src/initializer/fht/WaterPhaseInitializer.cpp
     src/initializer/tt/MinMaxHeightInitializer.cpp
 
@@ -43,9 +43,8 @@ FILES
     src/transformer/Transformer.cpp
     src/transformer/TtCrossTalkTransformer.cpp
     src/transformer/WaterPhaseTransformer.cpp
-    src/transformer/WpGeomTimeTransformer.cpp
 
-    src/utils/DensityPeaksClustering.cpp
+    # src/utils/DensityPeaksClustering.cpp WIP
     src/utils/Geometry.cpp
 
 DEPENDS

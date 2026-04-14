@@ -2,7 +2,8 @@
 
 void FhtTtCostFunction::set(const RecPmtTable& table) {
     m_ftable = table.begin();
-    m_ltable = std::find_if(table.rbegin(), table.rend(), 
+    m_ltable = std::find_if(
+        table.rbegin(), table.rend(), 
         [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_CD | RecPmtType::PMT_WP); }
     ).base();
     m_fht_theo.resize(std::distance(m_ftable, m_ltable));

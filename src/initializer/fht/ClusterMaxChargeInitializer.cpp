@@ -154,24 +154,26 @@ bool ClusterMaxChargeInitializer::initiate(const RecPmtTable& table) {
     RecPmtTable::const_iterator it_cd = table.begin();
     RecPmtTable::const_iterator it_wp = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_CD); }).base();
     RecPmtTable::const_iterator end_wp = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_WP); }).base();
+    bool has_cd = (std::distance(it_cd, it_wp) > 0);
+    bool has_wp = (std::distance(it_wp, end_wp) > 0);
 
     bool cd_used = false;
     double itime = 0.0;
     vec3 ipos_cd, fpos_cd;
-    if ( (m_mode & Mode::CD_ONLY) == Mode::CD_ONLY ) {
+    if ( (m_mode & Mode::CD_ONLY) == Mode::CD_ONLY && has_cd ) {
         cd_used = getCdInit(it_cd, it_wp, m_qthold, itime, ipos_cd, fpos_cd);
     }
     bool wp_used = false;
     vec3 ipos_wp, fpos_wp;
-    if ( (m_mode & Mode::WP_ONLY) == Mode::WP_ONLY ) {
+    if ( (m_mode & Mode::WP_ONLY) == Mode::WP_ONLY && has_wp ) {
         wp_used = getWpInit(it_wp, end_wp, m_qthold, ipos_wp, fpos_wp);
     }
 
     if (!cd_used && !wp_used) {
-        if ( (m_mode & Mode::CD_ONLY) == Mode::CD_ONLY ) {
+        if ( (m_mode & Mode::CD_ONLY) == Mode::CD_ONLY && has_cd ) {
             cd_used = getCdInit(it_cd, it_wp, 0.0, itime, ipos_cd, fpos_cd);
         }
-        if ( (m_mode & Mode::WP_ONLY) == Mode::WP_ONLY ) {
+        if ( (m_mode & Mode::WP_ONLY) == Mode::WP_ONLY && has_wp ) {
             wp_used = getWpInit(it_wp, end_wp, 0.0, ipos_wp, fpos_wp);
         }
         if (!cd_used && !wp_used) {

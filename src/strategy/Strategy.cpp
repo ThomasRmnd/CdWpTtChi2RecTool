@@ -19,7 +19,7 @@
 #include "estimator/tt/combinator/MaskHeightCartesianProdCombinator.hpp"
 #include "estimator/tt/converter/FuzeNeighborConverter.hpp"
 
-#include "initializer/fht/ClusterBundleInitializer.hpp"
+// #include "initializer/fht/ClusterBundleInitializer.hpp" WIP
 #include "initializer/fht/ClusterMaxChargeInitializer.hpp"
 #include "initializer/fht/WaterPhaseInitializer.hpp"
 #include "initializer/tt/MinMaxHeightInitializer.hpp"
@@ -37,7 +37,6 @@
 #include "transformer/PmtTypeTransformer.hpp"
 #include "transformer/TtCrossTalkTransformer.hpp"
 #include "transformer/WaterPhaseTransformer.hpp"
-#include "transformer/WpGeomTimeTransformer.hpp"
 
 #define DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Base, name, Derived, ...) \
     std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(__VA_ARGS__); \
@@ -273,6 +272,8 @@ void CdStoppingStrategy::save(RecTrks* tracks, double totpe) {
 // ===================================== CD Double Strategy =======================================
 // ################################################################################################
 
+/* WIP
+
 void CdDoubleStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdDoubleStrategy__Pipeline");
 
@@ -364,6 +365,8 @@ void CdDoubleStrategy::save(RecTrks* tracks, double totpe) {
         totpe, cost, 0
     );
 }
+
+*/
 
 // ################################################################################################
 // ========================================= TT Strategy ==========================================

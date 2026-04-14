@@ -29,7 +29,7 @@ bool CdWpTtChi2RecTool::initialize() {
     else {
         m_reg.book(std::make_shared<CdStrategy>());
         m_reg.book(std::make_shared<CdStoppingStrategy>());
-        m_reg.book(std::make_shared<CdDoubleStrategy>());
+        // m_reg.book(std::make_shared<CdDoubleStrategy>());
         m_reg.book(std::make_shared<TtStrategy>());
         m_reg.book(std::make_shared<CdWpStrategy>());
         m_reg.book(std::make_shared<CdTtStrategy>());
@@ -106,6 +106,14 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     if (!pipe->estimate(m_table)) {
         LogInfo << "Skip this event due to failed estimation\n";
         return true;
+    }
+
+    const std::vector<double>& params = pipe->getParams();
+    for (double par : params) {
+        if (std::isnan(par)) {
+            LogWarn << "One of the track parameters is NaN. Skipping\n";
+            return true;
+        }
     }
 
     strat->save(trks, totpe);
