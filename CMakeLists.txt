@@ -27,8 +27,8 @@ FILES
     src/estimator/tt/combinator/MaskHeightCartesianProdCombinator.cpp
     src/estimator/tt/converter/FuzeNeighborConverter.cpp
 
-    src/initializer/fht/ClusterBundleInitializer.cpp
-    # src/initializer/fht/ClusterMaxChargeInitializer.cpp WIP
+    # src/initializer/fht/ClusterBundleInitializer.cpp WIP
+    src/initializer/fht/ClusterMaxChargeInitializer.cpp
     src/initializer/fht/WaterPhaseInitializer.cpp
     src/initializer/tt/MinMaxHeightInitializer.cpp
 
