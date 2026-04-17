@@ -153,7 +153,7 @@ void CdStrategy::create() {
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
         "CdStrategy__FhtMinimizerEstimator", g_opti, cost
     );
-    // m_pipe->addStep(esti_min);
+    m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
@@ -466,7 +466,7 @@ void CdWpStrategy::create() {
     std::shared_ptr<Estimator> esti_min = std::make_shared<FhtMinimizerEstimator>(
         "CdWpStrategy__FhtMinimizerEstimator", g_opti, cost
     );
-    // m_pipe->addStep(esti_min);
+    m_pipe->addStep(esti_min);
 
     // ===================================== 2+ Minimization ======================================
     std::shared_ptr<Estimator> esti_corrmap_loop = std::make_shared<CorrectionMapLoopEstimator>(
