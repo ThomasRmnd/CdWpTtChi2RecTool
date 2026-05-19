@@ -64,7 +64,7 @@ bool CdWpTtChi2RecTool::initialize() {
 
     SniperPtr<IPMTParamSvc> pmtsvc(*getRoot(), "PMTParamSvc");
     if (pmtsvc.invalid()) {
-        LogError << "Cannot get the PMTParamSvc." << std::endl;
+        LogError << "Cannot get the PMTParamSvc\n";
         return false;
     }
     m_pmt_svc = pmtsvc.data();
@@ -111,7 +111,7 @@ bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     const std::vector<double>& params = pipe->getParams();
     for (double par : params) {
         if (std::isnan(par)) {
-            LogWarn << "One of the track parameters is NaN. Skipping\n";
+            LogInfo << "One of the track parameters is NaN. Skipping\n";
             return true;
         }
     }

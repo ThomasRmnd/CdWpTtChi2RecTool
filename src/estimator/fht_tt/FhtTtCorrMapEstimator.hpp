@@ -48,11 +48,13 @@ protected:
     std::vector<ScoredHits> m_scored_hits;
 
     void printHits(const std::vector<vec3>& hits) {
-        LogDebug << "Hits: ";
+        std::ostringstream oss;
+        oss << "Hits: ";
         for (const vec3& hit : hits) {
-            std::cout << hit << ", ";
+            oss << hit << ", ";
         }
-        std::cout << '\n';
+        oss << '\n';
+        LogDebug << oss.str();
     }
 
 };

@@ -57,15 +57,15 @@ void WaterPhaseTransformer::transform(RecPmtTable& table) {
     if (!getITime20inch(table)) return;
     if (!getFTime20inch(table)) return;
 
-    std::cout << "itime = " << m_lpmt_itime << ", ftime = " << m_lpmt_ftime << '\n';
+    LogDebug << "itime = " << m_lpmt_itime << ", ftime = " << m_lpmt_ftime << '\n';
 
     std::for_each(m_ftable, m_ltable, [&](RecPmtProp& pmt) { transformPmt(pmt); });
 
     std::size_t tsize_lpmt = std::count_if(m_ftable, m_ltable, [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_20INCH) == pmt.type; });
     std::size_t tsize_spmt = std::count_if(m_ftable, m_ltable, [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_3INCH) == pmt.type; });
     
-    std::cout << "LPMT: " << isize_lpmt << " - " << tsize_lpmt << " = " << isize_lpmt - tsize_lpmt << '\n';
-    std::cout << "SPMT: " << isize_spmt << " - " << tsize_spmt << " = " << isize_spmt - tsize_spmt << '\n';
+    LogDebug << "LPMT: " << isize_lpmt << " - " << tsize_lpmt << " = " << isize_lpmt - tsize_lpmt << '\n';
+    LogDebug << "SPMT: " << isize_spmt << " - " << tsize_spmt << " = " << isize_spmt - tsize_spmt << '\n';
 
     // Neighbouring filter for 20-inch PMTs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     m_nb_neigh.clear();
@@ -93,8 +93,8 @@ void WaterPhaseTransformer::transform(RecPmtTable& table) {
     std::size_t fsize_lpmt = std::count_if(table.begin(), table.end(), [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_20INCH) == pmt.type; });
     std::size_t fsize_spmt = std::count_if(table.begin(), table.end(), [](const RecPmtProp& pmt) { return pmt.used && (pmt.type & RecPmtType::PMT_3INCH) == pmt.type; });
     
-    std::cout << "LPMT: " << isize_lpmt << " - " << fsize_lpmt << " = " << isize_lpmt - fsize_lpmt << '\n';
-    std::cout << "SPMT: " << tsize_spmt << " - " << fsize_spmt << " = " << tsize_spmt - fsize_spmt << '\n';
+    LogDebug << "LPMT: " << isize_lpmt << " - " << fsize_lpmt << " = " << isize_lpmt - fsize_lpmt << '\n';
+    LogDebug << "SPMT: " << tsize_spmt << " - " << fsize_spmt << " = " << tsize_spmt - fsize_spmt << '\n';
         
     LogDebug << isize << " -> " << fsize << " = " << isize - fsize << " PMTs are removed\n";
 

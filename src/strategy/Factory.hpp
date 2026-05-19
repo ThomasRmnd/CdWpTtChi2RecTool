@@ -11,7 +11,7 @@ class StrategyFactory {
 
 public:
 
-    StrategyFactory(const StrategyRegistry& registry);
+    StrategyFactory(StrategyRegistry& registry);
 
     virtual ~StrategyFactory() = default;
 
@@ -19,7 +19,7 @@ public:
 
 protected:
 
-    const StrategyRegistry& c_registry;
+    StrategyRegistry& m_registry;
 
     DetectorType getDetectorType(const RecPmtTable& table) const;
 
@@ -29,7 +29,7 @@ class ManualStrategyFactory : public StrategyFactory {
 
 public:
 
-    ManualStrategyFactory(const StrategyRegistry& registry, ParamsType ptype);
+    ManualStrategyFactory(StrategyRegistry& registry, ParamsType ptype);
 
     ~ManualStrategyFactory() override = default;
 
@@ -45,7 +45,7 @@ class AutomaticStrategyFactory : public StrategyFactory {
 
 public:
 
-    AutomaticStrategyFactory(const StrategyRegistry& registry, const std::shared_ptr<Classifier>& classifier);
+    AutomaticStrategyFactory(StrategyRegistry& registry, const std::shared_ptr<Classifier>& classifier);
 
     ~AutomaticStrategyFactory() override = default;
 

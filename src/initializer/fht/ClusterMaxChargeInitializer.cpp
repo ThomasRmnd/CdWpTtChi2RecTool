@@ -84,7 +84,7 @@ bool ClusterMaxChargeInitializer::getCdInit(RecPmtTable::const_iterator ftable, 
         }
     }
     if (leading_totq == 0.0 || trailing_totq == 0.0) {
-        LogWarn << "Failed to calculate initial or final point in the CD initialization\n";
+        LogInfo << "Failed to calculate initial or final point in the CD initialization\n";
         return false;
     }
     itime = leading_edge_time;
@@ -139,7 +139,7 @@ bool ClusterMaxChargeInitializer::getWpInit(RecPmtTable::const_iterator ftable, 
         }
     }
     if (leading_totq == 0.0 || trailing_totq == 0.0) {
-        LogWarn << "Failed to calculate initial or final point in the WP initialization\n";
+        LogInfo << "Failed to calculate initial or final point in the WP initialization\n";
         return false;
     }
     ipos /= leading_totq;
@@ -192,7 +192,7 @@ bool ClusterMaxChargeInitializer::initiate(const RecPmtTable& table) {
     if (discriminant >= 0.0) {
         double sqrt_discriminant = std::sqrt(discriminant);
         double t1 = -b_half - sqrt_discriminant;
-        double t2 = -b_half + sqrt_discriminant;
+        // double t2 = -b_half + sqrt_discriminant;
         ipos = ipos + t1 * dir;
     }
 

@@ -22,11 +22,13 @@ bool MaskHeightCartesianProdCombinator::combine(const std::vector<vec3>& hits) {
         m_mask.assign(m_height_map.size(), false);
         std::fill(m_mask.end() - nb_pts, m_mask.end(), true);
         do {
-            LogDebug << "Mask: ";
+            std::ostringstream oss;
+            oss << "Mask: ";
             for (bool b : m_mask) {
-                std::cout << b << ' ';
+                oss << b << ' ';
             }
-            std::cout << '\n';
+            oss << '\n';
+            LogDebug << oss.str();
             if (!cartesianProduct(curr, m_height_map.begin(), m_mask.begin())) return false;
         } while (std::next_permutation(m_mask.begin(), m_mask.end()));
     }
@@ -43,11 +45,13 @@ bool MaskHeightCartesianProdCombinator::getHeightMap(const std::vector<vec3>& hi
     }
     LogDebug << "Height map: \n";
     for (const auto& it : m_height_map) {
-        LogDebug << it.first << " -> ";
+        std::ostringstream oss;
+        oss << it.first << " -> ";
         for (const vec3& h : it.second) {
-            std::cout << '(' << h.x << ", " << h.y << ", " << h.z << "), ";
+            oss << '(' << h.x << ", " << h.y << ", " << h.z << "), ";
         }
-        std::cout << '\n';
+        oss << '\n';
+        LogDebug << oss.str();
     }
     return true;
 }
@@ -58,11 +62,13 @@ bool MaskHeightCartesianProdCombinator::cartesianProduct(std::vector<vec3>& curr
         if (curr.empty()) {
             LogWarn << "The current combination is empty\n";
         }
-        /* LogDebug << "Current combination: ";
+        /* std::ostringstream oss;
+        oss << "Current combination: ";
         for (const vec3& h : curr) {
-            std::cout << '(' << h.x << ", " << h.y << ", " << h.z << "), ";
+            oss << '(' << h.x << ", " << h.y << ", " << h.z << "), ";
         }
-        std::cout << '\n'; */
+        oss << '\n'; 
+        LogDebug << oss.str(); */
         return true;
     }
     std::unordered_map<double, std::vector<vec3>>::const_iterator it_next = it;

@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "SniperKernel/SniperLog.h"
+
 class timer {
 
 public:
@@ -15,14 +17,16 @@ public:
     ~timer() {
         if (m_durations.empty()) return;
         std::chrono::duration<double> total = m_durations[0];
-        // std::cout << "Detailed time consumption ==> 0: " << m_durations[0].count() << "s, "; 
+        // std::ostringstream oss;
+        // oss << "Detailed time consumption ==> 0: " << m_durations[0].count() << "s, "; 
         for (std::size_t i = 1; i < m_durations.size() - 1; ++i) {
-            // std::cout << i << ": " << m_durations[i].count() << "s, ";
+            // oss << i << ": " << m_durations[i].count() << "s, ";
             total += m_durations[i];
         }
-        // std::cout << m_durations.size() - 1 << ": " << m_durations.back().count() << "s\n";
+        // oss << m_durations.size() - 1 << ": " << m_durations.back().count() << "s\n";
+        // LogInfo << oss.str();
         total += m_durations.back();
-        std::cout << "Total time consumption: " << total.count() << "s ==> Mean: " << total.count() / m_durations.size() << "s\n";
+        LogInfo << "Total time consumption: " << total.count() << "s ==> Mean: " << total.count() / m_durations.size() << "s\n";
     };
 
     void start() {

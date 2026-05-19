@@ -1,5 +1,7 @@
 #include "estimator/optimizer/Optimizer.hpp"
 
+#include <sstream>
+
 #include "SniperKernel/SniperLog.h"
 
 Optimizer::Optimizer(unsigned int max_calls, unsigned int max_iter, double tol) :
@@ -29,9 +31,11 @@ double Optimizer::getCost() const {
 }
 
 void Optimizer::printParams() {
-    LogDebug << "Final parameters: ";
+    std::ostringstream oss;
+    oss << "Final parameters: ";
     for (std::size_t k = 0; k < m_size; ++k) {
-        std::cout << m_names[k] << " = " << m_params[k] << ", ";
+        oss << m_names[k] << " = " << m_params[k] << ", ";
     }
-    std::cout << "cost = " << m_cost << '\n';
+    oss << "cost = " << m_cost << '\n';
+    LogInfo << oss.str();
 }

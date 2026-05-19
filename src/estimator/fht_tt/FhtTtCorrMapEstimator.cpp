@@ -125,26 +125,28 @@ bool FhtTtCorrMapEstimator::estimate(RecPmtTable& table) {
     std::sort(m_scored_hits.begin(), m_scored_hits.end());
     for (const ScoredHits& hit : m_scored_hits) {
         printHits(hit.hits);
-        std::cout << "Cost: " << hit.score << std::endl;
+        LogDebug << "Cost: " << hit.score << '\n';
     }
     m_func->set(m_scored_hits.front().hits);
     RecPmtTable dummy_empty_table;
     m_func->set(dummy_empty_table); // since the table is empty, this will only calculate the tt cost
     double tt_cost = m_func->operator()(m_scored_hits.front().fvars.data());
-    LogDebug << "CD cost: " << m_scored_hits.front().score - tt_cost << ", TT cost: " << tt_cost << std::endl;
+    LogDebug << "CD cost: " << m_scored_hits.front().score - tt_cost << ", TT cost: " << tt_cost << '\n';
 
     if ( ((m_scored_hits.front().score - tt_cost) - m_cost) / m_cost < 0.175 && tt_cost < 0.05) {
         m_cost = m_scored_hits.front().score;
         m_params = m_scored_hits.front().fvars;
-        LogDebug << "Final parameters: ";
+        std::ostringstream oss;
+        oss << "Final parameters: ";
         for (std::size_t k = 0; k < m_size; ++k) {
-            std::cout << m_names[k] << " = " << m_params[k] << ", ";
+            oss << m_names[k] << " = " << m_params[k] << ", ";
         }
-        std::cout << "cost = " << m_cost << std::endl;
+        oss << "cost = " << m_cost << '\n';
+        LogDebug << oss.str();
         return true;
     }
 
-    LogInfo << "The cost is too high: " << m_scored_hits.front().score << "; we will switch to 2 points reconstruction." << std::endl;
+    LogInfo << "The cost is too high: " << m_scored_hits.front().score << "; we will switch to 2 points reconstruction\n";
 
     // Final Minimization with 2 points ----------
 
@@ -163,11 +165,13 @@ bool FhtTtCorrMapEstimator::estimate(RecPmtTable& table) {
             hits_mask.assign(m_scored_hits[k].hits.size(), false);
             std::fill(hits_mask.end() - i, hits_mask.end(), true);
             do {
-                LogDebug << "Mask: ";
+                std::ostringstream oss;
+                oss << "Mask: ";
                 for (bool b : hits_mask) {
-                    std::cout << b << ", ";
+                    oss << b << ", ";
                 }
-                std::cout << std::endl;
+                oss << '\n';
+                LogDebug << oss.str();
                 curr_hits.clear();
                 for (std::size_t j = 0; j < hits_mask.size(); ++j) {
                     if (hits_mask[j]) curr_hits.push_back(m_scored_hits[k].hits[j]);
@@ -201,24 +205,29 @@ bool FhtTtCorrMapEstimator::estimate(RecPmtTable& table) {
 
     std::sort(m_scored_hits.begin(), m_scored_hits.end());
     for (const ScoredHits& hit : m_scored_hits) {
-        LogDebug << "Hits: ";
+        std::ostringstream oss;
+        oss << "Hits: ";
         for (const vec3& h : hit.hits) {
-            std::cout << h << ", ";
+            oss << h << ", ";
         }
-        std::cout << "Cost: " << hit.score << std::endl;
+        oss << "Cost: " << hit.score << '\n';
+        LogDebug << oss.str();
     }
     m_func->set(m_scored_hits.front().hits);
     m_func->set(dummy_empty_table); // since the table is empty, this will only calculate the tt cost
     tt_cost = m_func->operator()(m_scored_hits.front().fvars.data());
-    LogDebug << "CD cost: " << m_scored_hits.front().score - tt_cost << ", TT cost: " << tt_cost << std::endl;
+    LogDebug << "CD cost: " << m_scored_hits.front().score - tt_cost << ", TT cost: " << tt_cost << '\n';
 
     m_cost = m_scored_hits.front().score;
     m_params = m_scored_hits.front().fvars;
 
-    LogDebug << "Final parameters: ";
+    std::ostringstream oss;
+    oss << "Final parameters: ";
     for (std::size_t k = 0; k < m_size; ++k) {
-        std::cout << m_names[k] << " = " << m_params[k] << ", ";
+        oss << m_names[k] << " = " << m_params[k] << ", ";
     }
-    std::cout << "cost = " << m_cost << std::endl;
+    oss << "cost = " << m_cost << '\n';
+    LogDebug << oss.str();
+
     return true;
 }

@@ -29,11 +29,13 @@ public:
     }
 
     void printParams() {
-        LogInfo << "Initial parameters: ";
+        std::ostringstream oss;
+        oss << "Initial parameters: ";
         for (std::size_t k = 0; k < m_params.size() - 1; ++k) {
-            std::cout << m_params[k] << ", ";
+            oss << m_params[k] << ", ";
         }
-        std::cout << m_params.back() << '\n';
+        oss << m_params.back() << '\n';
+        LogInfo << oss.str();
     }
 
     /**
