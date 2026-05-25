@@ -121,6 +121,8 @@ public:
 
 };
 
+/* WIP
+
 class CdDoubleStrategy : public Strategy {
 
 public:
@@ -133,6 +135,8 @@ public:
     void save(RecTrks* tracks, double totpe) override;
 
 };
+
+*/
 
 class TtStrategy : public Strategy {
 

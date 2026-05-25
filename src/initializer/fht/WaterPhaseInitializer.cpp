@@ -70,6 +70,10 @@ bool WaterPhaseInitializer::initHighlyClipping(const RecPmtTable& table) {
 
         RecPmtTable::const_iterator ftable = std::find_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_WP); });
         RecPmtTable::const_iterator ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_WP); }).base();
+        if (std::distance(ftable, ltable) <= 0) {
+            LogWarn << "No WP PMTs found for initialization\n";
+            return false;
+        }
 
         LogDebug << "Number of WP PMTs for initialization: " << std::distance(ftable, ltable) << '\n';
 
@@ -118,7 +122,7 @@ bool WaterPhaseInitializer::initHighlyClipping(const RecPmtTable& table) {
         }
 
         if (!found_early || !found_late) {
-            LogWarn << "Early/Late position not found, cannot continue WpGeometryTimeTransformer" << std::endl;
+            LogWarn << "Early/Late position not found, cannot continue\n";
             return false;
         }
 
@@ -241,6 +245,10 @@ bool WaterPhaseInitializer::initiate(const RecPmtTable& table) {
 
     RecPmtTable::const_iterator ftable = std::find_if(table.begin(), table.end(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); });
     RecPmtTable::const_iterator ltable = std::find_if(table.rbegin(), table.rend(), [&](const RecPmtProp& pmt) { return hasPmtType(pmt, RecPmtType::PMT_20INCH); }).base();
+    if (std::distance(ftable, ltable) <= 0) {
+        LogWarn << "No PMTs found for the initialization\n";
+        return false;
+    }
 
     if (isHighlyClipping(table)) return initHighlyClipping(table);
 

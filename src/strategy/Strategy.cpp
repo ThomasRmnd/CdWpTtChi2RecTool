@@ -19,7 +19,7 @@
 #include "estimator/tt/combinator/MaskHeightCartesianProdCombinator.hpp"
 #include "estimator/tt/converter/FuzeNeighborConverter.hpp"
 
-#include "initializer/fht/ClusterBundleInitializer.hpp"
+// #include "initializer/fht/ClusterBundleInitializer.hpp" WIP
 #include "initializer/fht/ClusterMaxChargeInitializer.hpp"
 #include "initializer/fht/WaterPhaseInitializer.hpp"
 #include "initializer/tt/MinMaxHeightInitializer.hpp"
@@ -37,7 +37,6 @@
 #include "transformer/PmtTypeTransformer.hpp"
 #include "transformer/TtCrossTalkTransformer.hpp"
 #include "transformer/WaterPhaseTransformer.hpp"
-#include "transformer/WpGeomTimeTransformer.hpp"
 
 #define DEFINIT_GLOBAL_BASED_ON_TRACK_PARAMS(Base, name, Derived, ...) \
     std::shared_ptr<Base> g_##name##_single = std::make_shared<Derived<SingleAcrylicParamsTag>>(__VA_ARGS__); \
@@ -178,7 +177,7 @@ void CdStrategy::save(RecTrks* tracks, double totpe) {
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
-        LogWarn << "Negative length: " << length << '\n';
+        LogInfo << "Negative length: " << length << '\n';
         std::swap(start, end);
         std::swap(t_start, t_end);
     }
@@ -257,7 +256,7 @@ void CdStoppingStrategy::save(RecTrks* tracks, double totpe) {
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
-        LogWarn << "Negative length: " << length << '\n';
+        LogInfo << "Negative length: " << length << '\n';
         std::swap(start, end);
         std::swap(t_start, t_end);
     }
@@ -272,6 +271,8 @@ void CdStoppingStrategy::save(RecTrks* tracks, double totpe) {
 // ################################################################################################
 // ===================================== CD Double Strategy =======================================
 // ################################################################################################
+
+/* WIP
 
 void CdDoubleStrategy::create() {
     m_pipe = std::make_shared<Pipeline>("CdDoubleStrategy__Pipeline");
@@ -342,12 +343,12 @@ void CdDoubleStrategy::save(RecTrks* tracks, double totpe) {
     t_end_1 = t_start_1 + length_1 / constants::c;
     t_end_2 = t_start_2 + length_2 / constants::c;
     if (length_1 < 0.0) {
-        LogWarn << "Negative length: " << length_1 << '\n';
+        LogInfo << "Negative length: " << length_1 << '\n';
         std::swap(start_1, end_1);
         std::swap(t_start_1, t_end_1);
     }
     if (length_2 < 0.0) {
-        LogWarn << "Negative length: " << length_2 << '\n';
+        LogInfo << "Negative length: " << length_2 << '\n';
         std::swap(start_2, end_2);
         std::swap(t_start_2, t_end_2);
     }
@@ -364,6 +365,8 @@ void CdDoubleStrategy::save(RecTrks* tracks, double totpe) {
         totpe, cost, 0
     );
 }
+
+*/
 
 // ################################################################################################
 // ========================================= TT Strategy ==========================================
@@ -403,7 +406,7 @@ void TtStrategy::save(RecTrks* tracks, double totpe) {
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
-        LogWarn << "Negative length: " << length << '\n';
+        LogInfo << "Negative length: " << length << '\n';
         std::swap(start, end);
         std::swap(t_start, t_end);
     }
@@ -487,7 +490,7 @@ void CdWpStrategy::save(RecTrks* tracks, double totpe) {
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
-        LogWarn << "Negative length: " << length << '\n';
+        LogInfo << "Negative length: " << length << '\n';
         std::swap(start, end);
         std::swap(t_start, t_end);
     }
@@ -595,7 +598,7 @@ void CdTtStrategy::save(RecTrks* tracks, double totpe) {
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
-        LogWarn << "Negative length: " << length << '\n';
+        LogInfo << "Negative length: " << length << '\n';
         std::swap(start, end);
         std::swap(t_start, t_end);
     }
@@ -709,7 +712,7 @@ void CdWpTtStrategy::save(RecTrks* tracks, double totpe) {
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
-        LogWarn << "Negative length: " << length << '\n';
+        LogInfo << "Negative length: " << length << '\n';
         std::swap(start, end);
         std::swap(t_start, t_end);
     }
@@ -782,7 +785,7 @@ void CdWaterPhaseStrategy::save(RecTrks* tracks, double totpe) {
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
-        LogWarn << "Negative length: " << length << '\n';
+        LogInfo << "Negative length: " << length << '\n';
         std::swap(start, end);
         std::swap(t_start, t_end);
     }
@@ -862,7 +865,7 @@ void CdWpWaterPhaseStrategy::save(RecTrks* tracks, double totpe) {
     end = start + dir * length;
     t_end = t_start + length / constants::c;
     if (length < 0.0) {
-        LogWarn << "Negative length: " << length << '\n';
+        LogInfo << "Negative length: " << length << '\n';
         std::swap(start, end);
         std::swap(t_start, t_end);
     }

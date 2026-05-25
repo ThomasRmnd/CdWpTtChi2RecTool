@@ -40,8 +40,8 @@ public:
 
         m_shift = m_prof->GetBinContent(bin_x, bin_y);
 
-        LogDebug << "x = " << x << " y = " << y << std::endl;
-        LogDebug << "WP Time Shift: " << m_shift << std::endl;
+        LogDebug << "x = " << x << " y = " << y << '\n';
+        LogDebug << "WP Time Shift: " << m_shift << '\n';
 
         double signed_pos = 0.0;
         for (RecPmtTable::iterator it = first; it != last; ++it) {
@@ -63,17 +63,17 @@ private:
     bool openCorrProfile() override {
         m_prof = this->m_file->template get<TProfile2D>(this->m_mapname.c_str());
         if (!m_prof) {
-            LogError << "Cannot find TProfile3D prof3d in correction file " << this->m_filename << std::endl;
+            LogError << "Cannot find TProfile3D prof3d in correction file " << this->m_filename << '\n';
             return false;
         }
-        LogDebug << "WP Profile in correction file " << this->m_filename << " opened successfully." << std::endl;
+        LogDebug << "WP Profile in correction file " << this->m_filename << " opened successfully\n";
         return true;
     }
 
     int getBin(TAxis* axis, double value) {
         int bin = axis->FindBin(value);
         if (bin == 0 || bin == axis->GetNbins() + 1) {
-            // LogWarn << "The range of the correction map is not wide enough: value = " << value << ", bin = " << bin << std::endl;
+            // LogWarn << "The range of the correction map is not wide enough: value = " << value << ", bin = " << bin << '\n';
             bin = std::clamp(bin, 1, axis->GetNbins());
         }
         return bin;
@@ -132,17 +132,17 @@ private:
     bool openCorrProfile() override {
         m_prof = m_file->template get<TProfile2D>(m_mapname.c_str());
         if (!m_prof) {
-            LogError << "Cannot find TProfile3D prof3d in correction file " << m_filename << std::endl;
+            LogError << "Cannot find TProfile3D prof3d in correction file " << m_filename << '\n';
             return false;
         }
-        LogDebug << "WP Profile in correction file " << m_filename << " opened successfully." << std::endl;
+        LogDebug << "WP Profile in correction file " << m_filename << " opened successfully\n";
         return true;
     }
 
     int getBin(TAxis* axis, double value) {
         int bin = axis->FindBin(value);
         if (bin == 0 || bin == axis->GetNbins() + 1) {
-            // LogWarn << "The range of the correction map is not wide enough: value = " << value << ", bin = " << bin << std::endl;
+            // LogWarn << "The range of the correction map is not wide enough: value = " << value << ", bin = " << bin << '\n';
             bin = std::clamp(bin, 1, axis->GetNbins());
         }
         return bin;

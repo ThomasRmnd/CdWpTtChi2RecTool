@@ -17,7 +17,7 @@ public:
     bool finalize() override;
 
     void book(const std::shared_ptr<Strategy>& strat);
-    std::shared_ptr<Strategy> get(const StrategyType& type) const;
+    std::shared_ptr<Strategy> get(const StrategyType& type);
 
 private:
 

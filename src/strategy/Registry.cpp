@@ -5,7 +5,7 @@
 void StrategyRegistry::configure(const SniperJSON& config) {
     m_config = config;
     for (auto it = m_config.map_begin(); it != m_config.map_end(); ++it) {
-        std::cout << it->first << ": " << it->second.str() << std::endl;
+        LogDebug << it->first << ": " << it->second.str() << '\n';
     }
 }
 
@@ -44,10 +44,10 @@ void StrategyRegistry::book(const std::shared_ptr<Strategy>& strat) {
     m_strats[strat->type] = strat;
 }
 
-std::shared_ptr<Strategy> StrategyRegistry::get(const StrategyType& type) const {
+std::shared_ptr<Strategy> StrategyRegistry::get(const StrategyType& type) {
     std::unordered_map<StrategyType, std::shared_ptr<Strategy>>::const_iterator it = m_strats.find(type);
     if (it == m_strats.end()) {
-        std::cout << "StrategyRegistry::get: [WARN] No strategy found of type (" << static_cast<int>(type.params) << ", " << static_cast<int>(type.detector) << "). Skipping\n";
+        LogInfo << "No strategy found of type (" << static_cast<int>(type.params) << ", " << static_cast<int>(type.detector) << "). Skipping\n";
         return nullptr;
     }
     return it->second;

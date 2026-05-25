@@ -1,7 +1,7 @@
 #include "strategy/Factory.hpp"
 
-StrategyFactory::StrategyFactory(const StrategyRegistry& registry) :
-    c_registry(registry)
+StrategyFactory::StrategyFactory(StrategyRegistry& registry) :
+    m_registry(registry)
 {}
 
 DetectorType StrategyFactory::getDetectorType(const RecPmtTable& table) const {
@@ -15,16 +15,16 @@ DetectorType StrategyFactory::getDetectorType(const RecPmtTable& table) const {
     return dtype;
 }
 
-ManualStrategyFactory::ManualStrategyFactory(const StrategyRegistry& registry, ParamsType ptype) :
+ManualStrategyFactory::ManualStrategyFactory(StrategyRegistry& registry, ParamsType ptype) :
     StrategyFactory(registry),
     c_ptype(ptype)
 {}
 
 std::shared_ptr<Strategy> ManualStrategyFactory::construct(const RecPmtTable& table) {
-    return c_registry.get({c_ptype, getDetectorType(table)});
+    return m_registry.get({c_ptype, getDetectorType(table)});
 }
 
-AutomaticStrategyFactory::AutomaticStrategyFactory(const StrategyRegistry& registry, const std::shared_ptr<Classifier>& classifier) :
+AutomaticStrategyFactory::AutomaticStrategyFactory(StrategyRegistry& registry, const std::shared_ptr<Classifier>& classifier) :
     StrategyFactory(registry),
     m_classifier(classifier)
 {
@@ -33,5 +33,5 @@ AutomaticStrategyFactory::AutomaticStrategyFactory(const StrategyRegistry& regis
 }
 
 std::shared_ptr<Strategy> AutomaticStrategyFactory::construct(const RecPmtTable& table) {
-    return c_registry.get({m_classifier->classify(table), getDetectorType(table)});
+    return m_registry.get({m_classifier->classify(table), getDetectorType(table)});
 }
