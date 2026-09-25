@@ -81,7 +81,6 @@ void TriggerTimeCorrelation::changeRefTime(RecPmtTable& table, double diff_ts) {
 void TriggerTimeCorrelation::changeRefTimeInRange(RecPmtTable& table, double diff_ts, const RecPmtType& type) {
     for (RecPmtProp& pmt : table) {
         if (!pmt.used || !hasPmtType(pmt, type)) continue;
-        LogDebug << "PMT (" << pmt.id << " = " << pmt.fht << " --> " << pmt.fht - diff_ts << '\n';
         pmt.fht -= diff_ts;
     }
-}
+}   
