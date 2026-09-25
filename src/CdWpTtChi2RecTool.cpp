@@ -100,12 +100,16 @@ bool CdWpTtChi2RecTool::configure(const Params* params, const PmtTable* table) {
 bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     timer_guard tg(m_timer); // start the timer, and stop it when `tg` goes out of scope and if timer::stop() is not called
 
-    
+
 
     TableConverter::convert(c_ref_table, m_table);
     double totpe = TableConverter::getTotPE();
 
     LogInfo << "Start reconstruction entry with " << m_table.size() << " PMTs, and " << totpe << " PEs\n";
+
+    if (!m_trig_corr->correct(m_table, m_buf)) {
+        return false;
+    }
 
     std::shared_ptr<Strategy> strat = m_fact->construct(m_table);
     if (!strat) {
