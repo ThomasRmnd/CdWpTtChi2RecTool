@@ -22,7 +22,7 @@ bool TriggerTimeCorrelation::correct(RecPmtTable& table, JM::NavBuffer* buf) {
 
     m_cur_ts = TimeStamp{nav->TimeStamp().GetTimeSpec()};
     m_cur_type = getDetectorType(nav);
-    if (m_cur_type == DetectorType::UNKNOWN) {
+    if (m_cur_type == DetectorType::NONE) {
         LogInfo << "Unexpected entry type (" << nav->getDetectorType() << ") at " << m_cur_ts << ". Ignoring\n";
         return false;
     }
@@ -36,13 +36,13 @@ bool TriggerTimeCorrelation::correct(RecPmtTable& table, JM::NavBuffer* buf) {
         }
         m_other_ts = TimeStamp{nav->TimeStamp().GetTimeSpec()};
         m_other_type = getDetectorType(nav);
-        if (m_other_type == DetectorType::UNKNOWN) {
+        if (m_other_type == DetectorType::NONE) {
             LogInfo << "Unexpected entry type (" << nav->getDetectorType() << ") at " << m_other_ts << ". Ignoring\n";
             continue;
         }
         LogDebug << "Current entry: (type: " << static_cast<int>(m_cur_type) << ", ts: " << m_cur_ts << ")\n";
         LogDebug << "Other entry: (type: " << static_cast<int>(m_other_type) << ", ts: " << m_other_ts << ")\n";
-        if ( (m_cur_type & m_other_type) != DetectorType::UNKNOWN ) continue; // current event has already assotiated an event with same type
+        if ( (m_cur_type & m_other_type) != DetectorType::NONE ) continue; // current event has already assotiated an event with same type
         TimeStamp diff_ts = m_cur_ts - m_other_ts;
         double diff_ts_ns = static_cast<double>(diff_ts.GetSec()) * 1.0e9 + static_cast<double>(diff_ts.GetNanoSec());
         if (diff_ts_ns < m_time_window.first || m_time_window.second < diff_ts_ns) continue;
@@ -56,7 +56,7 @@ bool TriggerTimeCorrelation::correct(RecPmtTable& table, JM::NavBuffer* buf) {
 }
 
 DetectorType TriggerTimeCorrelation::getDetectorType(JM::EvtNavigator* nav) {
-    DetectorType type = DetectorType::UNKNOWN;
+    DetectorType type = DetectorType::NONE;
 
     JM::EvtNavigator::DetectorType evt_type = nav->getDetectorType();
 
