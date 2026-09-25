@@ -44,6 +44,8 @@ FILES
     src/transformer/TtCrossTalkTransformer.cpp
     src/transformer/WaterPhaseTransformer.cpp
 
+    src/trigger/TriggerTimeCorrelation.cpp
+
     # src/utils/DensityPeaksClustering.cpp WIP
     src/utils/Geometry.cpp
 
