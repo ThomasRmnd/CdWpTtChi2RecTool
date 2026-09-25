@@ -3,6 +3,11 @@
 #include "SniperKernel/SniperLog.h"
 #include "SniperKernel/ToolBase.h"
 
+TriggerTimeCorrelation::TriggerTimeCorrelation(const std::string& name, const std::pair<double, double>& time_window) :
+    Configurable{name},
+    m_time_window{time_window}
+{}
+
 void TriggerTimeCorrelation::configure(const SniperJSON& config) {
     if (!config.valid()) return;
     setConfigValue(m_time_window.first, "LowerBound", config);

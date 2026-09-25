@@ -63,7 +63,7 @@ bool CdWpTtChi2RecTool::initialize() {
     m_reg.configure(m_json);
     if (!m_reg.initialize()) return false;
 
-    m_trig_corr = std::make_shared<TriggerTimeCorrelation>("TriggerTimeCorrelation");
+    m_trig_corr = std::make_shared<TriggerTimeCorrelation>("TriggerTimeCorrelation", std::pair<double, double>{-750.0, 750.0});
     if (!m_trig_corr) {
         LogError << "Cannot create trigger time correlation tool\n";
         return false;

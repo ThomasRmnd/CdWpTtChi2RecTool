@@ -12,7 +12,7 @@ class TriggerTimeCorrelation : public Configurable {
 
 public:
 
-    using Configurable::Configurable;
+    TriggerTimeCorrelation(const std::string& name, const std::pair<double, double>& time_widnow);
 
     ~TriggerTimeCorrelation() override = default;
 
