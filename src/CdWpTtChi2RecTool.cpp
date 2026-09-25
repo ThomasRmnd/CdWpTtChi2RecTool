@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+#include "SniperKernel/SniperDataPtr.h"
 #include "SniperKernel/SniperJSON.h"
 #include "SniperKernel/SniperPtr.h"
 #include "SniperKernel/ToolFactory.h"
@@ -62,6 +63,19 @@ bool CdWpTtChi2RecTool::initialize() {
     m_reg.configure(m_json);
     if (!m_reg.initialize()) return false;
 
+    m_trig_corr = std::make_shared<TriggerTimeCorrelation>("TriggerTimeCorrelation");
+    if (!m_trig_corr) {
+        LogError << "Cannot create trigger time correlation tool\n";
+        return false;
+    }
+
+    SniperDataPtr<JM::NavBuffer> navbuf(getParent(), "/Event");
+    if (navbuf.invalid()) {
+        LogError << "Cannot get the NavBuffer @ /Event\n";
+        return false;
+    }
+    m_buf = navbuf.data();
+
     SniperPtr<IPMTParamSvc> pmtsvc(*getRoot(), "PMTParamSvc");
     if (pmtsvc.invalid()) {
         LogError << "Cannot get the PMTParamSvc\n";
@@ -85,6 +99,8 @@ bool CdWpTtChi2RecTool::configure(const Params* params, const PmtTable* table) {
 
 bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     timer_guard tg(m_timer); // start the timer, and stop it when `tg` goes out of scope and if timer::stop() is not called
+
+    
 
     TableConverter::convert(c_ref_table, m_table);
     double totpe = TableConverter::getTotPE();

@@ -8,6 +8,7 @@
 #include "SniperKernel/ToolBase.h"
 
 #include "strategy/Factory.hpp"
+#include "trigger/TriggerTimeCorrelation.hpp"
 #include "utils/RecPmtProp.hpp"
 #include "utils/timer.hpp"
 
@@ -39,7 +40,9 @@ private:
     StrategyRegistry m_reg;
     SniperJSON m_json;
     std::shared_ptr<StrategyFactory> m_fact;
+    std::shared_ptr<TriggerTimeCorrelation> m_trig_corr;
 
+    JM::NavBuffer* m_buf;
     IPMTParamSvc* m_pmt_svc;
 
     timer m_timer;
