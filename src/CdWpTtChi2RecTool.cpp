@@ -20,6 +20,7 @@ CdWpTtChi2RecTool::CdWpTtChi2RecTool(const std::string& name) :
     declProp("WaterPhase", m_water_phase = false);
     declProp("ManualReconstructionMode", m_manual_reco_mode = 1); // 1 = single through-going, 2 = single stopping, 3 = double
     declProp("ConfigFile", m_config_file);
+    declProp("TimeWindow", m_time_window = {-750.0, 750.0});
 }
 
 bool CdWpTtChi2RecTool::initialize() {
@@ -63,7 +64,7 @@ bool CdWpTtChi2RecTool::initialize() {
     m_reg.configure(m_json);
     if (!m_reg.initialize()) return false;
 
-    m_trig_corr = std::make_shared<TriggerTimeCorrelation>("TriggerTimeCorrelation", std::pair<double, double>{-750.0, 750.0});
+    m_trig_corr = std::make_shared<TriggerTimeCorrelation>("TriggerTimeCorrelation", m_time_window);
     if (!m_trig_corr) {
         LogError << "Cannot create trigger time correlation tool\n";
         return false;
@@ -99,8 +100,6 @@ bool CdWpTtChi2RecTool::configure(const Params* params, const PmtTable* table) {
 
 bool CdWpTtChi2RecTool::reconstruct(RecTrks* trks) {
     timer_guard tg(m_timer); // start the timer, and stop it when `tg` goes out of scope and if timer::stop() is not called
-
-
 
     TableConverter::convert(c_ref_table, m_table);
     double totpe = TableConverter::getTotPE();

@@ -32,6 +32,7 @@ private:
     bool m_water_phase;
     int m_manual_reco_mode;
     std::string m_config_file;
+    std::pair<double, double> m_time_window;
 
     const Params* c_params;
     const PmtTable* c_ref_table;
